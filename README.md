@@ -20,9 +20,13 @@ Unity Hub.
 ### Installing
 
 -Clone this project into your machine.
+
 -Open Unity Hub.
+
 -Add the cloned folder to it.
+
 -Select Unity version 2019.2.XX.
+
 -Open the project.
 
 ## Built With
@@ -37,7 +41,7 @@ Unity Hub.
 
 ## License
 
-Medieval Ghostbuster © 2020 Koala Studios 
+Medieval Ghostbuster © 2020 Koala Studios. 
 
 ## Acknowledgments
 
