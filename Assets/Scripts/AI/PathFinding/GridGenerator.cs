@@ -1,0 +1,80 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GridGenerator : MonoBehaviour
+{
+    public LayerMask unwalkablemask;
+    public Vector3 gridWorldSize;
+    public float nodeRadius;
+    private Node[,] grid;
+
+    private float nodeDiameter;
+    private int gridSizeX, gridSizeY;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        nodeDiameter = nodeRadius * 2;
+        gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
+        gridSizeY = Mathf.RoundToInt(gridWorldSize.z / nodeDiameter);
+        CreateGrid();
+    }
+
+    // Update is called once per frame
+    private void CreateGrid()
+    {
+        grid = new Node[gridSizeX, gridSizeY];
+
+        Vector3 bottomCorner = new Vector3(transform.position.x - (gridWorldSize.x / 2), transform.position.y, transform.position.z - (gridWorldSize.z / 2));
+
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                Vector3 worldPoint = new Vector3(bottomCorner.x + (x * nodeDiameter + nodeRadius), bottomCorner.y, bottomCorner.z + (y * nodeDiameter + nodeRadius));
+                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkablemask));
+                grid[x, y] = new Node(walkable, worldPoint, new Vector2(x, y));
+            }
+        }
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                GetNeighbors(grid[x, y]);
+            }
+        }
+    }
+    private void GetNeighbors(Node node)
+    {
+        List<Node> a = new List<Node>();
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                float distX = Mathf.Abs(Mathf.Abs(grid[x, y].pos.x) - Mathf.Abs(node.pos.x));
+                float distY = Mathf.Abs(Mathf.Abs(grid[x, y].pos.y) - Mathf.Abs(node.pos.y));
+
+                if ((distX == 1 && distY == 1) || 
+                    (distX == 1 && distY == 0) || 
+                    (distX == 0 && distY == 1))
+                {
+                    a.Add(grid[x, y]);
+                }
+            }
+        }
+        node.neighbors = a.ToArray();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, gridWorldSize);
+        if (grid != null)
+        {
+            foreach (Node a in grid)
+            {
+                Gizmos.color = a.Walkable ? Color.green : Color.red;
+                Gizmos.DrawWireCube(a.Position, Vector3.one * (nodeDiameter - 0.1f));
+            }
+        }
+    }
+}
