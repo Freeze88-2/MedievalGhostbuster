@@ -10,7 +10,7 @@ public class Node
     public Vector2 pos;
     public Node[] neighbors;
 
-    public float CombinedCost => closenessCost + distanceCost;
+    public float CombinedCost { get => closenessCost + distanceCost; }
     public float closenessCost;
     public float distanceCost;
 
