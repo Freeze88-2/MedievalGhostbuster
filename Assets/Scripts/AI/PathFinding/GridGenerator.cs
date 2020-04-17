@@ -94,7 +94,7 @@ public class GridGenerator : MonoBehaviour
         {
             foreach (Node a in grid)
             {
-                Gizmos.color = a.Walkable ? Color.green : Color.red;
+                Gizmos.color = a.Walkable ? a.HasGhost ? Color.blue: Color.green : Color.red;
                 Gizmos.DrawWireCube(a.Position, new Vector3(1, 0, 1) * nodeDiameter);
             }
         }

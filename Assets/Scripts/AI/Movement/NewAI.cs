@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class NewAI : MonoBehaviour
 {
-    [SerializeField] GameObject target;
-    [SerializeField] GameObject area;
-    GridGenerator grid;
+    [SerializeField] private GameObject target = null;
+    [SerializeField] private GameObject area = null;
 
+    private GridGenerator grid = null;
     private Rigidbody rb;
-    Node start;
-    Node end;
-    AStarAlgorithm AStar;
-    int pathN = 0;
-    List<Vector3> path = new List<Vector3>();
-    bool canMove = false;
+    private Node start;
+    private Node end;
+    private AStarAlgorithm AStar;
+
+    private int pathN = 0;
+    private List<Vector3> path = new List<Vector3>();
+    private bool canMove = false;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         grid = area.GetComponent<GridGenerator>();
@@ -24,7 +26,7 @@ public class NewAI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKey(KeyCode.Space))
         {
@@ -32,35 +34,68 @@ public class NewAI : MonoBehaviour
             pathN = 0;
         }
 
-            start = grid.GetClosestNode(transform.position);
-            end = grid.GetClosestNode(target.transform.position);
+        if (start != null)
+        {
+            SetGhostMinDistance(false);
+        }
 
-            path = AStar.CalculatePath(start, end);
+        start = grid.GetClosestNode(transform.position);
+        start.HasGhost = this;
+
+        end = grid.GetClosestNode(target.transform.position);
+
+        path = AStar.CalculatePath(start, end);
+
+        SetGhostMinDistance(true);
 
         if (canMove)
         {
-            rb.MovePosition(path[pathN]);
+            rb.MovePosition(Vector3.MoveTowards(transform.position, path[pathN],
+                Time.deltaTime * 2));
 
-            if (GetDistace(transform.position, path[pathN]) < 0.1f && pathN < path.Count -1)
+            if (Vector3.Distance(transform.position, path[pathN]) < 0.01f &&
+                pathN < path.Count - 1)
             {
                 pathN++;
             }
-            else if (pathN >= path.Count -1)
+            else if (pathN >= path.Count)
                 canMove = false;
         }
     }
-    private float GetDistace(Vector3 A, Vector3 B)
+    private void SetGhostMinDistance(bool state)
     {
-        // Distance formula (square root of ((x-x^2) + (y-y^2)))
-        return (Mathf.Sqrt(Mathf.Pow(Mathf.Abs(A.x - B.x), 2) +
-         Mathf.Pow(Mathf.Abs(A.y - B.y), 2)));
+        for (int i = 0; i < start.neighbors.Length; i++)
+        {
+            if (state)
+            {
+                if (start.neighbors[i].HasGhost == null)
+                {
+                    start.neighbors[i].HasGhost = this;
+                }
+            }
+            else
+            {
+                if (start.neighbors[i].HasGhost == this)
+                {
+                    start.neighbors[i].HasGhost = null;
+                }
+            }
+        }
     }
+
     private void OnDrawGizmos()
     {
-        foreach (Vector3 p in path)
+        if (start != null && path[0] != null)
         {
             Gizmos.color = Color.black;
-            Gizmos.DrawSphere(p, 0.1f);
+            Gizmos.DrawLine(start.Position, path[0]);
+        }
+        for (int i = 0; i < path.Count; i++)
+        {
+            Gizmos.color = Color.black;
+            Gizmos.DrawSphere(path[i], 0.1f);
+            if (i + 1 < path.Count)
+                Gizmos.DrawLine(path[i], path[i + 1]);
         }
     }
 }

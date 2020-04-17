@@ -11,13 +11,14 @@ public class AStarAlgorithm
     private readonly HashSet<Node> closed = new HashSet<Node>();
 
     // The finished full path to the target
-    private List<Vector3> path = new List<Vector3>();
-
+    private readonly List<Node> path = new List<Node>();
 
     /// <summary>
     /// A* algorithm for searching the bes path to a position
     /// </summary>
-    /// <param name="target"> The end position it should arrive </param>
+    /// <param name="start"> The node it begins on </param>
+    /// <param name="target"> The node it should end on </param>
+    /// <returns> A list of positions </returns>
     public List<Vector3> CalculatePath(Node start, Node target)
     {
         // Clears the list to make sure they're empty before starting to
@@ -36,12 +37,12 @@ public class AStarAlgorithm
             // open list (initially the ghost itself)
             Node current = open[0];
 
-            // Performs a loop while i is less than the amount of Objects
-            // on Open list, ignoring the first Object (the Ghost)
+            // Performs a loop while i is less than the amount of node
+            // on Open list, ignoring the first node
             for (int i = 1; i < open.Count; i++)
             {
-                // Checks if the cost of a Object on the open list is less
-                // or equals than the cost of the current Object
+                // Checks if the cost of a node on the open list is less
+                // or equals than the cost of the current node
                 if (open[i].CombinedCost < current.CombinedCost
                     || open[i].CombinedCost == current.CombinedCost)
                 {
@@ -60,25 +61,30 @@ public class AStarAlgorithm
             // Adds it to the locked path list
             closed.Add(current);
 
-            // Checks if the current position is the same as the target
-            if (current.Position == target.Position)
+            // Checks every neighbor of the target
+            for (int i = 0; i < target.neighbors.Length; i++)
             {
-                // Generates a list of positions and sends it back
-                TracePath(start, target);
-                return path;
+                // Checks if the current position is a target neighbour
+                if (current.pos == target.neighbors[i].pos)
+                {
+                    // Generates a list of positions and sends it back
+                    return TracePath(start, target.neighbors[i]);
+                }
             }
 
             // Checks all the Objects on the neighbors list
             for (int b = 0; b < current.neighbors.Length; b++)
             {
                 // Checks if the Object is already in the locked path
-                if (!closed.Contains(current.neighbors[b]) && current.neighbors[b].Walkable)
+                if (!closed.Contains(current.neighbors[b]) && 
+                    current.neighbors[b].Walkable && 
+                    !current.neighbors[b].HasGhost)
                 {
                     // Local variable combining the distance to the start 
                     // and the distance between the current position and
                     // that neighbor
-                    float newCostMov = current.distanceCost +
-                        GetDistace(current, current.neighbors[b]);
+                    float newCostMov = current.distanceCost + Vector3.Distance
+                        (current.pos, current.neighbors[b].pos);
 
                     // Checks if that variable is lower than the current
                     // distance of the Object and open list doesn't contain
@@ -89,8 +95,8 @@ public class AStarAlgorithm
                         // Sets a new distance cost to that neighbor
                         current.neighbors[b].distanceCost = newCostMov;
                         // Sets a new closeness to that neighbor
-                        current.neighbors[b].closenessCost =
-                             GetDistace(current.neighbors[b], target);
+                        current.neighbors[b].closenessCost = Vector3.Distance
+                            (current.neighbors[b].pos, target.pos);
                         // Sets the parent of that neighbor the current
                         // object
                         current.neighbors[b].Parent = current;
@@ -100,46 +106,72 @@ public class AStarAlgorithm
                 }
             }
         }
-        return path;
+        return null;
     }
 
     /// <summary>
     /// Forms a list of positions by getting the positions of the parents
-    /// of the Object until the Object is the start position
+    /// of the Nodes until the Node is the start position
     /// </summary>
+    /// <param name="start"> The Object it starts on </param>
     /// <param name="end"> The Object it targets </param>
-    private void TracePath(Node start, Node end)
+    private List<Vector3> TracePath(Node start, Node end)
     {
         // Creates a list of positions to store the path
         path.Clear();
         // Creates a local Object variable and assigns it the passed Object
         Node currentPiece = end;
+        Node nextPiece = currentPiece.Parent;
+        Vector2 dir = GetDirection(currentPiece, nextPiece);
 
         // Runs the loop until the currentPiece is not the start
-        while (currentPiece.Position != start.Position)
+        while (currentPiece.pos != start.pos)
         {
-            // Adds the position of the currentPiece to the list
-            path.Add(currentPiece.Position);
+            if (GetDirection(currentPiece, nextPiece) != dir ||
+                currentPiece.pos == start.pos ||
+                currentPiece.pos == end.pos)
+            {
+                // Adds the position of the currentPiece to the list
+                path.Add(currentPiece);
+            }
+
+            dir = GetDirection(currentPiece, nextPiece);
+
             // Assigns the currentPiece the parent of that piece
             currentPiece = currentPiece.Parent;
+            nextPiece = currentPiece.Parent;
         }
+        int count;
+
+        for (int y = 0; y < path.Count; y++)
+        {
+            count = 0;
+            for (int n = 0; n < path[y].neighbors.Length; n++)
+            {
+                if (path.Contains(path[y].neighbors[n]))
+                {
+                    count ++;
+                }
+            }
+            if (count >= 2)
+            {
+                path.Remove(path[y]);
+            }
+        }
+
         // The path forms from end to start, so it needs to be reversed
         path.Reverse();
+
+        List<Vector3> a = new List<Vector3>();
+
+        for (int k = 0; k < path.Count; k++)
+        {
+            a.Add(path[k].Position);
+        }
+        return a;
     }
 
-    /// <summary>
-    /// A simple method for calculating distances
-    /// </summary>
-    /// <param name="A"> The first position </param>
-    /// <param name="B"> The Second position </param>
-    /// <returns> An Integer with the aprox distance between the two
-    /// </returns>
-    private float GetDistace(Node A, Node B)
-    {
-        // Distance formula (square root of ((x-x^2) + (y-y^2)))
-        return (Mathf.Sqrt(Mathf.Pow(Mathf.Abs(A.pos.x - B.pos.x), 2) +
-         Mathf.Pow(Mathf.Abs(A.pos.y - B.pos.y), 2)));
-    }
+    private Vector2 GetDirection(Node a, Node b) => a.pos - b.pos;
 }
 
 
