@@ -639,7 +639,7 @@ GameObject:
   - component: {fileID: 1063278856}
   - component: {fileID: 1063278855}
   - component: {fileID: 1063278854}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: AI (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -854,7 +854,7 @@ GameObject:
   - component: {fileID: 1461934649}
   - component: {fileID: 1461934648}
   - component: {fileID: 1461934647}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: AI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
