@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float _rotationSpeed = 1.0f;
-    public Transform CameraRig, Player;
-    float _mouseX, _mouseY;
+    public float        _rotationSpeed;
+    public Transform    CameraRig, Player;
+    private float       _mouseX, _mouseY;
 
     void Start()
     {
-        // Cursor.visible = false;
-        // Cursor.lockState = CursorLockMode.Locked;
+        _rotationSpeed = 1.0f;
     }
 
     void LateUpdate() 
@@ -28,6 +27,5 @@ public class CameraController : MonoBehaviour
         transform.LookAt(CameraRig);
 
         CameraRig.rotation = Quaternion.Euler(_mouseY, _mouseX, 0);
-        Player.rotation = Quaternion.Euler(0, _mouseX, 0);
     }
 }
