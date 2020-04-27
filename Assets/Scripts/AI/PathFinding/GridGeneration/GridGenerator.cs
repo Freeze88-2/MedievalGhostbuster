@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class GridGenerator : MonoBehaviour
 {
-    public LayerMask unwalkablemask;
-    public Vector3 gridWorldSize;
-    public float nodeRadius;
-    public Node[,] grid;
+    [SerializeField] private LayerMask unwalkablemask;
+    [SerializeField] private Vector3 gridWorldSize = Vector3.one;
+    [SerializeField] private float nodeRadius = 0.3f;
 
+    private Node[,] grid;
     private float nodeDiameter;
     private int gridSizeX, gridSizeY;
 
-    // Start is called before the first frame update
-    void Start()
+    public void StartGridGeneration()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -22,11 +20,11 @@ public class GridGenerator : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void CreateGrid()
+    public void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
 
-        Vector3 bottomCorner = new Vector3(transform.position.x - 
+        Vector3 bottomCorner = new Vector3(transform.position.x -
             (gridWorldSize.x / 2), transform.position.y, transform.position.z -
             (gridWorldSize.z / 2));
 
@@ -34,8 +32,8 @@ public class GridGenerator : MonoBehaviour
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 worldPoint = new Vector3(bottomCorner.x + 
-                    (x * nodeDiameter + nodeRadius), bottomCorner.y, 
+                Vector3 worldPoint = new Vector3(bottomCorner.x +
+                    (x * nodeDiameter + nodeRadius), bottomCorner.y,
                     bottomCorner.z + (y * nodeDiameter + nodeRadius));
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius,
                     unwalkablemask));
@@ -61,11 +59,11 @@ public class GridGenerator : MonoBehaviour
             {
                 float distX = Mathf.Abs(Mathf.Abs(grid[x, y].pos.x) -
                     Mathf.Abs(node.pos.x));
-                float distY = Mathf.Abs(Mathf.Abs(grid[x, y].pos.y) - 
+                float distY = Mathf.Abs(Mathf.Abs(grid[x, y].pos.y) -
                     Mathf.Abs(node.pos.y));
 
-                if ((distX == 1 && distY == 1) || 
-                    (distX == 1 && distY == 0) || 
+                if ((distX == 1 && distY == 1) ||
+                    (distX == 1 && distY == 0) ||
                     (distX == 0 && distY == 1))
                 {
                     a.Add(grid[x, y]);
@@ -77,8 +75,10 @@ public class GridGenerator : MonoBehaviour
 
     public Node GetClosestNode(Vector3 position)
     {
-        float percentX = Mathf.Clamp01((position.x + gridWorldSize.x / 2) / gridWorldSize.x);
-        float percentY = Mathf.Clamp01((position.z + gridWorldSize.z / 2) / gridWorldSize.z);
+        float percentX = Mathf.Clamp01((position.x + gridWorldSize.x / 2) 
+            / gridWorldSize.x);
+        float percentY = Mathf.Clamp01((position.z + gridWorldSize.z / 2) 
+            / gridWorldSize.z);
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
@@ -94,7 +94,7 @@ public class GridGenerator : MonoBehaviour
         {
             foreach (Node a in grid)
             {
-                Gizmos.color = a.Walkable ? a.HasGhost ? Color.blue: Color.green : Color.red;
+                Gizmos.color = a.Walkable ? a.HasGhost ? Color.blue : Color.green : Color.red;
                 Gizmos.DrawWireCube(a.Position, new Vector3(1, 0, 1) * nodeDiameter);
             }
         }

@@ -5,9 +5,8 @@ using TMPro;
 using System.Linq;
 public class Debugger : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField inputfield;
-    [SerializeField] private Canvas canvas;
-    [SerializeField] private Material debugMat;
+    [SerializeField] private TMP_InputField inputfield = null;
+    [SerializeField] private Canvas canvas = null;
     List<GameObject> aIs = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -47,7 +46,7 @@ public class Debugger : MonoBehaviour
     {
         for (int i = 0; i < aIs.Count; i++)
         {
-            aIs[i].GetComponent<AIMovement>().SetupLine(debugMat, todo);
+            aIs[i].GetComponent<AIMovement>().SetupLine(todo);
         }
     }
 }

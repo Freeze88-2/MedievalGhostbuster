@@ -1,15 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity;
 public class AIMovement : MonoBehaviour
 {
     [SerializeField] private GameObject target = null;
     [SerializeField] private GameObject area = null;
-    [SerializeField] private float maxAccel = 1f;
-    [SerializeField] private float maxRotation = 1f;
     [SerializeField] private float maxSpeed = 1f;
-    [SerializeField] private float maxAngularAccel = 1f;
 
     private GridGenerator grid = null;
     private Node start;
@@ -19,13 +16,7 @@ public class AIMovement : MonoBehaviour
     private int pathN = 0;
 
     private LineRenderer line;
-
-    // The agent's rigid body
     private Rigidbody rb;
-
-    //private AIlookRotation steeringBehaviour;
-    public float MaxAngularAccel => maxAngularAccel;
-    public Vector3 AngularVelocity => rb.angularVelocity;
 
     // Use this for initialization
     private void Start()
@@ -33,7 +24,6 @@ public class AIMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         grid = area.GetComponent<GridGenerator>();
         AStar = new AStarAlgorithm();
-        //steeringBehaviour = GetComponent<AIlookRotation>();
     }
 
     // This is called every physics update
@@ -43,9 +33,9 @@ public class AIMovement : MonoBehaviour
 
         Vector3 dir = transform.position - nextPoint.Value;
         dir.y = 0;
+
         transform.rotation = Quaternion.Lerp(transform.rotation,
-                                             Quaternion.LookRotation(dir),
-                                             Time.unscaledDeltaTime * 3f);
+            Quaternion.LookRotation(dir), Time.unscaledDeltaTime * 2f);
 
         rb.velocity = -transform.forward * maxSpeed;
     }
@@ -71,20 +61,23 @@ public class AIMovement : MonoBehaviour
 
     private Vector3? GetNextPoint(List<Vector3> path)
     {
-        if (pathN >= path.Count)
+        if (path != null)
         {
-            pathN = 0;
-        }
-        if (Vector3.Distance(transform.position, path[pathN]) < 0.01f &&
-            pathN < path.Count - 1)
-        {
-            pathN++;
+            if (pathN >= path.Count - 1)
+            {
+                pathN = 0;
+            }
+            if (Vector3.Distance(transform.position, path[pathN]) < 0.01f &&
+                pathN < path.Count - 1)
+            {
+                pathN++;
+
+                Debug.Log(pathN);
+                Debug.Log(path.Count);
+            }
             return path[pathN];
         }
-        else
-        {
-            return path[pathN];
-        }
+        return transform.position;
     }
 
     private void SetGhostMinDistance(bool state)
@@ -108,9 +101,9 @@ public class AIMovement : MonoBehaviour
         }
     }
 
-    public void SetupLine(Material DebugMat, bool todo)
+    public void SetupLine(bool todo)
     {
-        StopCoroutine(Debug());
+        StopCoroutine(DebugLine());
         Destroy(line);
 
         if (todo)
@@ -124,17 +117,17 @@ public class AIMovement : MonoBehaviour
             line.startWidth = 0.05f;
             line.endWidth = 0.05f;
             line.useWorldSpace = true;
-            line.material = DebugMat;
 
-            StartCoroutine(Debug());
+            StartCoroutine(DebugLine());
         }
     }
-    List<Vector3> debugPath;
-    private IEnumerator Debug()
+
+    private List<Vector3> debugPath;
+
+    private IEnumerator DebugLine()
     {
         while (true)
         {
-
             line.positionCount = 1;
             line.SetPosition(0, start.Position);
 
