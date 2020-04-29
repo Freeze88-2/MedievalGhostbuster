@@ -5,7 +5,7 @@ using UnityEngine;
 public class Node
 {
     public bool Walkable { get; }
-    public AIMovement HasGhost { get; set; }
+    public int? GhostID { get; set; }
     public Vector3 Position { get; }
     public Node Parent { get; set; }
     public Vector2 pos;

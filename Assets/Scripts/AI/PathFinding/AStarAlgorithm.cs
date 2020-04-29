@@ -78,7 +78,7 @@ public class AStarAlgorithm
                 // Checks if the Object is already in the locked path
                 if (!closed.Contains(current.neighbors[b]) &&
                     current.neighbors[b].Walkable &&
-                    !current.neighbors[b].HasGhost)
+                    current.neighbors[b].GhostID == null)
                 {
                     // Local variable combining the distance to the start 
                     // and the distance between the current position and

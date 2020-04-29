@@ -75,15 +75,17 @@ public class GridGenerator : MonoBehaviour
 
     public Node GetClosestNode(Vector3 position)
     {
-        float percentX = Mathf.Clamp01((position.x + gridWorldSize.x / 2) 
+        float percentX = Mathf.Clamp01((position.x + gridWorldSize.x / 2)
             / gridWorldSize.x);
-        float percentY = Mathf.Clamp01((position.z + gridWorldSize.z / 2) 
+        float percentY = Mathf.Clamp01((position.z + gridWorldSize.z / 2)
             / gridWorldSize.z);
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
 
-        return grid[x, y];
+        if (grid != null)
+            return grid[x, y];
+        else return null;
     }
 
     private void OnDrawGizmos()
@@ -94,7 +96,7 @@ public class GridGenerator : MonoBehaviour
         {
             foreach (Node a in grid)
             {
-                Gizmos.color = a.Walkable ? a.HasGhost ? Color.blue : Color.green : Color.red;
+                Gizmos.color = a.Walkable ? a.GhostID != null ? Color.blue : Color.green : Color.red;
                 Gizmos.DrawWireCube(a.Position, new Vector3(1, 0, 1) * nodeDiameter);
             }
         }
