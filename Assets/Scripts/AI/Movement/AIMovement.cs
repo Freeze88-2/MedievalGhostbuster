@@ -1,47 +1,90 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity;
 
-public class AIMovement : MonoBehaviour
+/// <summary>
+/// Calculates and applies to the gameobject the movement
+/// </summary>
+public class AIMovement : MonoBehaviour, IEntity, IDebug
 {
+    // -- Target given --
     [SerializeField] private GameObject target = null;
+    // -- Designated area --
     [SerializeField] private GameObject area = null;
-    [SerializeField] private float maxSpeed = 1f;
 
+    // Provides a point for the AI to move to
     private AILogic ailogic;
+    // Line for debugging the path
     private LineRenderer line;
+    // The rigidbody attached to this gameobject
     private Rigidbody rb;
 
-    // Use this for initialization
+    /// <summary>
+    /// Color of this ghost
+    /// </summary>
+    public GhostColor GColor { get; }
+    /// <summary>
+    /// Current HP of this ghosts
+    /// </summary>
+    public float Hp { get; set; }
+    /// <summary>
+    /// The Maximun HP it can have
+    /// </summary>
+    public float MaxHp { get; }
+    /// <summary>
+    /// The maximum velocity it can have
+    /// </summary>
+    public float MaxSpeed { get; }
+
+    /// <summary>
+    /// Use this for initialization
+    /// </summary>
     private void Start()
     {
+        // Gets the rigidbody of this gameobject
         rb = GetComponent<Rigidbody>();
+        // Creates a new AILogic passing in the grid
         ailogic = new AILogic(area.GetComponent<GridGenerator>());
     }
 
-    // This is called every physics update
+    /// <summary>
+    /// This is called every physics update
+    /// </summary>
     private void FixedUpdate()
     {
-        Vector3? nextPoint = ailogic.GetPoint(this.gameObject, target);
+        // Gets a vector3 form the pathfinding
+        Vector3? nextPoint = ailogic.GetPoint(gameObject, target);
 
+        // Checks if the point received has a value
         if (nextPoint.HasValue)
         {
+            // Calculates the direction of current position to the next point
             Vector3 dir = transform.position - nextPoint.Value;
+            // Resets the value of Y to 0
             dir.y = 0;
 
+            // Rotates gradually the Ghost towards the direction
             transform.rotation = Quaternion.Lerp(transform.rotation,
-                Quaternion.LookRotation(dir), Time.unscaledDeltaTime * 2f);
+                Quaternion.LookRotation(dir), Time.unscaledDeltaTime * 3f);
 
-            rb.velocity = -transform.forward * maxSpeed;
+            // Moves the Ghost foward
+            rb.velocity = -transform.forward * MaxSpeed;
         }
     }
-    public void SetupLine(bool todo)
+    public void DealDamage(float amount)
+    {
+        Hp -= amount;
+    }
+    public void Heal(float amount)
+    {
+        Hp = Mathf.Min(Hp + amount, MaxHp);
+    }
+
+    public void RunDebug(bool active)
     {
         StopCoroutine(DebugLine());
         Destroy(line);
 
-        if (todo)
+        if (active)
         {
             line = gameObject.AddComponent<LineRenderer>();
 

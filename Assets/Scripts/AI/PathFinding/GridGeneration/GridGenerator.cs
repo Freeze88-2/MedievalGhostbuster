@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
-public class GridGenerator : MonoBehaviour
+public class GridGenerator : MonoBehaviour , IDebug
 {
-    [SerializeField] private LayerMask unwalkablemask;
+    [SerializeField] private LayerMask unwalkablemask = default;
     [SerializeField] private Vector3 gridWorldSize = Vector3.one;
     [SerializeField] private float nodeRadius = 0.3f;
 
@@ -11,11 +12,13 @@ public class GridGenerator : MonoBehaviour
     private float nodeDiameter;
     private int gridSizeX, gridSizeY;
 
+    private LineRenderer line;
+
     public void StartGridGeneration()
     {
         nodeDiameter = nodeRadius * 2;
-        gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
-        gridSizeY = Mathf.RoundToInt(gridWorldSize.z / nodeDiameter);
+        gridSizeX = (int)(gridWorldSize.x / nodeDiameter);
+        gridSizeY = (int)(gridWorldSize.z / nodeDiameter);
         CreateGrid();
     }
 
@@ -84,8 +87,60 @@ public class GridGenerator : MonoBehaviour
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
 
         if (grid != null)
+        {
             return grid[x, y];
-        else return null;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public void RunDebug(bool active)
+    {
+        StopCoroutine(DebugLine());
+        Destroy(line);
+
+        if (active)
+        {
+            line = gameObject.AddComponent<LineRenderer>();
+
+            line.sortingLayerName = "Debug";
+            line.sortingOrder = 100;
+            line.positionCount = 5;
+            line.startWidth = 0.05f;
+            line.endWidth = 0.05f;
+            line.useWorldSpace = true;
+
+            StartCoroutine(DebugLine());
+        }
+    }
+
+    private IEnumerator DebugLine()
+    {
+        while (true)
+        {
+            line.positionCount = 5;
+            line.SetPosition(0, new Vector3(transform.position.x -
+            (gridWorldSize.x / 2), transform.position.y, transform.position.z -
+            (gridWorldSize.z / 2)));
+
+            line.SetPosition(1, new Vector3(transform.position.x +
+            (gridWorldSize.x / 2), transform.position.y, transform.position.z -
+            (gridWorldSize.z / 2)));
+
+            line.SetPosition(2, new Vector3(transform.position.z +
+            (gridWorldSize.z / 2), transform.position.y, transform.position.x +
+            (gridWorldSize.x / 2)));
+
+            line.SetPosition(3, new Vector3(transform.position.z -
+            (gridWorldSize.z / 2), transform.position.y, transform.position.x +
+            (gridWorldSize.x / 2)));
+
+            line.SetPosition(4, new Vector3(transform.position.x -
+            (gridWorldSize.x / 2), transform.position.y, transform.position.z -
+            (gridWorldSize.z / 2)));
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     private void OnDrawGizmos()

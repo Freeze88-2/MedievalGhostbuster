@@ -736,7 +736,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputfield: {fileID: 1244785066}
   canvas: {fileID: 1885966424}
-  debugMat: {fileID: 2100000, guid: 99e352dbb4fb59b4993696f5d27e62f8, type: 2}
 --- !u!4 &700483577
 Transform:
   m_ObjectHideFlags: 0
@@ -1345,7 +1344,7 @@ PrefabInstance:
     - target: {fileID: 7884231276163824082, guid: 87db2b0e2d6265d4881def41aa20ceba,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.0046995e-16
+      value: 0.151
       objectReference: {fileID: 0}
     - target: {fileID: 7884231276163824082, guid: 87db2b0e2d6265d4881def41aa20ceba,
         type: 3}

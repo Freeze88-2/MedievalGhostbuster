@@ -1,18 +1,17 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(GridGenerator))]
 [CanEditMultipleObjects]
 public class GridGeneratorEditor : Editor
 {
-    SerializedProperty unwalkablemask, gridWorldSize, nodeRadius, grid;
+    private SerializedProperty unwalkablemask, gridWorldSize, nodeRadius;
 
     private void OnEnable()
     {
         unwalkablemask = serializedObject.FindProperty("unwalkablemask");
         gridWorldSize = serializedObject.FindProperty("gridWorldSize");
         nodeRadius = serializedObject.FindProperty("nodeRadius");
-        grid = serializedObject.FindProperty("grid");
     }
     public override void OnInspectorGUI()
     {

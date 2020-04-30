@@ -1,20 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class AILogic
 {
     public List<Vector3> path { get; private set; }
-    private GridGenerator grid = null;
+    private readonly GridGenerator grid = null;
     private Node start;
     private Node end;
-    private AStarAlgorithm AStar;
-    private int pathN;
-    private int iD;
+    private readonly AStarAlgorithm AStar;
+    private readonly int iD;
 
     public AILogic(GridGenerator grid)
     {
-        pathN = 0;
         path = new List<Vector3>();
         this.grid = grid;
         AStar = new AStarAlgorithm();
@@ -36,28 +33,14 @@ public class AILogic
         SetGhostMinDistance(true);
 
 
-        return GetNextPoint(init);
-    }
-
-    private Vector3? GetNextPoint(GameObject init)
-    {
-        if (path != null && path.Count > 0)
+        if (path.Count > 0)
         {
-            if (pathN >= path.Count - 1)
-            {
-                pathN = 0;
-            }
-            if (Vector3.Distance(init.transform.position, path[pathN]) < 0.01f &&
-                pathN < path.Count)
-            {
-                pathN++;
-
-                Debug.Log(pathN);
-                Debug.Log(path.Count);
-            }
-            return path[pathN];
+            return path[0];
         }
-        return null;
+        else
+        {
+            return null;
+        }
     }
 
     private void SetGhostMinDistance(bool state)

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Node
 {
@@ -11,7 +9,7 @@ public class Node
     public Vector2 pos;
     public Node[] neighbors;
 
-    public float CombinedCost { get => closenessCost + distanceCost; }
+    public float CombinedCost => closenessCost + distanceCost;
     public float closenessCost;
     public float distanceCost;
 

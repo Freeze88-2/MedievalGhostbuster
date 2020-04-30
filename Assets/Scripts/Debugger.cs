@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Linq;
 using TMPro;
-using System.Linq;
+using UnityEngine;
 public class Debugger : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputfield = null;
     [SerializeField] private Canvas canvas = null;
-    List<GameObject> aIs = new List<GameObject>();
+    private GameObject[] astar;
+    private GameObject[] aIs;
 
     // Start is called before the first frame update
     void Start()
     {
-        aIs = GameObject.FindGameObjectsWithTag("GhostEnemy").ToList();
+        aIs = GameObject.FindGameObjectsWithTag("GhostEnemy");
+        astar = GameObject.FindGameObjectsWithTag("GhostArea");
     }
 
     // Update is called once per frame
@@ -29,11 +29,20 @@ public class Debugger : MonoBehaviour
 
         switch (inp)
         {
-            case "/help": inputfield.text = "Commands:\n/help for all commands\n/aipathon to turn on AI pathing\n/aipath to turn off AI pathing";
+            case "/help":
+                inputfield.text = "Commands:\n/help for all commands\n/aipathon to turn on AI pathing\n/aipath to turn off AI pathing";
                 break;
-            case "/aipathon": ShowAIPath(true); inputfield.text = null;
+            case "/aipathon":
+                DebugObject(true, aIs); ResetText();
                 break;
-            case "/aipathoff": ShowAIPath(false); inputfield.text = null;
+            case "/aipathoff":
+                DebugObject(false, aIs); ResetText();
+                break;
+            case "/aiareaon":
+                DebugObject(true, astar); ResetText();
+                break;
+            case "/aiareaoff":
+                DebugObject(false, astar); ResetText();
                 break;
         }
     }
@@ -42,11 +51,11 @@ public class Debugger : MonoBehaviour
         inputfield.text = null;
     }
 
-    private void ShowAIPath(bool todo)
+    private void DebugObject(bool todo, GameObject[] objs)
     {
-        for (int i = 0; i < aIs.Count; i++)
+        for (int i = 0; i < objs.Count(); i++)
         {
-            aIs[i].GetComponent<AIMovement>().SetupLine(todo);
+            objs[i].GetComponent<IDebug>().RunDebug(todo);
         }
     }
 }
