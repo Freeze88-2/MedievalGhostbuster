@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class AnimController : MonoBehaviour
 {
-    private Animator            _characterAnim;
-    private PlayerMovement      _player;
-    private int                 _random;
+    [SerializeField] private Animator       _characterAnim;
+    [SerializeField] private Animator       _lanternAnim;
+    private int                             _random;
 
     private void Start()
     {
-        _characterAnim = GetComponentInChildren<Animator>();
-        _player = GetComponent<PlayerMovement>();
+       // _characterAnim = GetComponentInChildren<Animator>();
+        //_lanternAnim = GetComponentInChildren<Animator>();;
         _random = 0;
+        
     }
 
     private void Update()
     {
         AnimChangeOnWalk();
         AnimChangeOnAttack();
-
-        Debug.Log(_random);
+        AnimChangeOnBlock();
     }
 
     private void AnimChangeOnWalk()
@@ -42,13 +42,28 @@ public class AnimController : MonoBehaviour
     }
 
     private void AnimChangeOnAttack()
-    {        
-        if (Input.GetButtonDown("Fire1"))
+    {
+        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
         {
-            _random = Random.Range(0,3);
-            _characterAnim.SetInteger("AttackChain", _random);
+            if (Input.GetButtonDown("Fire1"))
+            {
+                _random = Random.Range(0,3);
+                _characterAnim.SetInteger("AttackChain", _random);
 
-            _characterAnim.SetTrigger("Attack");
+                _characterAnim.SetTrigger("Attack");
+            }
+        }
+    }
+
+    private void AnimChangeOnBlock()
+    {
+        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        {
+            if (Input.GetButtonDown("Fire2"))
+            {
+                _characterAnim.SetTrigger("Block");
+                _lanternAnim.SetTrigger("Rotate");
+            }
         }
     }
 }
