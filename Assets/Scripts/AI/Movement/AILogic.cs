@@ -1,18 +1,33 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Checks pathfinding and returns a point
+/// </summary>
 public class AILogic
 {
-    public List<Vector3> path { get; private set; }
+    /// <summary>
+    /// List of points found by the pathfinding
+    /// </summary>
+    public List<Vector3> Path { get; private set; }
+    // The designated area of the ghost
     private readonly GridGenerator grid = null;
+    // The starting node
     private Node start;
+    // The ending node
     private Node end;
+    // Instance of the pathfinding algorithm
     private readonly AStarAlgorithm AStar;
+    // Unique ID of the ghost
     private readonly int iD;
 
+    /// <summary>
+    /// Consctructor the AILogic
+    /// </summary>
+    /// <param name="grid"> The area of this AI </param>
     public AILogic(GridGenerator grid)
     {
-        path = new List<Vector3>();
+        Path = new List<Vector3>();
         this.grid = grid;
         AStar = new AStarAlgorithm();
         iD = System.DateTime.Now.Millisecond + Random.Range(0, 10000);
@@ -28,14 +43,14 @@ public class AILogic
         if (start != null && end != null)
         {
             start.GhostID = iD;
-            path = AStar.CalculatePath(start, end);
+            Path = AStar.CalculatePath(start, end);
         }
         SetGhostMinDistance(true);
 
 
-        if (path.Count > 0)
+        if (Path != null && Path.Count > 0)
         {
-            return path[0];
+            return Path[0];
         }
         else
         {

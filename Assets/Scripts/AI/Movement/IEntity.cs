@@ -1,33 +1,27 @@
-﻿/// <summary>
+﻿using UnityEngine;
+
+/// <summary>
 /// Comon methods and properties for an entity in game
 /// </summary>
-public interface IEntity
+public interface IEntity 
 {
-    /// <summary>
-    /// Type of color the entity is (mainly for ghosts)
-    /// </summary>
+    // The color of the ghost
     GhostColor GColor { get; }
-    /// <summary>
-    /// The Maximum health points of the Entity
-    /// </summary>
+    // The current hp of the ghost
     float MaxHp { get; }
-    /// <summary>
-    /// The Maximum movement speed of the Entity
-    /// </summary>
+    // Maximum speed of the entity
     float MaxSpeed { get; }
-    /// <summary>
-    /// The current health points of the Entity
-    /// </summary>
-    float Hp { get; set; }
+    // The current hp of the ghost
+    float Hp { get; }
 
     /// <summary>
-    /// Used to subtract HP from the entity
+    /// Subtract the specefied amount of hp from the entity
     /// </summary>
-    /// <param name="amount"> The amount to be subctracted </param>
+    /// <param name="amount"> The amount of hp to be subtracted </param>
     void DealDamage(float amount);
     /// <summary>
-    /// Used to subtract HP from the entity
+    /// Adds the specefied amount to the hp from the entity
     /// </summary>
-    /// <param name="amount"> The amount to be added </param>
+    /// <param name="amount"></param>
     void Heal(float amount);
 }

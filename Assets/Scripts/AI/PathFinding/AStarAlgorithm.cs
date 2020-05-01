@@ -176,10 +176,7 @@ public class AStarAlgorithm
         return a;
     }
 
-    private Vector2 GetDirection(Node a, Node b)
-    {
-        return a.pos - b.pos;
-    }
+    private Vector2 GetDirection(Node a, Node b) => a.pos - b.pos;
 }
 
 

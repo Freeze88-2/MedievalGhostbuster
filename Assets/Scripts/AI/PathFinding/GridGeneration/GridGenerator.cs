@@ -83,8 +83,8 @@ public class GridGenerator : MonoBehaviour , IDebug
         float percentY = Mathf.Clamp01((position.z + gridWorldSize.z / 2)
             / gridWorldSize.z);
 
-        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        int x = Mathf.RoundToInt((gridSizeX) * percentX);
+        int y = Mathf.RoundToInt((gridSizeY) * percentY);
 
         if (grid != null)
         {
@@ -139,7 +139,7 @@ public class GridGenerator : MonoBehaviour , IDebug
             line.SetPosition(4, new Vector3(transform.position.x -
             (gridWorldSize.x / 2), transform.position.y, transform.position.z -
             (gridWorldSize.z / 2)));
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
     }
 
