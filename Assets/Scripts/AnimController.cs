@@ -6,42 +6,49 @@ public class AnimController : MonoBehaviour
 {
     private Animator            _characterAnim;
     private PlayerMovement      _player;
+    private int                 _random;
 
-    //private int                 _chainAttacksAnim;
-
-    // Start is called before the first frame update
     private void Start()
     {
         _characterAnim = GetComponentInChildren<Animator>();
         _player = GetComponent<PlayerMovement>();
+        _random = 0;
     }
 
-    // Update is called once per frame
     private void Update()
     {
         AnimChangeOnWalk();
         AnimChangeOnAttack();
+
+        Debug.Log(_random);
     }
 
     private void AnimChangeOnWalk()
     {
-        if (Input.GetAxis("Horizontal") > 0
+        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        {
+            _characterAnim.SetBool("IsWalking", false);
+        }
+        else if (Input.GetAxis("Horizontal") > 0
                 || Input.GetAxis("Horizontal") < 0)
         {
-            _characterAnim.Play("Male_Sword_Walk");
+            _characterAnim.SetBool("IsWalking", true);
         }
         else if (Input.GetAxis("Vertical") > 0
                 || Input.GetAxis("Vertical") < 0)
         {
-            _characterAnim.Play("Male_Sword_Walk");
+            _characterAnim.SetBool("IsWalking", true);
         }
     }
 
     private void AnimChangeOnAttack()
-    {
+    {        
         if (Input.GetButtonDown("Fire1"))
         {
-            _characterAnim.SetTrigger("IsAttack");
+            _random = Random.Range(0,3);
+            _characterAnim.SetInteger("AttackChain", _random);
+
+            _characterAnim.SetTrigger("Attack");
         }
     }
 }
