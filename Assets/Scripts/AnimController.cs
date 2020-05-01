@@ -7,6 +7,8 @@ public class AnimController : MonoBehaviour
     private Animator            _characterAnim;
     private PlayerMovement      _player;
 
+    //private int                 _chainAttacksAnim;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -18,23 +20,28 @@ public class AnimController : MonoBehaviour
     private void Update()
     {
         AnimChangeOnWalk();
+        AnimChangeOnAttack();
     }
 
     private void AnimChangeOnWalk()
     {
-        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        if (Input.GetAxis("Horizontal") > 0
+                || Input.GetAxis("Horizontal") < 0)
         {
-            _characterAnim.Play("Male Idle");
+            _characterAnim.Play("Male_Sword_Walk");
         }
-        else if (Input.GetAxis("Horizontal") >= 0
-                && Input.GetAxis("Horizontal") <= 0)
+        else if (Input.GetAxis("Vertical") > 0
+                || Input.GetAxis("Vertical") < 0)
         {
-            _characterAnim.Play("Male Sprint");
+            _characterAnim.Play("Male_Sword_Walk");
         }
-        else if (Input.GetAxis("Vertical") >= 0
-                && Input.GetAxis("Vertical") <= 0)
+    }
+
+    private void AnimChangeOnAttack()
+    {
+        if (Input.GetButtonDown("Fire1"))
         {
-            _characterAnim.Play("Male Sprint");
+            _characterAnim.SetTrigger("IsAttack");
         }
     }
 }
