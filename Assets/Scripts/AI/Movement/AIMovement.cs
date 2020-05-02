@@ -53,6 +53,28 @@ public class AIMovement : AIGhost, IDebug
             // Moves the Ghost foward
             rb.velocity = transform.forward * MaxSpeed;
         }
+        else if (Vector3.Distance(transform.position, target.transform.position) < 2.5f)
+        {
+            Attack();
+        }
+    }
+    //--------------------------------------------------------------//
+    //                          Temporary                           //
+    //--------------------------------------------------------------//
+    private void Attack()
+    {
+        Vector3 dir = target.transform.position - transform.position;
+        // Resets the value of Y to 0
+        dir.y = 0;
+
+        // Rotates gradually the Ghost towards the direction
+        transform.rotation = Quaternion.Lerp(transform.rotation,
+            Quaternion.LookRotation(dir), Time.fixedDeltaTime * MaxSpeed * 6f);
+
+        IEntity player = target.GetComponent<IEntity>();
+
+        if (player != null)
+            player.DealDamage(1f);
     }
 
     /// <summary>
