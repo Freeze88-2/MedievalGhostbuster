@@ -4,46 +4,48 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float        _speed;
-    public float        _jumpHeight;
-    public bool         _isGrounded = true;
-    private Rigidbody   rb;
+    [SerializeField] private float      _speed;
+    [SerializeField] private float      _jumpHeight;
+    [SerializeField] private float      _rotationSpeed;
+    [SerializeField] private float      _gravity;
+    private Vector3                     _moveDirection;
+    private CharacterController         _cc;
 
-    void Start() 
+    void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        _moveDirection      = Vector3.zero;
+        _cc                 = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        PlayerMov();
+        MovementUpdate();
     }
 
-    void PlayerMov()
+    private void MovementUpdate()
     {
-        float _horizontalMov = Input.GetAxis("Horizontal");
-        float _verticalMov = Input.GetAxis("Vertical");
+        if(_cc.isGrounded)
+        {
+            _moveDirection = new Vector3(0, 0, Input.GetAxis("Vertical"));
+            _moveDirection = transform.TransformDirection(_moveDirection);
+            _moveDirection *= _speed;
+            
+            if(Input.GetButtonDown("Jump"))
+            {
+                _moveDirection.y = _jumpHeight;
+            } 
+        }
+        else
+        {
+            _moveDirection = new Vector3(0,
+                _moveDirection.y, Input.GetAxis("Vertical"));
+            _moveDirection = transform.TransformDirection(_moveDirection);
+            _moveDirection.x *= _speed;
+            _moveDirection.z *= _speed;
+        }
 
-        if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
-        {
-            Vector3 playerMov = 
-                new Vector3(_horizontalMov, 0f, _verticalMov).normalized
-                * _speed * Time.deltaTime;
-            transform.Translate(playerMov, Space.Self);
-        }
-        
-        if (Input.GetButtonDown("Jump") && _isGrounded == true)
-        {
-            rb.AddForce(new Vector3(0, _jumpHeight, 0), ForceMode.Impulse);
-            _isGrounded = false;
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision) 
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            _isGrounded = true;
-        }
+        transform.Rotate(0, Input.GetAxis("Horizontal") * _rotationSpeed, 0);
+        _cc.Move(_moveDirection * Time.deltaTime);
+        _moveDirection.y -= _gravity * Time.deltaTime;
     }
 }
