@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Node
 {
     public bool Walkable { get; }
-    public NewAI HasGhost { get; set; }
+    public int? GhostID { get; set; }
     public Vector3 Position { get; }
     public Node Parent { get; set; }
     public Vector2 pos;
     public Node[] neighbors;
 
-    public float CombinedCost { get => closenessCost + distanceCost; }
+    public float CombinedCost => closenessCost + distanceCost;
     public float closenessCost;
     public float distanceCost;
 

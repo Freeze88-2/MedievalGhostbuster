@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class AStarAlgorithm
@@ -76,9 +75,9 @@ public class AStarAlgorithm
             for (int b = 0; b < current.neighbors.Length; b++)
             {
                 // Checks if the Object is already in the locked path
-                if (!closed.Contains(current.neighbors[b]) && 
-                    current.neighbors[b].Walkable && 
-                    !current.neighbors[b].HasGhost)
+                if (!closed.Contains(current.neighbors[b]) &&
+                    current.neighbors[b].Walkable &&
+                    current.neighbors[b].GhostID == null)
                 {
                     // Local variable combining the distance to the start 
                     // and the distance between the current position and
@@ -122,24 +121,30 @@ public class AStarAlgorithm
         // Creates a local Object variable and assigns it the passed Object
         Node currentPiece = end;
         Node nextPiece = currentPiece.Parent;
-        Vector2 dir = GetDirection(currentPiece, nextPiece);
 
-        // Runs the loop until the currentPiece is not the start
-        while (currentPiece.pos != start.pos)
+        if (nextPiece != null)
         {
-            if (GetDirection(currentPiece, nextPiece) != dir ||
-                currentPiece.pos == start.pos ||
-                currentPiece.pos == end.pos)
+            Vector2 dir = GetDirection(currentPiece, nextPiece);
+
+            // Runs the loop until the currentPiece is not the start
+            while (currentPiece.pos != start.pos)
             {
-                // Adds the position of the currentPiece to the list
-                path.Add(currentPiece);
+
+                if (GetDirection(currentPiece, nextPiece) != dir ||
+                    currentPiece.pos == start.pos ||
+                    currentPiece.pos == end.pos)
+                {
+                    // Adds the position of the currentPiece to the list
+                    path.Add(currentPiece);
+                }
+
+                dir = GetDirection(currentPiece, nextPiece);
+
+                // Assigns the currentPiece the parent of that piece
+                currentPiece = currentPiece.Parent;
+                nextPiece = currentPiece.Parent;
+
             }
-
-            dir = GetDirection(currentPiece, nextPiece);
-
-            // Assigns the currentPiece the parent of that piece
-            currentPiece = currentPiece.Parent;
-            nextPiece = currentPiece.Parent;
         }
         int count;
 
@@ -150,7 +155,7 @@ public class AStarAlgorithm
             {
                 if (path.Contains(path[y].neighbors[n]))
                 {
-                    count ++;
+                    count++;
                 }
             }
             if (count >= 2)
