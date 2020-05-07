@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 808050547685477566}
   - component: {fileID: 689950672755737132}
   m_Layer: 0
-  m_Name: AI-Blue 1
+  m_Name: AI-Blue
   m_TagString: GhostEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   area: {fileID: 0}
-  gcolor: 2
-  maxSpeed: 1
-  maxHp: 100
-  hp: 100
+  _gcolor: 2
+  _maxSpeed: 1
+  _maxHp: 100
+  _hp: 100

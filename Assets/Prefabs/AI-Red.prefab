@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   area: {fileID: 0}
-  gcolor: 0
-  maxSpeed: 2
-  maxHp: 100
-  hp: 100
+  _gcolor: 0
+  _maxSpeed: 2
+  _maxHp: 100
+  _hp: 100

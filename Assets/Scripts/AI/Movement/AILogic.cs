@@ -1,81 +1,91 @@
-﻿using System.Collections.Generic;
+﻿using AI.PathFinding;
+using AI.PathFinding.GridGeneration;
+using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Checks pathfinding and returns a point
-/// </summary>
-public class AILogic
+namespace AI.Movement
 {
     /// <summary>
-    /// List of points found by the pathfinding
+    /// Checks pathfinding and returns a point
     /// </summary>
-    public List<Vector3> Path { get; private set; }
-    // The designated area of the ghost
-    private readonly GridGenerator grid = null;
-    // The starting node
-    private Node start;
-    // The ending node
-    private Node end;
-    // Instance of the pathfinding algorithm
-    private readonly AStarAlgorithm AStar;
-    // Unique ID of the ghost
-    private readonly int iD;
-
-    /// <summary>
-    /// Consctructor the AILogic
-    /// </summary>
-    /// <param name="grid"> The area of this AI </param>
-    public AILogic(GridGenerator grid)
+    public class AILogic
     {
-        Path = new List<Vector3>();
-        this.grid = grid;
-        AStar = new AStarAlgorithm();
-        iD = System.DateTime.Now.Millisecond + Random.Range(0, 10000);
-    }
-    public Vector3? GetPoint(GameObject init, GameObject target)
-    {
-        SetGhostMinDistance(false);
+        /// <summary>
+        /// List of points found by the pathfinding
+        /// </summary>
+        public List<Vector3> Path { get; private set; }
 
-        start = grid.GetClosestNode(init.transform.position);
+        // The designated area of the ghost
+        private readonly GridGenerator _grid = null;
 
-        end = grid.GetClosestNode(target.transform.position);
+        // The starting node
+        private Node _start;
 
-        if (start != null && end != null)
+        // The ending node
+        private Node _end;
+
+        // Instance of the pathfinding algorithm
+        private readonly AStarAlgorithm _aStar;
+
+        // Unique ID of the ghost
+        private readonly int _iD;
+
+        /// <summary>
+        /// Consctructor the AILogic
+        /// </summary>
+        /// <param name="_grid"> The area of this AI </param>
+        public AILogic(GridGenerator _grid)
         {
-            start.GhostID = iD;
-            Path = AStar.CalculatePath(start, end);
+            Path = new List<Vector3>();
+            this._grid = _grid;
+            _aStar = new AStarAlgorithm();
+            _iD = System.DateTime.Now.Millisecond + Random.Range(0, 10000);
         }
-        SetGhostMinDistance(true);
 
+        public Vector3? GetPoint(GameObject init, GameObject target)
+        {
+            SetGhostMinDistance(false);
 
-        if (Path != null && Path.Count > 0)
-        {
-            return Path[0];
-        }
-        else
-        {
-            return null;
-        }
-    }
+            _start = _grid.GetClosestNode(init.transform.position);
 
-    private void SetGhostMinDistance(bool state)
-    {
-        if (start != null)
-        {
-            for (int i = 0; i < start.neighbors.Length; i++)
+            _end = _grid.GetClosestNode(target.transform.position);
+
+            if (_start != null && _end != null)
             {
-                if (state)
+                _start.GhostID = _iD;
+                Path = _aStar.CalculatePath(_start, _end);
+            }
+            SetGhostMinDistance(true);
+
+            if (Path != null && Path.Count > 0)
+            {
+                return Path[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void SetGhostMinDistance(bool state)
+        {
+            if (_start != null)
+            {
+                for (int i = 0; i < _start.neighbors.Length; i++)
                 {
-                    if (start.neighbors[i].GhostID == null)
+                    if (state)
                     {
-                        start.neighbors[i].GhostID = iD;
+                        if (_start.neighbors[i].GhostID == null)
+                        {
+                            _start.neighbors[i].GhostID = _iD;
+                        }
                     }
-                }
-                else
-                {
-                    if (start.neighbors[i].GhostID == iD)
+                    else
                     {
-                        start.neighbors[i].GhostID = null;
+                        if (_start.neighbors[i].GhostID == _iD)
+                        {
+                            _start.neighbors[i].GhostID = null;
+                        }
                     }
                 }
             }

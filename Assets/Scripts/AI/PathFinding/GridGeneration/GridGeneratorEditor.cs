@@ -1,32 +1,35 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(GridGenerator))]
-[CanEditMultipleObjects]
-public class GridGeneratorEditor : Editor
+namespace AI.PathFinding.GridGeneration
 {
-    private SerializedProperty unwalkablemask, gridWorldSize, nodeRadius;
-
-    private void OnEnable()
+    [CustomEditor(typeof(GridGenerator))]
+    [CanEditMultipleObjects]
+    public class GridGeneratorEditor : Editor
     {
-        unwalkablemask = serializedObject.FindProperty("unwalkablemask");
-        gridWorldSize = serializedObject.FindProperty("gridWorldSize");
-        nodeRadius = serializedObject.FindProperty("nodeRadius");
-    }
-    public override void OnInspectorGUI()
-    {
-        EditorGUILayout.HelpBox("Grid Generation options", MessageType.None);
-        EditorGUILayout.PropertyField(unwalkablemask, true);
-        EditorGUILayout.PropertyField(nodeRadius, true);
-        EditorGUILayout.PropertyField(gridWorldSize, true);
+        private SerializedProperty unwalkablemask, gridWorldSize, nodeRadius;
 
-        serializedObject.ApplyModifiedProperties();
-
-        GridGenerator gridScript = (GridGenerator)target;
-        if (GUILayout.Button("Generate"))
+        private void OnEnable()
         {
-            gridScript.StartGridGeneration();
+            unwalkablemask = serializedObject.FindProperty("unwalkablemask");
+            gridWorldSize = serializedObject.FindProperty("gridWorldSize");
+            nodeRadius = serializedObject.FindProperty("nodeRadius");
+        }
+
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.HelpBox("Grid Generation options", MessageType.None);
+            EditorGUILayout.PropertyField(unwalkablemask, true);
+            EditorGUILayout.PropertyField(nodeRadius, true);
+            EditorGUILayout.PropertyField(gridWorldSize, true);
+
+            serializedObject.ApplyModifiedProperties();
+
+            GridGenerator gridScript = (GridGenerator)target;
+            if (GUILayout.Button("Generate"))
+            {
+                gridScript.StartGridGeneration();
+            }
         }
     }
-
 }

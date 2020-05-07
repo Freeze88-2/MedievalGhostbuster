@@ -3,7 +3,7 @@
 /// <summary>
 /// Comon methods and properties for an entity in game
 /// </summary>
-public interface IEntity 
+public interface IEntity
 {
     // The color of the ghost
     GhostColor GColor { get; }
