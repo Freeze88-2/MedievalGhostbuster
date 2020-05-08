@@ -1,53 +1,77 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using AI;
 
-public class LanternCapture : MonoBehaviour
+namespace Lantern
 {
-    private Collider col;
-    private LanternBehaviour lantern;
-
-    // Start is called before the first frame update
-    void Start()
+    public class LanternCapture : MonoBehaviour
     {
-        col = GetComponent<Collider>();
-        lantern = new LanternBehaviour();
-    }
+        private Collider col;
+        private LanternBehaviour lantern;
+        private List<IEntity> ignored;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
+        [SerializeField] private GameObject[] objs = null;
+        // Start is called before the first frame update
+        private void Start()
         {
-            lantern.EmptyLantern();
+            col = GetComponent<Collider>();
+            lantern = new LanternBehaviour(objs);
+            ignored = new List<IEntity>();
         }
-        if (Input.GetKey(KeyCode.Space))
+
+        // Update is called once per frame
+        private void Update()
         {
-            lantern.ShowColorsIn();
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("GhostEnemy"))
-        {
-            Vector3 vel = -(transform.position - other.transform.position);
-            vel = vel.normalized;
-            vel *= Vector3.Distance(transform.position,
-                other.transform.position) - Vector3.Distance(col.bounds.max,
-                transform.position) * 4;
-
-            other.attachedRigidbody.velocity += vel * Time.fixedDeltaTime;
-
-            float a = Vector3.Distance(other.transform.position, transform.position);
-
-            if (Vector3.Distance(other.transform.position, transform.position) < 0.4f)
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-                lantern.StoreColor
-                    (other.gameObject.GetComponent<IEntity>().GColor);
+                lantern.EmptyLantern();
+            }
+            if (Input.GetKey(KeyCode.Space))
+            {
+                lantern.ShowColorsIn();
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
+                lantern.GetAbility().ActivateAbility();
+            }
+        }
 
-                Destroy(other.gameObject);
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.CompareTag("GhostEnemy"))
+            {
+                IEntity ghost = other.gameObject.GetComponent<IEntity>();
+
+                if (!ignored.Contains(ghost))
+                {
+                    float catchResistence = (ghost.MaxHp - ghost.Hp) + 40;
+
+                    int captureChance = Random.Range(0, 100);
+
+                    if (captureChance < catchResistence
+                        && !lantern.Colors[1].HasValue)
+                    {
+                        Vector3 vel = -(transform.position -
+                            other.transform.position).normalized;
+
+                        vel *= Vector3.Distance(transform.position,
+                            other.transform.position) -
+                            Vector3.Distance(col.bounds.max,
+                            transform.position) * 4;
+
+                        other.attachedRigidbody.velocity += vel *
+                            Time.fixedDeltaTime;
+
+                        if (Vector3.Distance(other.transform.position,
+                            transform.position) < 0.4f &&
+                            !lantern.Colors[1].HasValue)
+                        {
+                            lantern.StoreColor(ghost.GColor);
+
+                            Destroy(other.gameObject);
+                            ignored.Add(ghost);
+                        }
+                    }
+                }
             }
         }
     }

@@ -2,34 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LanternBehaviour
+namespace Lantern
 {
-    private GhostColor?[] colors;
-
-    public LanternBehaviour()
+    public class LanternBehaviour 
     {
-        colors = new GhostColor?[2];
-    }
+        public GhostColor?[] Colors { get; private set; }
+        private readonly HabilityManager habilities;
 
-    public void EmptyLantern()
-    {
-        colors = new GhostColor?[2];
-    }
-
-    public void StoreColor(GhostColor color)
-    {
-        if (!colors[0].HasValue)
+        public LanternBehaviour(GameObject[] obs)
         {
-            colors[0] = color;
+            Colors = new GhostColor?[2];
+            habilities = new HabilityManager(obs);
         }
-        else if (colors[0].HasValue)
-        {
-            colors[1] = color;
-        }
-    }
 
-    public void ShowColorsIn()
-    {
-            Debug.Log($"{colors[0]} and {colors[1]}");
+        public void EmptyLantern()
+        {
+            Colors = new GhostColor?[2];
+        }
+
+        public void StoreColor(GhostColor color)
+        {
+            if (!Colors[0].HasValue)
+            {
+                Colors[0] = color;
+            }
+            else if (Colors[0].HasValue)
+            {
+                Colors[1] = color;
+            }
+        }
+
+        public void ShowColorsIn()
+        {
+            Debug.Log($"{Colors[0]} and {Colors[1]}");
+        }
+
+        public IAbility GetAbility()
+        {
+            return habilities.GetAbility(Colors[0].Value, Colors[1].Value);
+        }
     }
 }
