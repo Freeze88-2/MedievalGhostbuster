@@ -124,7 +124,7 @@ namespace AI.Movement
         /// <summary>
         /// Coroutine for drawing the _line everyframe
         /// </summary>
-        /// <returns> A wait timer </returns>
+        /// <returns> A _wait _timer </returns>
         private IEnumerator DebugLine()
         {
             // Performs a loop until the coroutine is stopped

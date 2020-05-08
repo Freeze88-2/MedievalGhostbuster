@@ -4,14 +4,14 @@ namespace Lantern
 {
     public class HabilityManager
     {
-        private readonly IAbility[] abilities;
+        private readonly IAbility[] _abilities;
 
         public HabilityManager(GameObject[] obs)
         {
-            abilities = new IAbility[obs.Length];
+            _abilities = new IAbility[obs.Length];
             for (int i = 0; i < obs.Length; i++)
             {
-                abilities[i] = obs[i].GetComponent<IAbility>();
+                _abilities[i] = obs[i].GetComponent<IAbility>();
             }
         }
 
@@ -26,11 +26,11 @@ namespace Lantern
 
         private IAbility SearchWantedAbility((GhostColor, GhostColor) color)
         {
-            for (int i = 0; i < abilities.Length; i++)
+            for (int i = 0; i < _abilities.Length; i++)
             {
-                if (abilities[i].AbilityColors == color)
+                if (_abilities[i].AbilityColors == color)
                 {
-                    return abilities[i];
+                    return _abilities[i];
                 }
             }
             return null;

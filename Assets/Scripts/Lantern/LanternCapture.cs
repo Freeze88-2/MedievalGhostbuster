@@ -5,44 +5,24 @@ namespace Lantern
 {
     public class LanternCapture : MonoBehaviour
     {
-        private Collider col;
-        private LanternBehaviour lantern;
-        private List<IEntity> ignored;
-
         [SerializeField] private GameObject[] objs = null;
 
+        public LanternBehaviour lantern;
+        private Collider _col;
+        private List<IEntity> _ignored;
+        private IEntity _alreadyCought;
+
         // Start is called before the first frame update
-        private void Start()
+        private void Awake()
         {
-            col = GetComponent<Collider>();
+            _col = GetComponent<Collider>();
             lantern = new LanternBehaviour(objs);
-            ignored = new List<IEntity>();
+            _ignored = new List<IEntity>();
         }
 
-        // Update is called once per frame
-        private void Update()
+        private void OnEnable()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                lantern.EmptyLantern();
-            }
-            if (Input.GetKey(KeyCode.Space))
-            {
-                lantern.ShowColorsIn();
-            }
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                IAbility ability = lantern.GetAbility();
-
-                if (ability != null)
-                {
-                    ability.ActivateAbility();
-                    if (ability.HabilityEnded)
-                    {
-                        lantern.EmptyLantern();
-                    }
-                }
-            }
+            _ignored.Clear();
         }
 
         private void OnTriggerStay(Collider other)
@@ -51,35 +31,47 @@ namespace Lantern
             {
                 IEntity ghost = other.gameObject.GetComponent<IEntity>();
 
-                if (!ignored.Contains(ghost))
+                if (_alreadyCought != null && ghost != _alreadyCought)
+                {
+                    _ignored.Add(ghost);
+                }
+                if (!_ignored.Contains(ghost))
                 {
                     float catchResistence = (ghost.MaxHp - ghost.Hp) + 40;
 
                     int captureChance = Random.Range(0, 100);
 
                     if (captureChance < catchResistence
-                        && !lantern.Colors[1].HasValue)
+                        && !lantern.Colors[1].HasValue 
+                        || ghost == _alreadyCought)
                     {
+                        _alreadyCought = ghost;
+
                         Vector3 vel = -(transform.position -
                             other.transform.position).normalized;
 
                         vel *= Vector3.Distance(transform.position,
                             other.transform.position) -
-                            Vector3.Distance(col.bounds.max,
-                            transform.position) * 4;
+                            Vector3.Distance(_col.bounds.max,
+                            transform.position) * 10;
 
                         other.attachedRigidbody.velocity += vel *
                             Time.fixedDeltaTime;
 
                         if (Vector3.Distance(other.transform.position,
-                            transform.position) < 0.4f &&
+                            transform.position) < 0.3f &&
                             !lantern.Colors[1].HasValue)
                         {
                             lantern.StoreColor(ghost.GColor);
 
                             Destroy(other.gameObject);
-                            ignored.Add(ghost);
+                            _ignored.Clear();
+                            _alreadyCought = null;
                         }
+                    }
+                    else
+                    {
+                        _ignored.Add(ghost);
                     }
                 }
             }

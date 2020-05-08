@@ -5,12 +5,12 @@ namespace Lantern
     public class LanternBehaviour
     {
         public GhostColor?[] Colors { get; private set; }
-        private readonly HabilityManager habilities;
+        private readonly HabilityManager _habilities;
 
         public LanternBehaviour(GameObject[] obs)
         {
             Colors = new GhostColor?[2];
-            habilities = new HabilityManager(obs);
+            _habilities = new HabilityManager(obs);
         }
 
         public void EmptyLantern()
@@ -39,7 +39,8 @@ namespace Lantern
         {
             if (Colors[0].HasValue && Colors[1].HasValue)
             {
-                return habilities.GetAbility(Colors[0].Value, Colors[1].Value);
+                return _habilities.GetAbility(Colors[0].Value, 
+                    Colors[1].Value);
             }
             return null;
         }

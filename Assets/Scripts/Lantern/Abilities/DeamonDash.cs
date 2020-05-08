@@ -5,14 +5,15 @@ namespace Lantern.Abilities
 {
     public class DeamonDash : MonoBehaviour, IAbility
     {
-        [SerializeField] private CharacterController playerRb = null;
-        [SerializeField] private float dashSpeed = 25f;
-        [SerializeField] private int dashDuration = 10;
-        [SerializeField] private int nOfDahses = 3;
+        [SerializeField] private float _dashSpeed = 25f;
+        [SerializeField] private int _dashDuration = 10;
+        [SerializeField] private int _nOfDahses = 3;
 
-        private WaitForSecondsRealtime wait;
-        private int timer;
-        private bool isDashing;
+        private CharacterController _playerRb;
+        private WaitForSecondsRealtime _wait;
+        private int _timer;
+        private bool _isDashing;
+        private int _dashes;
 
         public (GhostColor, GhostColor) AbilityColors
         {
@@ -23,43 +24,45 @@ namespace Lantern.Abilities
 
         private void Start()
         {
-            wait = new WaitForSecondsRealtime(0.5f);
+            _playerRb = GameObject.FindGameObjectWithTag("Player")
+                .GetComponent<CharacterController>();
+            _wait = new WaitForSecondsRealtime(0.5f);
+            _dashes = _nOfDahses;
+            _timer = 0;
+            _isDashing = false;
             HabilityEnded = false;
-            isDashing = false;
-            timer = 0;
         }
 
         public void ActivateAbility()
         {
             HabilityEnded = false;
-            if (!isDashing)
+            if (!_isDashing)
             {
                 StartCoroutine(Dash());
-
-                Debug.Log("Dashing in the 90's");
             }
-            if (nOfDahses <= 0)
+            if (_dashes <= 0)
             {
                 HabilityEnded = true;
-                isDashing = false;
-                timer = 0;
+                _isDashing = false;
+                _timer = 0;
+                _dashes = _nOfDahses;
             }
         }
 
         private IEnumerator Dash()
         {
-            isDashing = true;
-            nOfDahses--;
-            while (timer < dashDuration)
+            _isDashing = true;
+            _dashes--;
+            while (_timer < _dashDuration)
             {
-                playerRb.Move(playerRb.transform.forward *
-                    dashSpeed * Time.deltaTime);
-                timer++;
+                _playerRb.Move(_playerRb.transform.forward *
+                    _dashSpeed * Time.deltaTime);
+                _timer++;
                 yield return null;
             }
-            yield return wait;
-            isDashing = false;
-            timer = 0;
+            yield return _wait;
+            _isDashing = false;
+            _timer = 0;
         }
     }
 }

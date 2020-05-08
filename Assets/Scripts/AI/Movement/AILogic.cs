@@ -11,7 +11,7 @@ namespace AI.Movement
     public class AILogic
     {
         /// <summary>
-        /// List of points found by the pathfinding
+        /// List of _points found by the pathfinding
         /// </summary>
         public List<Vector3> Path { get; private set; }
 
