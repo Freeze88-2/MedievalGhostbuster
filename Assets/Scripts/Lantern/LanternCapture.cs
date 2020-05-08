@@ -10,6 +10,7 @@ namespace Lantern
         private List<IEntity> ignored;
 
         [SerializeField] private GameObject[] objs = null;
+
         // Start is called before the first frame update
         private void Start()
         {
@@ -29,9 +30,18 @@ namespace Lantern
             {
                 lantern.ShowColorsIn();
             }
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                lantern.GetAbility().ActivateAbility();
+                IAbility ability = lantern.GetAbility();
+
+                if (ability != null)
+                {
+                    ability.ActivateAbility();
+                    if (ability.HabilityEnded)
+                    {
+                        lantern.EmptyLantern();
+                    }
+                }
             }
         }
 

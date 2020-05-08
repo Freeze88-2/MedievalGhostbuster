@@ -14,16 +14,16 @@ namespace AI.Movement
         [SerializeField] protected GameObject area = null;
 
         // The color of the ghost
-        [SerializeField] private GhostColor   _gcolor = GhostColor.Blue;
+        [SerializeField] private GhostColor _gcolor = GhostColor.Blue;
 
         // Maximum speed of the entity
-        [SerializeField] private float        _maxSpeed = 1f;
+        [SerializeField] private float _maxSpeed = 1f;
 
         // The Maximum hp possible
-        [SerializeField] private float        _maxHp = 100f;
+        [SerializeField] private float _maxHp = 100f;
 
         // The current hp of the ghost
-        [SerializeField] private float        _hp = 100f;
+        [SerializeField] private float _hp = 100f;
 
         /// <summary>
         /// The color of the ghost

@@ -11,7 +11,7 @@ namespace AI.Movement
     public class AIMovement : AIEntity, IDebug
     {
         // Provides a point for the AI to move to
-        private AILogic      _ailogic;
+        private AILogic _ailogic;
 
         // Line for debugging the _path
         private LineRenderer _line;

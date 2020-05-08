@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Lantern.Abilities;
+﻿using UnityEngine;
 
 namespace Lantern
 {
@@ -17,6 +14,7 @@ namespace Lantern
                 abilities[i] = obs[i].GetComponent<IAbility>();
             }
         }
+
         public IAbility GetAbility(GhostColor a, GhostColor b)
         {
             if (a == GhostColor.Red && b == GhostColor.Red)
@@ -25,6 +23,7 @@ namespace Lantern
             }
             return null;
         }
+
         private IAbility SearchWantedAbility((GhostColor, GhostColor) color)
         {
             for (int i = 0; i < abilities.Length; i++)

@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using CostumDebug;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CostumDebug;
 
 namespace AI.PathFinding.GridGeneration
 {

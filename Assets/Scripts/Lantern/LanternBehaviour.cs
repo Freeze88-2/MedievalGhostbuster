@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Lantern
 {
-    public class LanternBehaviour 
+    public class LanternBehaviour
     {
         public GhostColor?[] Colors { get; private set; }
         private readonly HabilityManager habilities;
@@ -39,7 +37,11 @@ namespace Lantern
 
         public IAbility GetAbility()
         {
-            return habilities.GetAbility(Colors[0].Value, Colors[1].Value);
+            if (Colors[0].HasValue && Colors[1].HasValue)
+            {
+                return habilities.GetAbility(Colors[0].Value, Colors[1].Value);
+            }
+            return null;
         }
     }
 }

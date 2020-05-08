@@ -6,13 +6,13 @@ namespace AI.PathFinding
     public class AStarAlgorithm
     {
         // Creates a list for storing a temporary _path
-        private readonly List<Node>    _open = new List<Node>();
+        private readonly List<Node> _open = new List<Node>();
 
         // Creates an HashSet for storing a locked _path
         private readonly HashSet<Node> _closed = new HashSet<Node>();
 
         // The finished full _path to the target
-        private readonly List<Node>    _path = new List<Node>();
+        private readonly List<Node> _path = new List<Node>();
 
         /// <summary>
         /// A* algorithm for searching the bes _path to a position
