@@ -5,19 +5,21 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     [SerializeField] private Camera     _mainCamera;
-    [SerializeField] private float      _rotationSpeed;
-    [SerializeField] private float      _speed;
+    private float                       _speed;
+    private float                       _rotationSpeed;
     private float                       _inputX;
     private float                       _inputZ;
     private float                       _verticalVelocity;
+    private float                       _gravity;
+    private float                       _jumpForce;
     private Vector3                     _moveDirection;
-    private Vector3                     _jumpVector;
     private CharacterController         _cc;
     
     void Start()
     {
         _speed                          = 5.0f;
-        _verticalVelocity               = 5.0f;
+        _jumpForce                      = 10.0f;
+        _gravity                        = 14.0f;
         _rotationSpeed                  = 0.1f;
         _mainCamera                     = Camera.main;
         _cc                             = GetComponent<CharacterController>();
@@ -27,22 +29,27 @@ public class MovementController : MonoBehaviour
     void Update()
     {
         PlayerMovementAndRotation();
-        Jump(); 
+        Jump();                 
     }
 
     void Jump()
     {
-        Debug.Log(_cc.isGrounded);
-        if (Input.GetButtonDown("Jump"))
+        if(_cc.isGrounded)
         {
-            _jumpVector = new Vector3 (0, _verticalVelocity, 0);
-            _cc.Move(_jumpVector);
+            _verticalVelocity = -_gravity * Time.deltaTime;
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                _verticalVelocity = _jumpForce;
+            }
         }
         else
         {
-            _jumpVector = new Vector3 (0, -_verticalVelocity, 0);
-            _cc.Move(_jumpVector);
-        }        
+            _verticalVelocity -= _gravity * Time.deltaTime;
+        }
+
+        Vector3 jumpVector = new Vector3(0, _verticalVelocity, 0);
+        _cc.Move(jumpVector * Time.deltaTime);              
     }
 
     void PlayerMovementAndRotation()
@@ -50,7 +57,6 @@ public class MovementController : MonoBehaviour
         _inputX             = Input.GetAxis("Horizontal");
         _inputZ             = Input.GetAxis("Vertical");
 
-        var camera          = Camera.main;
         Vector3 forward     = _mainCamera.transform.forward;
         Vector3 right       = _mainCamera.transform.right;
 
@@ -60,11 +66,14 @@ public class MovementController : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        _moveDirection = (forward * _inputZ) + (right *_inputX);
+        _moveDirection = ((forward * _inputZ) + (right *_inputX)).normalized;
 
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-            Quaternion.LookRotation(_moveDirection), 
-            _rotationSpeed);
+        if (_moveDirection.magnitude != 0)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(_moveDirection), 
+                _rotationSpeed);
+        }
         
         _cc.Move(_moveDirection *_speed * Time.deltaTime);
     }
