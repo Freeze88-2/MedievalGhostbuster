@@ -29,27 +29,34 @@ public class MovementController : MonoBehaviour
     void Update()
     {
         PlayerMovementAndRotation();
-        Jump();                 
+        JumpCheck();                 
     }
 
-    void Jump()
+    void FixedUpdate() 
+    {
+        Jump();
+    }
+
+    void JumpCheck()
     {
         if(_cc.isGrounded)
         {
             _verticalVelocity = -_gravity * Time.deltaTime;
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                _verticalVelocity = _jumpForce;
-            }
         }
         else
         {
             _verticalVelocity -= _gravity * Time.deltaTime;
-        }
+        }             
+    }
 
+    void Jump()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            _verticalVelocity = _jumpForce;
+        }
         Vector3 jumpVector = new Vector3(0, _verticalVelocity, 0);
-        _cc.Move(jumpVector * Time.deltaTime);              
+        _cc.Move(jumpVector * Time.deltaTime); 
     }
 
     void PlayerMovementAndRotation()
