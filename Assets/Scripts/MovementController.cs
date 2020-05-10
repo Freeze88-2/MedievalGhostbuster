@@ -19,7 +19,7 @@ public class MovementController : MonoBehaviour
     {
         _speed                          = 5.0f;
         _jumpForce                      = 10.0f;
-        _gravity                        = 14.0f;
+        _gravity                        = 20.0f;
         _rotationSpeed                  = 0.1f;
         _mainCamera                     = Camera.main;
         _cc                             = GetComponent<CharacterController>();
@@ -28,35 +28,30 @@ public class MovementController : MonoBehaviour
     
     void Update()
     {
-        PlayerMovementAndRotation();
+        ApplyGravity();
         JumpCheck();                 
-    }
-
-    void FixedUpdate() 
-    {
-        Jump();
+        PlayerMovementAndRotation();
     }
 
     void JumpCheck()
     {
         if(_cc.isGrounded)
         {
-            _verticalVelocity = -_gravity * Time.deltaTime;
-        }
-        else
-        {
-            _verticalVelocity -= _gravity * Time.deltaTime;
-        }             
+            if (Input.GetButtonDown("Jump"))
+            {
+                ApplyJump();
+            }
+        }          
     }
 
-    void Jump()
+    void ApplyJump()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            _verticalVelocity = _jumpForce;
-        }
-        Vector3 jumpVector = new Vector3(0, _verticalVelocity, 0);
-        _cc.Move(jumpVector * Time.deltaTime); 
+        _verticalVelocity = _jumpForce;
+    }
+
+    void ApplyGravity()
+    {
+        _verticalVelocity -= _gravity * Time.deltaTime;
     }
 
     void PlayerMovementAndRotation()
@@ -81,7 +76,11 @@ public class MovementController : MonoBehaviour
                 Quaternion.LookRotation(_moveDirection), 
                 _rotationSpeed);
         }
+
+        _moveDirection.x *= _speed;
+        _moveDirection.z *= _speed;
+        _moveDirection.y = _verticalVelocity;
         
-        _cc.Move(_moveDirection *_speed * Time.deltaTime);
+        _cc.Move(_moveDirection * Time.deltaTime);
     }
 }
