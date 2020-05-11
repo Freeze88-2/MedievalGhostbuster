@@ -21,14 +21,6 @@ namespace Lantern.Abilities
 
         public bool HabilityEnded { get; private set; }
 
-        public void ActivateAbility()
-        {
-            if (!_isHealing)
-            {
-                HabilityEnded = false;
-                StartCoroutine(HealPlayer());
-            }
-        }
 
         // Start is called before the first frame update
         void Start()
@@ -39,6 +31,15 @@ namespace Lantern.Abilities
             _player = GameObject.FindGameObjectWithTag("Player")
                 .GetComponent<IEntity>();
         }
+        public void ActivateAbility()
+        {
+            if (!_isHealing)
+            {
+                HabilityEnded = false;
+                StartCoroutine(HealPlayer());
+            }
+        }
+
         private IEnumerator HealPlayer()
         {
             _isHealing = true;
@@ -46,7 +47,6 @@ namespace Lantern.Abilities
             {
                 // ------- Heal Player ----------
                 _player.Heal(_healAmount);
-                Debug.Log(_player.Hp);
 
                 yield return _wait;
 

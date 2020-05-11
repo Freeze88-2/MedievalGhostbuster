@@ -78,12 +78,18 @@ namespace Lantern
                 if (ability != null)
                 {
                     ability.ActivateAbility();
-                    if (ability.HabilityEnded)
-                    {
-                        behaviour.EmptyLantern();
-                    }
+                    StartCoroutine(CheckAbilityStatus(ability));
                 }
             }
+        }
+
+        private IEnumerator CheckAbilityStatus(IAbility ability)
+        {
+            while(!ability.HabilityEnded)
+            {
+                yield return null;
+            }
+            behaviour.EmptyLantern();
         }
     }
 }

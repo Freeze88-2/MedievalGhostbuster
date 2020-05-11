@@ -64,7 +64,7 @@ namespace AI.Movement
                     MaxSpeed * 6f);
 
                 // Moves the Ghost foward
-                rb.velocity = transform.forward * MaxSpeed;
+                rb.velocity = transform.forward * Speed;
             }
         }
 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 733100194266218859}
   - component: {fileID: 5201078916446571095}
   - component: {fileID: 5370549693521446085}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: AI-Red
   m_TagString: GhostEnemy
   m_Icon: {fileID: 0}
@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e977533cd3a2e4a84ad947694b441a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   area: {fileID: 0}
   _gcolor: 0
   _maxSpeed: 2

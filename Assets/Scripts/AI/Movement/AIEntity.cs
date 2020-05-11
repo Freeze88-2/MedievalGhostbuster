@@ -38,7 +38,12 @@ namespace AI.Movement
         /// <summary>
         /// Maximum speed of the entity
         /// </summary>
-        public float MaxSpeed { get; set; }
+        public float MaxSpeed { get; private set; }
+
+        /// <summary>
+        /// The current speed of the ghost
+        /// </summary>
+        public float Speed { get; set; }
 
         /// <summary>
         /// The current hp of the ghost
@@ -73,6 +78,7 @@ namespace AI.Movement
             // Sets the current hp to the one of the editor
             Hp = _hp;
             // Set's if this ghost can perform actions or be performed on
+            Speed = _maxSpeed;
             IsTargatable = true;
         }
 

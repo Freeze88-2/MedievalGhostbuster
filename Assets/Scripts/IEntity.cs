@@ -16,7 +16,12 @@ public interface IEntity
     /// <summary>
     /// Maximum speed of the entity
     /// </summary>
-    float MaxSpeed { get; set; }
+    float MaxSpeed { get; }
+
+    /// <summary>
+    /// The current speed of the entity
+    /// </summary>
+    float Speed { get; set; }
 
     /// <summary>
     /// The current hp of the ghost
