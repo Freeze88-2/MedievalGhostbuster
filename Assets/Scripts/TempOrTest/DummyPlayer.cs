@@ -29,12 +29,17 @@ public class DummyPlayer : MonoBehaviour , IEntity
     /// <summary>
     /// Maximum speed of the entity
     /// </summary>
-    public float MaxSpeed { get; private set; }
+    public float MaxSpeed { get; set; }
 
     /// <summary>
     /// The current hp of the ghost
     /// </summary>
     public float Hp { get; private set; }
+
+    /// <summary>
+    /// If this player can be targetted
+    /// </summary>
+    public bool IsTargatable { get; set; }
 
     /// <summary>
     /// The rigidbody attached to this gameobject
@@ -56,6 +61,7 @@ public class DummyPlayer : MonoBehaviour , IEntity
         MaxSpeed = _maxSpeed;
         // Sets the current hp to the one of the editor
         Hp = _hp;
+        IsTargatable = true;
     }
 
     // Update is called once per frame

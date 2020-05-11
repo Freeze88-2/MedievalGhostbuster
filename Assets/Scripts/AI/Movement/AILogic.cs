@@ -50,11 +50,12 @@ namespace AI.Movement
 
             _end = _grid.GetClosestNode(target.transform.position);
 
-            if (_start != null && _end != null)
+            if (_start != null && _end != null && _end.GhostID == null)
             {
                 _start.GhostID = _iD;
                 Path = _aStar.CalculatePath(_start, _end);
             }
+
             SetGhostMinDistance(true);
 
             if (Path != null && Path.Count > 0)

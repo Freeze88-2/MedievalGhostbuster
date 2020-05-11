@@ -5,7 +5,7 @@ namespace Lantern
 {
     public class LanternCapture : MonoBehaviour
     {
-        [SerializeField] private GameObject[] objs = null;
+        [SerializeField] private GameObject objs = null;
 
         public LanternBehaviour lantern;
         private Collider _col;
@@ -15,14 +15,16 @@ namespace Lantern
         // Start is called before the first frame update
         private void Awake()
         {
+            IAbility[] abs = objs.GetComponents<IAbility>();
             _col = GetComponent<Collider>();
-            lantern = new LanternBehaviour(objs);
+            lantern = new LanternBehaviour(abs);
             _ignored = new List<IEntity>();
         }
 
         private void OnEnable()
         {
             _ignored.Clear();
+            _alreadyCought = null;
         }
 
         private void OnTriggerStay(Collider other)
@@ -45,6 +47,7 @@ namespace Lantern
                         && !lantern.Colors[1].HasValue 
                         || ghost == _alreadyCought)
                     {
+                        ghost.IsTargatable = false;
                         _alreadyCought = ghost;
 
                         Vector3 vel = -(transform.position -
@@ -53,13 +56,13 @@ namespace Lantern
                         vel *= Vector3.Distance(transform.position,
                             other.transform.position) -
                             Vector3.Distance(_col.bounds.max,
-                            transform.position) * 10;
+                            transform.position) * 100;
 
-                        other.attachedRigidbody.velocity += vel *
+                        other.attachedRigidbody.velocity = vel *
                             Time.fixedDeltaTime;
 
                         if (Vector3.Distance(other.transform.position,
-                            transform.position) < 0.3f &&
+                            transform.position) < 0.1f &&
                             !lantern.Colors[1].HasValue)
                         {
                             lantern.StoreColor(ghost.GColor);

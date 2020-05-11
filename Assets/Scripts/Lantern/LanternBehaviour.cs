@@ -7,10 +7,10 @@ namespace Lantern
         public GhostColor?[] Colors { get; private set; }
         private readonly HabilityManager _habilities;
 
-        public LanternBehaviour(GameObject[] obs)
+        public LanternBehaviour(IAbility[] abs)
         {
             Colors = new GhostColor?[2];
-            _habilities = new HabilityManager(obs);
+            _habilities = new HabilityManager(abs);
         }
 
         public void EmptyLantern()

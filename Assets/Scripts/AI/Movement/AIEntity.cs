@@ -8,7 +8,7 @@ namespace AI.Movement
     public class AIEntity : MonoBehaviour, IEntity
     {
         // -- Target given --
-        [SerializeField] protected GameObject target = null;
+        protected GameObject target = null;
 
         // -- Designated area --
         [SerializeField] protected GameObject area = null;
@@ -38,12 +38,17 @@ namespace AI.Movement
         /// <summary>
         /// Maximum speed of the entity
         /// </summary>
-        public float MaxSpeed { get; private set; }
+        public float MaxSpeed { get; set; }
 
         /// <summary>
         /// The current hp of the ghost
         /// </summary>
         public float Hp { get; private set; }
+
+        /// <summary>
+        /// If this ghost can be targetted
+        /// </summary>
+        public bool IsTargatable { get; set ; }
 
         /// <summary>
         /// The rigidbody attached to this gameobject
@@ -55,6 +60,8 @@ namespace AI.Movement
         /// </summary>
         protected virtual void Start()
         {
+            // Gets the player
+            target = GameObject.FindGameObjectWithTag("Player");
             // Gets the rigidbody of this gameobject
             rb = GetComponent<Rigidbody>();
             // Sets the color to the one of the editor
@@ -65,6 +72,8 @@ namespace AI.Movement
             MaxSpeed = _maxSpeed;
             // Sets the current hp to the one of the editor
             Hp = _hp;
+            // Set's if this ghost can perform actions or be performed on
+            IsTargatable = true;
         }
 
         /// <summary>

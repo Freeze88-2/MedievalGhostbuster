@@ -16,12 +16,15 @@ namespace AI.Movement
         // Line for debugging the _path
         private LineRenderer _line;
 
+        private IEntity player;
+
         /// <summary>
         /// Use this for initialization
         /// </summary>
         protected override void Start()
         {
             base.Start();
+            player = target.GetComponent<IEntity>();
             if (area != null)
             {
                 // Creates a new AILogic passing in the _grid
@@ -36,13 +39,19 @@ namespace AI.Movement
         {
             Vector3? nextPoint = null;
 
-            if (area != null)
+            if (area != null && player.IsTargatable) // TEMP------
             {
                 // Gets a vector3 form the pathfinding
                 nextPoint = _ailogic.GetPoint(gameObject, target);
             }
+
+            if (target != null && Vector3.Distance(transform.position,
+                target.transform.position) < 2.5f)
+            {
+                Attack();
+            }
             // Checks if the point received has a value
-            if (nextPoint.HasValue)
+            else if (nextPoint.HasValue && IsTargatable)
             {
                 // Calculates the direction of current point to the next point
                 Vector3 dir = nextPoint.Value - transform.position;
@@ -56,11 +65,6 @@ namespace AI.Movement
 
                 // Moves the Ghost foward
                 rb.velocity = transform.forward * MaxSpeed;
-            }
-            else if (target != null && Vector3.Distance(transform.position,
-                target.transform.position) < 2.5f)
-            {
-                Attack();
             }
         }
 

@@ -3,17 +3,30 @@
 /// </summary>
 public interface IEntity
 {
-    // The color of the ghost
+    /// <summary>
+    /// The color of the ghost
+    /// </summary>
     GhostColor GColor { get; }
 
-    // The current hp of the ghost
+    /// <summary>
+    /// The current hp of the ghost
+    /// </summary>
     float MaxHp { get; }
 
-    // Maximum speed of the entity
-    float MaxSpeed { get; }
+    /// <summary>
+    /// Maximum speed of the entity
+    /// </summary>
+    float MaxSpeed { get; set; }
 
-    // The current hp of the ghost
+    /// <summary>
+    /// The current hp of the ghost
+    /// </summary>
     float Hp { get; }
+
+    /// <summary>
+    /// If this Entity can be targetted
+    /// </summary>
+    bool IsTargatable { get; set; }
 
     /// <summary>
     /// Subtract the specefied amount of hp from the entity
