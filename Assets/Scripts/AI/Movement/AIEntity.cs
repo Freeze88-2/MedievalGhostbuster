@@ -90,6 +90,13 @@ namespace AI.Movement
         {
             // subtracts the amount from the hp
             Hp = Mathf.Max(Hp - amount, 0);
+
+            // Checks if the hp is 0
+            if (Hp == 0)
+            {
+                // Kills the ghost
+                Destroy(this.gameObject);
+            }
         }
 
         /// <summary>
