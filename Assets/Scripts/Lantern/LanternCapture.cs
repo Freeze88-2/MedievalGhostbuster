@@ -58,7 +58,7 @@ namespace Lantern
                             Vector3.Distance(_col.bounds.max,
                             transform.position) * 100;
 
-                        other.attachedRigidbody.velocity = vel *
+                        other.attachedRigidbody.velocity += vel *
                             Time.fixedDeltaTime;
 
                         if (Vector3.Distance(other.transform.position,
@@ -68,7 +68,6 @@ namespace Lantern
                             lantern.StoreColor(ghost.GColor);
 
                             Destroy(other.gameObject);
-                            _ignored.Clear();
                             _alreadyCought = null;
                         }
                     }

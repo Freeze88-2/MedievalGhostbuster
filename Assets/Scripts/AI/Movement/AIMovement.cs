@@ -16,7 +16,11 @@ namespace AI.Movement
         // Line for debugging the _path
         private LineRenderer _line;
 
-        private IEntity player;
+        // The player entity
+        private IEntity _player;
+
+        // If the ghost can move on the next fixed update
+        private bool _canMove;
 
         /// <summary>
         /// Use this for initialization
@@ -24,7 +28,9 @@ namespace AI.Movement
         protected override void Start()
         {
             base.Start();
-            player = target.GetComponent<IEntity>();
+            _player = target.GetComponent<IEntity>();
+            _canMove = false;
+
             if (area != null)
             {
                 // Creates a new AILogic passing in the _grid
@@ -32,14 +38,11 @@ namespace AI.Movement
             }
         }
 
-        /// <summary>
-        /// This is called every physics update
-        /// </summary>
-        private void FixedUpdate()
+        private void Update()
         {
             Vector3? nextPoint = null;
 
-            if (area != null && player.IsTargatable) // TEMP------
+            if (area != null && _player.IsTargatable) // TEMP------
             {
                 // Gets a vector3 form the pathfinding
                 nextPoint = _ailogic.GetPoint(gameObject, target);
@@ -49,6 +52,7 @@ namespace AI.Movement
                 target.transform.position) < 2.5f)
             {
                 Attack();
+                _canMove = false;
             }
             // Checks if the point received has a value
             else if (nextPoint.HasValue && IsTargatable)
@@ -63,8 +67,29 @@ namespace AI.Movement
                     Quaternion.LookRotation(dir), Time.fixedDeltaTime *
                     MaxSpeed * 6f);
 
-                // Moves the Ghost foward
-                rb.velocity = transform.forward * Speed;
+                // Let's the ghost move foward the next fixed update
+                _canMove = true;
+            }
+            else
+            {
+                // Doesn't let the ghost move foward the next fixed update
+                _canMove = false;
+            }
+        }
+
+        /// <summary>
+        /// This is called every physics update
+        /// </summary>
+        private void FixedUpdate()
+        {
+            // If the ghost can move
+            if (_canMove)
+            {
+                if (Physics.Raycast(transform.position, -transform.up, 1f))
+                {
+                    // Moves the Ghost foward
+                    rb.velocity += (transform.forward * Speed) * Time.fixedDeltaTime;
+                }
             }
         }
 

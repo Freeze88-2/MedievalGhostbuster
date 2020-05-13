@@ -27,7 +27,7 @@ namespace Lantern.Abilities
 
                 Collider[] cols = Physics.OverlapSphere(
                     _player.transform.position, 100f,
-                    LayerMask.GetMask("Enemy"));
+                    LayerMask.GetMask("Entity"));
 
                 for (int i = 0; i < cols.Length; i++)
                 {
@@ -70,7 +70,6 @@ namespace Lantern.Abilities
             }
             _isReseting = false;
             HabilityEnded = true;
-            Debug.Log("I has ended");
         }
     }
 }
