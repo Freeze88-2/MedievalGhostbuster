@@ -29,6 +29,10 @@ namespace Lantern
             {
                 return SearchWantedAbility((GhostColor.Red, GhostColor.Green));
             }
+            else if ((a == GhostColor.Red && b == GhostColor.Blue) || (a == GhostColor.Blue && b == GhostColor.Red))
+            {
+                return SearchWantedAbility((GhostColor.Red, GhostColor.Blue));
+            }
             return null;
         }
 

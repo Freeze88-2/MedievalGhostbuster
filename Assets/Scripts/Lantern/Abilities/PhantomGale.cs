@@ -7,15 +7,12 @@ namespace Lantern.Abilities
     public class PhantomGale : MonoBehaviour, IAbility
     {
         [SerializeField] private float _coneRadiusX = 3f;
-        [SerializeField] private float _coneRadiusY = 2f;
+        [SerializeField] private float _coneRadiusY = 0.5f;
         [SerializeField] private float _coneLenght = 5f;
 
         List<RaycastHit> rays = new List<RaycastHit>();
         List<IEntity> alreadyCounted = new List<IEntity>();
         private GameObject _player;
-        private WaitForSecondsRealtime _wait;
-        private int _timer;
-        private bool _isPushing;
 
         public (GhostColor, GhostColor) AbilityColors
         {
@@ -27,9 +24,6 @@ namespace Lantern.Abilities
         private void Start()
         {
             _player = GameObject.FindGameObjectWithTag("Player");
-            _wait = new WaitForSecondsRealtime(0.5f);
-            _timer = 0;
-            _isPushing = false;
             HabilityEnded = false;
         }
 
@@ -39,18 +33,21 @@ namespace Lantern.Abilities
             rays.Clear();
             alreadyCounted.Clear();
 
-            for (float j = -_coneRadiusY; j <= _coneRadiusY; j += 0.2f)
+            for (float j = -_coneRadiusY; j <= _coneRadiusY; j += 0.1f)
             {
                 for (float i = -_coneRadiusX; i <= _coneRadiusX; i += 0.2f)
                 {
                     Vector3 ray = (_player.transform.forward * _coneLenght) +
-                        (_player.transform.right * i) + (_player.transform.up * j);
+                        (_player.transform.right * i);
 
-                    //Ray r = new Ray(_player.transform.position, ray);
 
-                    Debug.DrawRay(_player.transform.position, ray, Color.red, 100f);
+                    Vector3 start = _player.transform.position;
+                    start.y += j;
 
-                    RaycastHit[] allhit = Physics.RaycastAll(_player.transform.position, ray
+                    Debug.DrawRay(start, ray, Color.red, 100f);
+
+
+                    RaycastHit[] allhit = Physics.RaycastAll(start, ray
                         , _coneLenght, LayerMask.GetMask("Entity"));
 
                     for (int z = 0; z < allhit.Length; z++)
@@ -64,7 +61,7 @@ namespace Lantern.Abilities
             }
             PushEntities();
 
-            //HabilityEnded = true;
+            HabilityEnded = true;
         }
 
         private void PushEntities()
