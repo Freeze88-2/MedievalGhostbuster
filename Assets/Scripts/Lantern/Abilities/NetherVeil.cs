@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lantern.Abilities
@@ -19,11 +18,9 @@ namespace Lantern.Abilities
 
         public bool HabilityEnded { get; private set; }
 
-
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-
             HabilityEnded = false;
             _wait = new WaitForSeconds(_duration);
             _player = GameObject.FindGameObjectWithTag("Player")

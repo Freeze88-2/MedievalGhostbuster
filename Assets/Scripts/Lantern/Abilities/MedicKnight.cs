@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lantern.Abilities
 {
-    public class MedicKnight : MonoBehaviour , IAbility
+    public class MedicKnight : MonoBehaviour, IAbility
     {
         [SerializeField] private float _healAmount = 0f;
         [SerializeField] private float _healTime = 0f;
@@ -14,6 +13,7 @@ namespace Lantern.Abilities
         private WaitForSeconds _wait;
         private float _timer;
         private bool _isHealing;
+
         public (GhostColor, GhostColor) AbilityColors
         {
             get => (GhostColor.Green, GhostColor.Green);
@@ -21,9 +21,8 @@ namespace Lantern.Abilities
 
         public bool HabilityEnded { get; private set; }
 
-
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _isHealing = false;
             HabilityEnded = false;
@@ -31,6 +30,7 @@ namespace Lantern.Abilities
             _player = GameObject.FindGameObjectWithTag("Player")
                 .GetComponent<IEntity>();
         }
+
         public void ActivateAbility()
         {
             if (!_isHealing)

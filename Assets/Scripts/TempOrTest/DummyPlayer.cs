@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class DummyPlayer : MonoBehaviour , IEntity
+public class DummyPlayer : MonoBehaviour, IEntity
 {
     // The color of the ghost
     [SerializeField] private GhostColor _gcolor = GhostColor.Blue;
@@ -72,7 +70,7 @@ public class DummyPlayer : MonoBehaviour , IEntity
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
     }
 

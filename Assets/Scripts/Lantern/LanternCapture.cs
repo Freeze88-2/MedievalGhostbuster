@@ -44,7 +44,7 @@ namespace Lantern
                     int captureChance = Random.Range(0, 100);
 
                     if (captureChance < catchResistence
-                        && !lantern.Colors[1].HasValue 
+                        && !lantern.Colors[1].HasValue
                         || ghost == _alreadyCought)
                     {
                         ghost.IsTargatable = false;

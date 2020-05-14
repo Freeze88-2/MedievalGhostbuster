@@ -53,7 +53,7 @@ namespace AI.Movement
         /// <summary>
         /// If this ghost can be targetted
         /// </summary>
-        public bool IsTargatable { get; set ; }
+        public bool IsTargatable { get; set; }
 
         /// <summary>
         /// The rigidbody attached to this gameobject

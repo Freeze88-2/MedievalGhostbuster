@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Lantern.Abilities
 {
-    public class ThunderDome : MonoBehaviour , IAbility
+    public class ThunderDome : MonoBehaviour, IAbility
     {
         private GameObject _player;
         public bool HabilityEnded { get; private set; }
@@ -33,7 +31,7 @@ namespace Lantern.Abilities
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _player = GameObject.FindGameObjectWithTag("Player");
         }

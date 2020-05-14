@@ -39,7 +39,7 @@ namespace Lantern
         {
             if (Colors[0].HasValue && Colors[1].HasValue)
             {
-                return _habilities.GetAbility(Colors[0].Value, 
+                return _habilities.GetAbility(Colors[0].Value,
                     Colors[1].Value);
             }
             return null;

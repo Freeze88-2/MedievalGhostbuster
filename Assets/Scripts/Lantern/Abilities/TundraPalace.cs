@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lantern.Abilities
@@ -49,7 +48,7 @@ namespace Lantern.Abilities
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _isReseting = false;
             HabilityEnded = false;

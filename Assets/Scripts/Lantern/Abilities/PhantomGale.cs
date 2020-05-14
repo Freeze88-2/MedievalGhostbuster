@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lantern.Abilities
@@ -10,8 +9,8 @@ namespace Lantern.Abilities
         [SerializeField] private float _coneRadiusY = 0.5f;
         [SerializeField] private float _coneLenght = 5f;
 
-        List<RaycastHit> rays = new List<RaycastHit>();
-        List<IEntity> alreadyCounted = new List<IEntity>();
+        private List<RaycastHit> rays = new List<RaycastHit>();
+        private List<IEntity> alreadyCounted = new List<IEntity>();
         private GameObject _player;
 
         public (GhostColor, GhostColor) AbilityColors
@@ -40,12 +39,10 @@ namespace Lantern.Abilities
                     Vector3 ray = (_player.transform.forward * _coneLenght) +
                         (_player.transform.right * i);
 
-
                     Vector3 start = _player.transform.position;
                     start.y += j;
 
                     Debug.DrawRay(start, ray, Color.red, 100f);
-
 
                     RaycastHit[] allhit = Physics.RaycastAll(start, ray
                         , _coneLenght, LayerMask.GetMask("Entity"));
