@@ -17,7 +17,11 @@ public class CameraController : MonoBehaviour
     private float                           _smooth;
     private float                           _range;
     private const string                    PLAYER_LAYER = "Player";
-    private const float                     Y_OFFSET = 0.9f;
+
+    // Change Y_OFFSET according to model (0.9 for capsule, 0.4 for skeleton)
+    // This applies to cameraRig Y position (same values)
+    private const float                     Y_OFFSET = 0.4f;
+
     private RaycastHit                      _cullingHit;
     private bool FireState                  
         => Input.GetMouseButton(1);
