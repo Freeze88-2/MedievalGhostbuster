@@ -56,17 +56,24 @@ namespace Lantern
         {
             if (Camera.current != Camera.main)
             {
-                Ray camRay = new Ray(_player.position, Camera.main.transform.forward);
+                Ray camRay = new Ray(_player.position, 
+                    Camera.main.transform.forward);
 
-                if (Physics.Raycast(camRay, out RaycastHit hit, 100f, LayerMask.GetMask("Default")))
+                if (Physics.Raycast(camRay, out RaycastHit hit, 100f,
+                    LayerMask.GetMask("Default")))
                 {
                     if (hit.distance < _maxDistance)
                     {
                         _line.enabled = true;
                         _cursor.SetActive(true);
 
-                        Vector3 calcVel = ThrowLantern(hit.point, _player.position, Vector3.Distance(_player.transform.position, hit.point) / 5);
-                        DrawPath(calcVel, Vector3.Distance(_player.transform.position, hit.point) / 5);
+                        float distance = Vector3.Distance
+                            (_player.transform.position, hit.point) / 5;
+
+                        Vector3 calcVel = ThrowLantern(hit.point,
+                            _player.position, distance);
+
+                        DrawPath(calcVel, distance);
 
                         if (Input.GetKeyDown(KeyCode.Mouse0))
                         {
@@ -98,7 +105,8 @@ namespace Lantern
             float sx = disX.magnitude;
 
             float velocityX = sx / time;
-            float velocityY = sy / time + 0.5f * Mathf.Abs(Physics.gravity.y) * time;
+            float velocityY = sy / time + 0.5f * 
+                Mathf.Abs(Physics.gravity.y) * time;
 
             Vector3 final = disX.normalized;
 
@@ -115,7 +123,9 @@ namespace Lantern
             for (int i = 1; i <= 100; i++)
             {
                 float simtime = i / (float)30 * speed;
-                Vector3 simss = (sim * simtime + Vector3.up * Physics.gravity.y * simtime * simtime / 2f);
+                Vector3 simss = (sim * simtime + Vector3.up * Physics.gravity.y
+                    * simtime * simtime / 2f);
+
                 Vector3 point = _player.position + simss;
 
                 _line.SetPosition(i, point);
