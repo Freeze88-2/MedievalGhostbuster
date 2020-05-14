@@ -69,11 +69,6 @@ public class DummyPlayer : MonoBehaviour, IEntity
         IsTargatable = true;
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-    }
-
     /// <summary>
     /// Subtract the specefied amount of hp from the entity
     /// </summary>

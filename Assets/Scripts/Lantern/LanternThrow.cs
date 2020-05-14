@@ -91,7 +91,8 @@ namespace Lantern
                         DrawPath(calcVel, distance);
 
                             _cursor.transform.position = hit.point;
-                        if (Input.GetKeyDown(KeyCode.Mouse0))
+
+                        if (Input.GetKeyDown(KeyCode.E))
                         {
                             if (!_capturer.activeSelf)
                             {
