@@ -10,7 +10,6 @@ public class CameraController : MonoBehaviour
     private int                             _playerLayer;
     private CameraType                      _currentActiveCamera;
     public Transform                        Player;
-    
     private float                           _rotationSpeed;
     private float                           _mouseX, _mouseY;
     private float                           _minDistance, _maxDistance;      
