@@ -20,7 +20,7 @@ namespace AI.PathFinding
         /// <param name="_start"> The node it begins on </param>
         /// <param name="target"> The node it should _end on </param>
         /// <returns> A list of positions </returns>
-        public List<Vector3> CalculatePath(Node _start, Node target)
+        public List<Vector3> CalculatePath(Node start, Node target)
         {
             // Clears the list to make sure they're empty before starting to
             // use them
@@ -28,7 +28,7 @@ namespace AI.PathFinding
             _closed.Clear();
 
             // Adds the the ghost position '_start' to the _open list
-            _open.Add(_start);
+            _open.Add(start);
 
             // Searches for a _path while the _open list has something or it
             // returned something
@@ -69,7 +69,7 @@ namespace AI.PathFinding
                     if (current.pos == target.neighbors[i].pos)
                     {
                         // Generates a list of positions and sends it back
-                        return TracePath(_start, target.neighbors[i]);
+                        return TracePath(start, target.neighbors[i]);
                     }
                 }
 
@@ -109,6 +109,7 @@ namespace AI.PathFinding
                     }
                 }
             }
+            // If none of the above returns null
             return null;
         }
 
@@ -118,12 +119,12 @@ namespace AI.PathFinding
         /// </summary>
         /// <param name="_start"> The Object it starts on </param>
         /// <param name="_end"> The Object it targets </param>
-        private List<Vector3> TracePath(Node _start, Node _end)
+        private List<Vector3> TracePath(Node start, Node end)
         {
             // Creates a list of positions to store the _path
             _path.Clear();
             // Creates a local Object variable and assigns it the passed Object
-            Node currentPiece = _end;
+            Node currentPiece = end;
             Node nextPiece = currentPiece.Parent;
 
             if (nextPiece != null)
@@ -131,11 +132,11 @@ namespace AI.PathFinding
                 Vector2 dir = GetDirection(currentPiece, nextPiece);
 
                 // Runs the loop until the currentPiece is not the _start
-                while (currentPiece.pos != _start.pos)
+                while (currentPiece.pos != start.pos)
                 {
                     if (GetDirection(currentPiece, nextPiece) != dir ||
-                        currentPiece.pos == _start.pos ||
-                        currentPiece.pos == _end.pos)
+                        currentPiece.pos == start.pos ||
+                        currentPiece.pos == end.pos)
                     {
                         // Adds the position of the currentPiece to the list
                         _path.Add(currentPiece);

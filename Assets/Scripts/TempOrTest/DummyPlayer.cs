@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Temporary Player to test mechanics
+/// </summary>
+[System.Obsolete("DummyPlayer is obsolete, use a player script instead")]
 public class DummyPlayer : MonoBehaviour, IEntity
 {
     // The color of the ghost

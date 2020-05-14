@@ -27,10 +27,14 @@ namespace AI.Movement
         /// </summary>
         protected override void Start()
         {
+            // Calls the base class start
             base.Start();
+            // Finds the IEntity component of the player
             _player = target.GetComponent<IEntity>();
+            // Gives a default value to _canMove
             _canMove = false;
 
+            // Checks if the area exists
             if (area != null)
             {
                 // Creates a new AILogic passing in the _grid
@@ -39,21 +43,29 @@ namespace AI.Movement
             }
         }
 
+        
+        /// <summary>
+        /// Called once per frame
+        /// </summary>
         private void Update()
         {
+            // Stores the next point from AILogic
             Vector3? nextPoint = null;
 
-            if (area != null && _player.IsTargatable) // TEMP------
+            // Checks if the area exists and can hit the player
+            if (area != null && _player.IsTargatable)
             {
                 // Gets a vector3 form the pathfinding
                 nextPoint = _ailogic.GetPoint(gameObject.transform.position, 
                     target.transform.position);
             }
-
+            // Checks if the target exists and the distance is less than 2.5
             if (target != null && Vector3.Distance(transform.position,
                 target.transform.position) < 2.5f)
             {
+                // Attacks the target
                 Attack();
+                // Stops the ghost from moving
                 _canMove = false;
             }
             // Checks if the point received has a value
@@ -66,7 +78,7 @@ namespace AI.Movement
 
                 // Rotates gradually the Ghost towards the direction
                 transform.rotation = Quaternion.Lerp(transform.rotation,
-                    Quaternion.LookRotation(dir), Time.fixedDeltaTime *
+                    Quaternion.LookRotation(dir), Time.deltaTime *
                     MaxSpeed * 6f);
 
                 // Let's the ghost move foward the next fixed update
@@ -87,10 +99,12 @@ namespace AI.Movement
             // If the ghost can move
             if (_canMove)
             {
+                // Checks if the ghost has something below 
                 if (Physics.Raycast(transform.position, -transform.up, 1f))
                 {
                     // Moves the Ghost foward
-                    rb.velocity += (transform.forward * Speed) * Time.fixedDeltaTime;
+                    rb.velocity += (transform.forward * Speed) * 
+                        Time.fixedDeltaTime;
                 }
             }
         }
@@ -106,7 +120,7 @@ namespace AI.Movement
 
             // Rotates gradually the Ghost towards the direction
             transform.rotation = Quaternion.Lerp(transform.rotation,
-                Quaternion.LookRotation(dir), Time.fixedDeltaTime *
+                Quaternion.LookRotation(dir), Time.deltaTime *
                 MaxSpeed * 6f);
 
             IEntity player = target.GetComponent<IEntity>();

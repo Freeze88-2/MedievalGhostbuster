@@ -41,14 +41,8 @@ namespace Lantern
 
         private void CheckLanternDespawn()
         {
-            if (_capturer.activeSelf)
-            {
-                _activeTime += Time.deltaTime;
-            }
-            else
-            {
-                _activeTime = 0;
-            }
+            _activeTime = _capturer.activeSelf ? 
+                _activeTime + Time.deltaTime : 0;
 
             if ((int)_activeTime % 60 > _secondsToDespawn)
             {
@@ -60,19 +54,9 @@ namespace Lantern
         {
             if (!one.isActiveAndEnabled)
             {
-                Ray camRay = new Ray();
-
-                if (left.isActiveAndEnabled)
-                {
-                    camRay = new Ray(_player.position,
-                        left.transform.forward);
-                }
-                else
-                {
-
-                    camRay = new Ray(_player.position,
-                        right.transform.forward);
-                }
+                Ray camRay = left.isActiveAndEnabled ? 
+                    new Ray(_player.position,left.transform.forward) :
+                    new Ray(_player.position, right.transform.forward);
 
                 if (Physics.Raycast(camRay, out RaycastHit hit, 100f,
                     LayerMask.GetMask("Default")))

@@ -31,17 +31,27 @@ namespace AI.Movement
         private readonly int _iD;
 
         /// <summary>
-        /// Consctructor the AILogic
+        /// Creates a new AILogic for the AI to manage the target and position
         /// </summary>
         /// <param name="_grid"> The area of this AI </param>
         public AILogic(GridGenerator _grid)
         {
+            // Creates a new list of positions
             Path = new List<Vector3>();
+            // Assigns the given grid to the one of this class
             this._grid = _grid;
+            // Creates a new A* algorithm
             _aStar = new AStarAlgorithm();
+            // Creates a unique ID for this ghost
             _iD = System.DateTime.Now.Millisecond + Random.Range(0, 10000);
         }
 
+        /// <summary>
+        /// Returns the next point of the path
+        /// </summary>
+        /// <param name="init"> Initial position of the ghost </param>
+        /// <param name="target"> Destination of the ghost </param>
+        /// <returns> The next position to move to </returns>
         public Vector3? GetPoint(Vector3 init, Vector3 target)
         {
             SetGhostMinDistance(false);
