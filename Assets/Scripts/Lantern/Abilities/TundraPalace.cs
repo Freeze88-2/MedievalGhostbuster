@@ -6,6 +6,9 @@ namespace Lantern.Abilities
     public class TundraPalace : MonoBehaviour, IAbility
     {
         [SerializeField] private float _durationTime = 0f;
+        [SerializeField] private float _radius = 15f;
+        [SerializeField] private float _freezingRadius = 7f;
+        [SerializeField] private GameObject _freezeEffect = null;
 
         private GameObject _player;
         private WaitForSeconds _wait;
@@ -25,15 +28,21 @@ namespace Lantern.Abilities
                 HabilityEnded = false;
 
                 Collider[] cols = Physics.OverlapSphere(
-                    _player.transform.position, 100f,
+                    _player.transform.position, _radius,
                     LayerMask.GetMask("Entity"));
+
+                Physics.Raycast(_player.transform.position, 
+                    -_player.transform.up, out RaycastHit hit, 100f,
+                    LayerMask.GetMask("Default"));
+
+                Instantiate(_freezeEffect, hit.point, Quaternion.identity);
 
                 for (int i = 0; i < cols.Length; i++)
                 {
                     IEntity ghost = cols[i].gameObject.GetComponent<IEntity>();
 
                     if (Vector3.Distance(cols[i].transform.position,
-                        _player.transform.position) < 5f)
+                        _player.transform.position) < _freezingRadius)
                     {
                         ghost.Speed = 0f;
                     }

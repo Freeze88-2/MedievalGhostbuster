@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using AI.PathFinding.GridGeneration;
+﻿using AI.PathFinding.GridGeneration;
+using UnityEngine;
 
 namespace AI.Movement
 {

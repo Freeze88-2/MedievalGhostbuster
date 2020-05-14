@@ -6,12 +6,12 @@ using AI.PathFinding.GridGeneration;
 [CanEditMultipleObjects]
 public class GridGeneratorEditor : Editor
 {
-    private SerializedProperty unwalkablemask, gridWorldSize, nodeRadius;
+    private SerializedProperty unwalkablemask, areaSize, nodeRadius;
 
     private void OnEnable()
     {
         unwalkablemask = serializedObject.FindProperty("unwalkablemask");
-        gridWorldSize = serializedObject.FindProperty("gridWorldSize");
+        areaSize = serializedObject.FindProperty("areaSize");
         nodeRadius = serializedObject.FindProperty("nodeRadius");
     }
 
@@ -20,7 +20,7 @@ public class GridGeneratorEditor : Editor
         EditorGUILayout.HelpBox("Grid Generation options", MessageType.None);
         EditorGUILayout.PropertyField(unwalkablemask, true);
         EditorGUILayout.PropertyField(nodeRadius, true);
-        EditorGUILayout.PropertyField(gridWorldSize, true);
+        EditorGUILayout.PropertyField(areaSize, true);
 
         serializedObject.ApplyModifiedProperties();
 

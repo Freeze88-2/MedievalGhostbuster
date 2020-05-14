@@ -39,11 +39,9 @@ namespace AI.Movement
             {
                 // Creates a new AILogic passing in the _grid
                 _ailogic = new AILogic(area.GetComponent<GridGenerator>());
-                
             }
         }
 
-        
         /// <summary>
         /// Called once per frame
         /// </summary>
@@ -56,7 +54,7 @@ namespace AI.Movement
             if (area != null && _player.IsTargatable)
             {
                 // Gets a vector3 form the pathfinding
-                nextPoint = _ailogic.GetPoint(gameObject.transform.position, 
+                nextPoint = _ailogic.GetPoint(gameObject.transform.position,
                     target.transform.position);
             }
             // Checks if the target exists and the distance is less than 2.5
@@ -99,11 +97,11 @@ namespace AI.Movement
             // If the ghost can move
             if (_canMove)
             {
-                // Checks if the ghost has something below 
+                // Checks if the ghost has something below
                 if (Physics.Raycast(transform.position, -transform.up, 1f))
                 {
                     // Moves the Ghost foward
-                    rb.velocity += (transform.forward * Speed) * 
+                    rb.velocity += (transform.forward * Speed) *
                         Time.fixedDeltaTime;
                 }
             }

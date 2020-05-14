@@ -10,9 +10,9 @@ namespace Lantern
         [SerializeField] private Transform _player = null;
         [SerializeField] private GameObject _cursor = null;
 
-        [SerializeField] Camera one;
-        [SerializeField] Camera left;
-        [SerializeField] Camera right;
+        [SerializeField] private Camera one;
+        [SerializeField] private Camera left;
+        [SerializeField] private Camera right;
 
         private GameObject _capturer;
         private Rigidbody _lanternRB;
@@ -41,7 +41,7 @@ namespace Lantern
 
         private void CheckLanternDespawn()
         {
-            _activeTime = _capturer.activeSelf ? 
+            _activeTime = _capturer.activeSelf ?
                 _activeTime + Time.deltaTime : 0;
 
             if ((int)_activeTime % 60 > _secondsToDespawn)
@@ -54,8 +54,8 @@ namespace Lantern
         {
             if (!one.isActiveAndEnabled)
             {
-                Ray camRay = left.isActiveAndEnabled ? 
-                    new Ray(_player.position,left.transform.forward) :
+                Ray camRay = left.isActiveAndEnabled ?
+                    new Ray(_player.position, left.transform.forward) :
                     new Ray(_player.position, right.transform.forward);
 
                 if (Physics.Raycast(camRay, out RaycastHit hit, 100f,
@@ -74,7 +74,7 @@ namespace Lantern
 
                         DrawPath(calcVel, distance);
 
-                            _cursor.transform.position = hit.point;
+                        _cursor.transform.position = hit.point;
 
                         if (Input.GetKeyDown(KeyCode.E))
                         {
@@ -100,7 +100,6 @@ namespace Lantern
                 _cursor.SetActive(false);
             }
         }
-
 
         private Vector3 ThrowLantern(Vector3 target, Vector3 start, float time)
         {
@@ -139,6 +138,7 @@ namespace Lantern
                 _line.SetPosition(i, point);
             }
         }
+
         private void AbilityCast()
         {
             if (Input.GetKeyDown(KeyCode.Q))

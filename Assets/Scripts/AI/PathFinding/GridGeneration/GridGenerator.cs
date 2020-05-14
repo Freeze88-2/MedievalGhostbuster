@@ -12,17 +12,22 @@ namespace AI.PathFinding.GridGeneration
     {
         // The layer the AI can't walk on
         [SerializeField] private LayerMask unwalkablemask = default;
+
         // The size of the area
         [SerializeField] private Vector3 areaSize = Vector3.one;
+
         // The size of the each node
         [SerializeField] private float nodeRadius = 0.3f;
 
         // Stores all the grid nodes
         private Node[,] _grid;
+
         // Stores the diamater of the node
         private float nodeDiameter;
-        // Stores the size on the X and Z 
+
+        // Stores the size on the X and Z
         private int gridSizeX, gridSizeY;
+
         // A line renderer for debugging
         private LineRenderer _line;
 
