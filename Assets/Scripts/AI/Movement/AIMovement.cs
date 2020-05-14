@@ -46,7 +46,8 @@ namespace AI.Movement
             if (area != null && _player.IsTargatable) // TEMP------
             {
                 // Gets a vector3 form the pathfinding
-                nextPoint = _ailogic.GetPoint(gameObject, target);
+                nextPoint = _ailogic.GetPoint(gameObject.transform.position, 
+                    target.transform.position);
             }
 
             if (target != null && Vector3.Distance(transform.position,

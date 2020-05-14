@@ -42,13 +42,13 @@ namespace AI.Movement
             _iD = System.DateTime.Now.Millisecond + Random.Range(0, 10000);
         }
 
-        public Vector3? GetPoint(GameObject init, GameObject target)
+        public Vector3? GetPoint(Vector3 init, Vector3 target)
         {
             SetGhostMinDistance(false);
 
-            _start = _grid.GetClosestNode(init.transform.position);
+            _start = _grid.GetClosestNode(init - _grid.transform.position);
 
-            _end = _grid.GetClosestNode(target.transform.position);
+            _end = _grid.GetClosestNode(target - _grid.transform.position);
 
             if (_start != null && _end != null && _end.GhostID == null)
             {

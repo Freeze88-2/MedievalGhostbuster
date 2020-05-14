@@ -86,11 +86,13 @@ namespace AI.PathFinding.GridGeneration
             float percentY = Mathf.Clamp01((position.z + gridWorldSize.z / 2)
                 / gridWorldSize.z);
 
-            int x = Mathf.RoundToInt((gridSizeX) * percentX);
-            int y = Mathf.RoundToInt((gridSizeY) * percentY);
+            int x = Mathf.RoundToInt((gridSizeX -1) * percentX);
+            int y = Mathf.RoundToInt((gridSizeY -1) * percentY);
 
-            if (_grid != null && x < gridSizeX -1 && y < gridSizeY -1)
+            if (_grid != null)
+            {
                 return _grid[x, y];
+            }
 
             else
             {
