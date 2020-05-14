@@ -7,92 +7,160 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Camera         _mainCamera;
     [SerializeField] private Camera         _leftShoulderCamera;
     [SerializeField] private Camera         _rightShoulderCamera;
-    public float                            _rotationSpeed;
-    public Transform                        CameraRig, Player;
+    private int                             _playerLayer;
+    private CameraType                      _currentActiveCamera;
+    public Transform                        Player;
+    private float                           _rotationSpeed;
     private float                           _mouseX, _mouseY;
-    private float                           _minDistance;    
-    private float                           _maxDistance;   
-    private float                           _smooth;   
-    private Vector3                         _dollyDir;
-    private Vector3                         _dollyDirAdjusted;
-    private float                           _range; 
+    private float                           _minDistance, _maxDistance;      
+    private float                           _smooth;
+    private float                           _range;
+    private const string                    PLAYER_LAYER = "Player";
+
+    // Change Y_OFFSET according to model (0.9 for capsule, 0.4 for skeleton)
+    // This applies to cameraRig Y position (same values)
+    private const float                     Y_OFFSET = 0.4f;
+
+    private RaycastHit                      _cullingHit;
+    private bool FireState                  
+        => Input.GetMouseButton(1);
+    private bool AltPressed                 
+        => Input.GetKeyDown(KeyCode.LeftAlt);
+
+    private Vector3 TargetPosition 
+        => Player.position + new Vector3(0, Y_OFFSET, 0);
 
     void Start()
     {
         _rotationSpeed                  = 1.0f;
+        _smooth                         = 3.0f;
+        _range                          = Vector3.Distance(TargetPosition, transform.position);
         _minDistance                    = 1.0f; 
-        _maxDistance                    = 4.5f; 
-        _smooth                         = 10.0f;
-        _dollyDir                       = transform.localPosition.normalized; 
-        _range                          = transform.localPosition.magnitude;
+        _maxDistance                    = _range; 
         _mainCamera.enabled             = true; 
         _leftShoulderCamera.enabled     = false; 
-        _rightShoulderCamera.enabled    = false; 
+        _rightShoulderCamera.enabled    = false;
+        _playerLayer                    = LayerMask.NameToLayer(PLAYER_LAYER);
+        ChangeCameras(CameraType.Main); 
     }
 
-    void Update() 
+    void LateUpdate() 
     {
         CamControl();
-        CamCollision();
+        CamRigUpdate();
+    }
+
+    private void FixedUpdate() 
+    {
+        if (!Physics.Linecast 
+            (TargetPosition, transform.position - 
+            (transform.forward), out _cullingHit))
+        {
+            _cullingHit = default; 
+        }
+    }
+    
+    void ChangeCameras(CameraType camToActivate)
+    {
+        _currentActiveCamera = camToActivate;
+
+        switch (camToActivate)
+        {
+            case CameraType.None:
+                ToggleCamera(null);
+                break;
+            case CameraType.Main:
+                ToggleCamera(_mainCamera);
+                break;
+            case CameraType.LeftShoulder:
+                ToggleCamera(_leftShoulderCamera);
+                break;
+            case CameraType.RightShoulder:
+                ToggleCamera(_rightShoulderCamera);
+                break;
+        }        
+    }
+    
+    void ToggleCamera(Camera cam)
+    {
+        _mainCamera.enabled                 = (cam == _mainCamera);
+        _rightShoulderCamera.enabled        = (cam == _rightShoulderCamera);
+        _leftShoulderCamera.enabled         = (cam == _leftShoulderCamera);
     }
 
     private void CamControl()
+    {   
+        if (FireState)
+        {
+            // Toggle default camera
+            if(_currentActiveCamera == CameraType.Main)
+            {
+                ChangeCameras(CameraType.RightShoulder);
+            }
+            // Player wants to change
+            else if (AltPressed)
+            {
+                // Swap the cams
+                switch (_currentActiveCamera)
+                {
+                    case CameraType.LeftShoulder:
+                        ChangeCameras(CameraType.RightShoulder);
+                        break;
+                    case CameraType.RightShoulder:
+                    default:
+                        ChangeCameras(CameraType.LeftShoulder);
+                        break;                
+                }
+            }
+            Player.rotation = Quaternion.Euler(0, _mouseX, 0);
+        }
+        else if (_currentActiveCamera != CameraType.Main)
+        {
+            ChangeCameras(CameraType.Main);
+        }
+    }
+
+    // Main cam collision check
+    private void CamRigUpdate()
+    {
+        UpdateRotation();
+        UpdatePosition();        
+    }
+
+    void UpdateRotation()
     {
         _mouseX += Input.GetAxis("Mouse X") * _rotationSpeed; 
         _mouseY -= Input.GetAxis("Mouse Y") * _rotationSpeed; 
         _mouseY = Mathf.Clamp(_mouseY, -35, 60);
 
-        transform.LookAt(CameraRig);
-
-        CameraRig.rotation = Quaternion.Euler(_mouseY, _mouseX, 0);
-
-        if (_mainCamera.enabled && Input.GetMouseButton(1))
-        {
-            _rightShoulderCamera.enabled = true;
-            Player.rotation = Quaternion.Euler(0, _mouseX, 0);
-
-            if (_rightShoulderCamera.enabled 
-                && Input.GetKeyDown(KeyCode.LeftAlt) 
-                && Input.GetMouseButton(1))
-            {
-                _leftShoulderCamera.enabled = true;
-                Player.rotation = Quaternion.Euler(0, _mouseX, 0);
-            }
-
-            if (_leftShoulderCamera.enabled 
-                && _rightShoulderCamera.enabled 
-                && Input.GetKeyDown(KeyCode.LeftAlt) 
-                && Input.GetMouseButton(1))
-            {
-                _rightShoulderCamera.enabled = true;
-                Player.rotation = Quaternion.Euler(0, _mouseX, 0);
-            }
-        }
-        else
-        {
-            _mainCamera.enabled             = true;
-            _leftShoulderCamera.enabled     = false; 
-            _rightShoulderCamera.enabled    = false; 
-        }
+        transform.rotation = Quaternion.Euler(_mouseY, _mouseX, 0);
     }
 
-    private void CamCollision()
+    void UpdatePosition()
     {
-        Vector3 desiredCameraPos = 
-            transform.parent.TransformPoint(_dollyDir * _maxDistance);
-        RaycastHit hit;
-
-        if (Physics.Linecast 
-            (transform.parent.position, desiredCameraPos, out hit))
+        Vector3 desiredCameraPos = default;
+        
+        if (_cullingHit.collider == null)
         {
-            _range = Mathf.Clamp(hit.distance, _minDistance, _maxDistance);
+            desiredCameraPos = TargetPosition + (-transform.forward * _range);
         }
         else
         {
-            _range = _maxDistance;
+            desiredCameraPos = TargetPosition + (-transform.forward * 
+                Vector3.Distance(_cullingHit.point, TargetPosition));
+            desiredCameraPos = Vector3.Lerp(
+                desiredCameraPos, 
+                transform.position,
+                Time.deltaTime * _smooth);
         }
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition,
-            _dollyDir * _range, Time.deltaTime * _smooth);
+        transform.position = desiredCameraPos;
+    }
+
+    void OnDrawGizmos() 
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(TargetPosition, transform.position - transform.forward);
+        Gizmos.DrawSphere(TargetPosition, 0.02f);
     }
 }
