@@ -35,6 +35,7 @@ namespace AI.Movement
             {
                 // Creates a new AILogic passing in the _grid
                 _ailogic = new AILogic(area.GetComponent<GridGenerator>());
+                
             }
         }
 

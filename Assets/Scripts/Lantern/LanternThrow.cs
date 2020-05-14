@@ -10,6 +10,10 @@ namespace Lantern
         [SerializeField] private Transform _player = null;
         [SerializeField] private GameObject _cursor = null;
 
+        [SerializeField] Camera one;
+        [SerializeField] Camera left;
+        [SerializeField] Camera right;
+
         private GameObject _capturer;
         private Rigidbody _lanternRB;
         private float _activeTime;
@@ -54,10 +58,21 @@ namespace Lantern
 
         private void LanternThrowing()
         {
-            if (Camera.current != Camera.main)
+            if (!one.isActiveAndEnabled)
             {
-                Ray camRay = new Ray(_player.position, 
-                    Camera.main.transform.forward);
+                Ray camRay = new Ray();
+
+                if (left.isActiveAndEnabled)
+                {
+                    camRay = new Ray(_player.position,
+                        left.transform.forward);
+                }
+                else
+                {
+
+                    camRay = new Ray(_player.position,
+                        right.transform.forward);
+                }
 
                 if (Physics.Raycast(camRay, out RaycastHit hit, 100f,
                     LayerMask.GetMask("Default")))
@@ -68,13 +83,14 @@ namespace Lantern
                         _cursor.SetActive(true);
 
                         float distance = Vector3.Distance
-                            (_player.transform.position, hit.point) / 5;
+                            (_player.position, hit.point) / 5;
 
                         Vector3 calcVel = ThrowLantern(hit.point,
                             _player.position, distance);
 
                         DrawPath(calcVel, distance);
 
+                            _cursor.transform.position = hit.point;
                         if (Input.GetKeyDown(KeyCode.Mouse0))
                         {
                             if (!_capturer.activeSelf)
@@ -93,19 +109,25 @@ namespace Lantern
                     }
                 }
             }
+            else
+            {
+                _line.enabled = false;
+                _cursor.SetActive(false);
+            }
         }
+
 
         private Vector3 ThrowLantern(Vector3 target, Vector3 start, float time)
         {
             Vector3 dis = target - start;
             Vector3 disX = dis;
-            dis.y = 0f;
+            disX.y = 0f;
 
             float sy = dis.y;
             float sx = disX.magnitude;
 
             float velocityX = sx / time;
-            float velocityY = sy / time + 0.5f * 
+            float velocityY = sy / time + 0.5f *
                 Mathf.Abs(Physics.gravity.y) * time;
 
             Vector3 final = disX.normalized;
@@ -115,26 +137,21 @@ namespace Lantern
 
             return final;
         }
+
         private void DrawPath(Vector3 sim, float speed)
         {
-            _line.positionCount = 101;
+            _line.positionCount = 66;
             _line.SetPosition(0, _player.position);
 
-            for (int i = 1; i <= 100; i++)
+            for (int i = 1; i <= 65; i++)
             {
                 float simtime = i / (float)30 * speed;
                 Vector3 simss = (sim * simtime + Vector3.up * Physics.gravity.y
                     * simtime * simtime / 2f);
 
-                Vector3 point = _player.position + simss;
+                Vector3 point = simss + _player.position;
 
                 _line.SetPosition(i, point);
-
-                if (Physics.CheckSphere(point, 0.3f,
-                    LayerMask.GetMask("Default")))
-                {
-                    _cursor.transform.position = point;
-                }
             }
         }
         private void AbilityCast()

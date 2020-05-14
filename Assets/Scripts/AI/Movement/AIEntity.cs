@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using AI.PathFinding.GridGeneration;
 
 namespace AI.Movement
 {
@@ -8,7 +9,7 @@ namespace AI.Movement
     public class AIEntity : MonoBehaviour, IEntity
     {
         // -- Target given --
-        protected GameObject target = null;
+        [SerializeField] protected GameObject target = null;
 
         // -- Designated area --
         [SerializeField] protected GameObject area = null;
@@ -65,8 +66,7 @@ namespace AI.Movement
         /// </summary>
         protected virtual void Start()
         {
-            // Gets the player
-            target = GameObject.FindGameObjectWithTag("Player");
+            area.GetComponent<GridGenerator>().StartGridGeneration();
             // Gets the rigidbody of this gameobject
             rb = GetComponent<Rigidbody>();
             // Sets the color to the one of the editor

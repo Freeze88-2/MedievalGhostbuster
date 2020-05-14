@@ -89,10 +89,9 @@ namespace AI.PathFinding.GridGeneration
             int x = Mathf.RoundToInt((gridSizeX) * percentX);
             int y = Mathf.RoundToInt((gridSizeY) * percentY);
 
-            if (_grid != null)
-            {
+            if (_grid != null && x < gridSizeX -1 && y < gridSizeY -1)
                 return _grid[x, y];
-            }
+
             else
             {
                 return null;
