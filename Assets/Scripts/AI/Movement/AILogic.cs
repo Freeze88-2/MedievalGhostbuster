@@ -54,19 +54,19 @@ namespace AI.Movement
         /// <returns> The next position to move to </returns>
         public Vector3? GetPoint(Vector3 init, Vector3 target)
         {
-            SetGhostMinDistance(false);
+            //SetGhostMinDistance(false);
 
             _start = _grid.GetClosestNode(init - _grid.transform.position);
 
             _end = _grid.GetClosestNode(target - _grid.transform.position);
 
-            if (_start != null && _end != null && _end.GhostID == null)
+            if (_start != null && _end != null)
             {
-                _start.GhostID = _iD;
+                //_start.GhostID = _iD;
                 Path = _aStar.CalculatePath(_start, _end);
             }
 
-            SetGhostMinDistance(true);
+            //SetGhostMinDistance(true);
 
             if (Path != null && Path.Count > 0)
             {
@@ -78,28 +78,28 @@ namespace AI.Movement
             }
         }
 
-        private void SetGhostMinDistance(bool state)
-        {
-            if (_start != null)
-            {
-                for (int i = 0; i < _start.neighbors.Length; i++)
-                {
-                    if (state)
-                    {
-                        if (_start.neighbors[i].GhostID == null)
-                        {
-                            _start.neighbors[i].GhostID = _iD;
-                        }
-                    }
-                    else
-                    {
-                        if (_start.neighbors[i].GhostID == _iD)
-                        {
-                            _start.neighbors[i].GhostID = null;
-                        }
-                    }
-                }
-            }
-        }
+        //private void SetGhostMinDistance(bool state)
+        //{
+        //    if (_start != null)
+        //    {
+        //        for (int i = 0; i < _start.neighbors.Length; i++)
+        //        {
+        //            if (state)
+        //            {
+        //                if (_start.neighbors[i].GhostID == null)
+        //                {
+        //                    _start.neighbors[i].GhostID = _iD;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (_start.neighbors[i].GhostID == _iD)
+        //                {
+        //                    _start.neighbors[i].GhostID = null;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

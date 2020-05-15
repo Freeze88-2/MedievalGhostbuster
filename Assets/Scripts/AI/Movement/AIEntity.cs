@@ -9,7 +9,7 @@ namespace AI.Movement
     public class AIEntity : MonoBehaviour, IEntity
     {
         // -- Target given --
-        [SerializeField] protected GameObject target = null;
+        [SerializeField] public GameObject target = null;
 
         // -- Designated area --
         [SerializeField] protected GameObject area = null;
@@ -55,6 +55,8 @@ namespace AI.Movement
         /// If this ghost can be targetted
         /// </summary>
         public bool IsTargatable { get; set; }
+
+        public Vector3 Velocity => rb.velocity;
 
         /// <summary>
         /// The rigidbody attached to this gameobject

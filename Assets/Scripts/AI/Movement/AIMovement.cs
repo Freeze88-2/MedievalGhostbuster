@@ -22,6 +22,10 @@ namespace AI.Movement
         // If the ghost can move on the next fixed update
         private bool _canMove;
 
+        private Vector3 vel;
+
+        private IBehaviour[] bevs;
+
         /// <summary>
         /// Use this for initialization
         /// </summary>
@@ -33,6 +37,16 @@ namespace AI.Movement
             _player = target.GetComponent<IEntity>();
             // Gives a default value to _canMove
             _canMove = false;
+
+            GameObject[] objs = GameObject.FindGameObjectsWithTag("GhostEnemy");
+            AIEntity[] ss = new AIEntity[objs.Length];
+
+            for (int i = 0; i < objs.Length; i++)
+            {
+                ss[i] = objs[i].GetComponent<AIEntity>();
+            }
+
+            bevs = new IBehaviour[3] { new AISeek(), new AISeparation(ss, 1f), new AIObstacleAvoidance(ss) };
 
             // Checks if the area exists
             if (area != null)
@@ -56,28 +70,38 @@ namespace AI.Movement
                 // Gets a vector3 form the pathfinding
                 nextPoint = _ailogic.GetPoint(gameObject.transform.position,
                     target.transform.position);
-            }
-            // Checks if the target exists and the distance is less than 2.5
-            if (target != null && Vector3.Distance(transform.position,
-                target.transform.position) < 2.5f)
-            {
-                // Attacks the target
-                Attack();
-                // Stops the ghost from moving
-                _canMove = false;
-            }
-            // Checks if the point received has a value
-            else if (nextPoint.HasValue && IsTargatable)
-            {
-                // Calculates the direction of current point to the next point
-                Vector3 dir = nextPoint.Value - transform.position;
-                // Resets the value of Y to 0
-                dir.y = 0;
+                if (nextPoint.HasValue)
+                {
+                    vel = Vector3.zero;
+                    for (int i = 0; i < bevs.Length; i++)
+                    {
+                        Vector3 cur = bevs[i].GetOutput(this, i == 0 ? nextPoint.Value : Vector3.zero).Velocity;
 
-                // Rotates gradually the Ghost towards the direction
-                transform.rotation = Quaternion.Lerp(transform.rotation,
-                    Quaternion.LookRotation(dir), Time.deltaTime *
-                    MaxSpeed * 6f);
+                        vel += cur;
+                    }
+                }
+            }
+            //// Checks if the target exists and the distance is less than 2.5
+            //if (target != null && Vector3.Distance(transform.position,
+            //    target.transform.position) < 2.5f)
+            //{
+            //    // Attacks the target
+            //    Attack();
+            //    // Stops the ghost from moving
+            //    _canMove = false;
+            //}
+            // Checks if the point received has a value
+            if (nextPoint.HasValue && IsTargatable)
+            {
+                //// Calculates the direction of current point to the next point
+                //Vector3 dir = nextPoint.Value - transform.position;
+                //// Resets the value of Y to 0
+                //dir.y = 0;
+
+                //// Rotates gradually the Ghost towards the direction
+                //transform.rotation = Quaternion.Lerp(transform.rotation,
+                //    Quaternion.LookRotation(dir), Time.deltaTime *
+                //    MaxSpeed * 6f);
 
                 // Let's the ghost move foward the next fixed update
                 _canMove = true;
@@ -100,9 +124,24 @@ namespace AI.Movement
                 // Checks if the ghost has something below
                 if (Physics.Raycast(transform.position, -transform.up, 1f))
                 {
-                    // Moves the Ghost foward
-                    rb.velocity += (transform.forward * Speed) *
-                        Time.fixedDeltaTime;
+                    //if (sep.AvoidEntities(this) != Vector3.zero)
+                    //{
+                    //    // Moves the Ghost foward
+                    //    rb.velocity += (transform.forward * Speed) + sep.AvoidEntities(this) *
+                    //        Time.fixedDeltaTime;
+                    //}
+                    //else
+                    //{
+                    //    // Moves the Ghost foward
+                    //    rb.velocity += (transform.forward * Speed) + sep.AvoidEntities(this) *
+                    //        Time.fixedDeltaTime;
+                    //}
+                    rb.AddForce(-(vel));
+
+                    if (rb.velocity.magnitude > Speed)
+                    {
+                        rb.velocity = rb.velocity.normalized * Speed;
+                    }
                 }
             }
         }
