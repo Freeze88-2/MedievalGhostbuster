@@ -8,7 +8,7 @@ namespace AI.Movement
     /// <summary>
     /// Checks pathfinding and returns a point
     /// </summary>
-    public class AILogic
+    public class AIPathing
     {
         /// <summary>
         /// List of _points found by the pathfinding
@@ -31,10 +31,10 @@ namespace AI.Movement
         private readonly int _iD;
 
         /// <summary>
-        /// Creates a new AILogic for the AI to manage the target and position
+        /// Creates a new AIPathing for the AI to manage the target and position
         /// </summary>
         /// <param name="_grid"> The area of this AI </param>
-        public AILogic(GridGenerator _grid)
+        public AIPathing(GridGenerator _grid)
         {
             // Creates a new list of positions
             Path = new List<Vector3>();

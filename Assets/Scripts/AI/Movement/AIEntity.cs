@@ -97,7 +97,7 @@ namespace AI.Movement
             if (Hp == 0)
             {
                 // Kills the ghost
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             }
         }
 

@@ -11,7 +11,7 @@ namespace AI.Movement
     public class AIMovement : AIEntity, IDebug
     {
         // Provides a point for the AI to move to
-        private AILogic _ailogic;
+        private AIPathing _ailogic;
 
         // Line for debugging the _path
         private LineRenderer _line;
@@ -46,13 +46,16 @@ namespace AI.Movement
                 ss[i] = objs[i].GetComponent<AIEntity>();
             }
 
-            bevs = new IBehaviour[3] { new AISeek(), new AISeparation(ss, 1f), new AIObstacleAvoidance(ss) };
+            bevs = new IBehaviour[3] { 
+                new AISeek(), 
+                new AISeparation(ss, 1f), 
+                new AIObstacleAvoidance(ss) };
 
             // Checks if the area exists
             if (area != null)
             {
-                // Creates a new AILogic passing in the _grid
-                _ailogic = new AILogic(area.GetComponent<GridGenerator>());
+                // Creates a new AIPathing passing in the _grid
+                _ailogic = new AIPathing(area.GetComponent<GridGenerator>());
             }
         }
 
@@ -61,7 +64,7 @@ namespace AI.Movement
         /// </summary>
         private void Update()
         {
-            // Stores the next point from AILogic
+            // Stores the next point from AIPathing
             Vector3? nextPoint = null;
 
             // Checks if the area exists and can hit the player
@@ -124,18 +127,6 @@ namespace AI.Movement
                 // Checks if the ghost has something below
                 if (Physics.Raycast(transform.position, -transform.up, 1f))
                 {
-                    //if (sep.AvoidEntities(this) != Vector3.zero)
-                    //{
-                    //    // Moves the Ghost foward
-                    //    rb.velocity += (transform.forward * Speed) + sep.AvoidEntities(this) *
-                    //        Time.fixedDeltaTime;
-                    //}
-                    //else
-                    //{
-                    //    // Moves the Ghost foward
-                    //    rb.velocity += (transform.forward * Speed) + sep.AvoidEntities(this) *
-                    //        Time.fixedDeltaTime;
-                    //}
                     rb.AddForce(-(vel));
 
                     if (rb.velocity.magnitude > Speed)

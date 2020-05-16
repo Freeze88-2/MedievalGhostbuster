@@ -4,11 +4,12 @@ namespace AI.Movement
 {
     public class AIObstacleAvoidance : IBehaviour
     {
-        private readonly AIEntity[] entities;
+        private readonly AIEntity[] _aIEntities;
         private readonly float diameter = 5;
+
         public AIObstacleAvoidance(AIEntity[] allGhosts)
         {
-            entities = allGhosts;
+            _aIEntities = allGhosts;
         }
 
         public SteeringBehaviour GetOutput(AIEntity current, Vector3 velocity)
@@ -37,11 +38,11 @@ namespace AI.Movement
         {
             AIEntity mostThreatening = null;
 
-            for (int i = 0; i < entities.Length; i++)
+            for (int i = 0; i < _aIEntities.Length; i++)
             {
-                if (entities[i] == null) continue;
+                if (_aIEntities[i] == null) continue;
 
-                AIEntity obstacle = entities[i];
+                AIEntity obstacle = _aIEntities[i];
                 bool collision = LineIntersectsCircle(ahead, ahead2, obstacle.transform.position);
 
                 if (collision && (mostThreatening == null ||
