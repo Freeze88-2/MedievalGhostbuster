@@ -7,12 +7,14 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Camera         _mainCamera;
     [SerializeField] private Camera         _leftShoulderCamera;
     [SerializeField] private Camera         _rightShoulderCamera;
+    [SerializeField] private Transform      _player;
+    // [SerializeField]private Transform       _sensor;
     private int                             _playerLayer;
     private CameraType                      _currentActiveCamera;
-    public Transform                        Player;
+    
     private float                           _rotationSpeed;
     private float                           _mouseX, _mouseY;
-    private float                           _minDistance, _maxDistance;      
+    // private float                           _minDistance, _maxDistance;      
     private float                           _smooth;
     private float                           _range;
     private const string                    PLAYER_LAYER = "Player";
@@ -28,20 +30,21 @@ public class CameraController : MonoBehaviour
         => Input.GetKeyDown(KeyCode.LeftAlt);
 
     private Vector3 TargetPosition 
-        => Player.position + new Vector3(0, Y_OFFSET, 0);
+        => _player.position + new Vector3(0, Y_OFFSET, 0);
 
     void Start()
     {
         _rotationSpeed                  = 1.0f;
         _smooth                         = 3.0f;
         _range                          = Vector3.Distance(TargetPosition, transform.position);
-        _minDistance                    = 1.0f; 
-        _maxDistance                    = _range; 
+        // _minDistance                    = 1.0f; 
+        // _maxDistance                    = _range; 
         _mainCamera.enabled             = true; 
         _leftShoulderCamera.enabled     = false; 
         _rightShoulderCamera.enabled    = false;
         _playerLayer                    = LayerMask.NameToLayer(PLAYER_LAYER);
-        ChangeCameras(CameraType.Main); 
+        ChangeCameras(CameraType.Main);
+        // _sensor                         = transform.GetChild(0).transform; 
     }
 
     void LateUpdate() 
@@ -112,7 +115,7 @@ public class CameraController : MonoBehaviour
                         break;                
                 }
             }
-            Player.rotation = Quaternion.Euler(0, _mouseX, 0);
+            _player.rotation = Quaternion.Euler(0, _mouseX, 0);
         }
         else if (_currentActiveCamera != CameraType.Main)
         {
