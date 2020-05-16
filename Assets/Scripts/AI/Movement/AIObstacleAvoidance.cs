@@ -5,7 +5,7 @@ namespace AI.Movement
     public class AIObstacleAvoidance : IBehaviour
     {
         private readonly AIEntity[] entities;
-        private float diameter = 5;
+        private readonly float diameter = 5;
         public AIObstacleAvoidance(AIEntity[] allGhosts)
         {
             entities = allGhosts;
@@ -17,17 +17,9 @@ namespace AI.Movement
 
             Vector3 ahead = current.transform.position + current.Velocity.normalized * diameter;
             Vector3 ahead2 = current.transform.position + current.Velocity.normalized * diameter * 0.5f;
-
-            //for (int i = 0; i < entities.Length; i++)
-            //{
-            //    if (LineIntersectsCircle(ahead, ahead2, entities[i].transform.position))
-            //    {
-            //        Vector3 avoidanceForce = (ahead - entities[i].transform.position).normalized * 10f;
-            //    }
-            //}
+            Vector3 avoidance = Vector3.zero;
 
             AIEntity mostThreatening = FindMostThreateningObstacle(current, ahead, ahead2);
-            Vector3 avoidance = Vector3.zero;
 
             if (mostThreatening != null)
             {
@@ -47,6 +39,8 @@ namespace AI.Movement
 
             for (int i = 0; i < entities.Length; i++)
             {
+                if (entities[i] == null) continue;
+
                 AIEntity obstacle = entities[i];
                 bool collision = LineIntersectsCircle(ahead, ahead2, obstacle.transform.position);
 
@@ -72,43 +66,3 @@ namespace AI.Movement
         }
     }
 }
-
-//AIEntity initialTarget = null;
-//float initialMinSeperation = 0;
-//float initialDistance = 0;
-//Vector3 initialRealPos = Vector3.zero;
-//Vector3 initialRealVel = Vector3.zero;
-//float lowestTime = 10000f;
-
-//for (int i = 0; i < entities.Length; i++)
-//{
-//    Vector3 realPos = current.transform.position - entities[i].transform.position;
-//    Vector3 realVel = entities[i].Velocity - current.Velocity;
-//    float collisionDelta = Vector3.Dot(realPos, realVel) / (realVel.magnitude * realVel.magnitude);
-
-//    float minSeparation = realPos.magnitude - realVel.magnitude * collisionDelta;
-
-//    if (minSeparation > 3) continue;
-
-//    if (collisionDelta > 0 && collisionDelta < lowestTime)
-//    {
-//        lowestTime = collisionDelta;
-//        initialTarget = entities[i];
-//        initialMinSeperation = minSeparation;
-//        initialDistance = realPos.magnitude;
-//        initialRealPos = realPos;
-//        initialRealVel = realVel;
-//    }
-//}
-
-//if (initialTarget != null)
-//{
-//    Vector3 realPos =
-//        initialMinSeperation <= 0 || initialDistance < 3f ?
-//        current.transform.position -
-//        initialTarget.transform.position :
-//        initialRealPos + initialRealVel * lowestTime;
-
-//    velocity = -realPos.normalized * current.Speed;
-//}
-//return new SteeringBehaviour(velocity, 0f);

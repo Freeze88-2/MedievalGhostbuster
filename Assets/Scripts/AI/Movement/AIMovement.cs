@@ -93,15 +93,15 @@ namespace AI.Movement
             // Checks if the point received has a value
             if (nextPoint.HasValue && IsTargatable)
             {
-                //// Calculates the direction of current point to the next point
-                //Vector3 dir = nextPoint.Value - transform.position;
-                //// Resets the value of Y to 0
-                //dir.y = 0;
+                // Calculates the direction of current point to the next point
+                Vector3 dir = nextPoint.Value - transform.position;
+                // Resets the value of Y to 0
+                dir.y = 0;
 
-                //// Rotates gradually the Ghost towards the direction
-                //transform.rotation = Quaternion.Lerp(transform.rotation,
-                //    Quaternion.LookRotation(dir), Time.deltaTime *
-                //    MaxSpeed * 6f);
+                // Rotates gradually the Ghost towards the direction
+                transform.rotation = Quaternion.Lerp(transform.rotation,
+                    Quaternion.LookRotation(dir), Time.deltaTime *
+                    MaxSpeed * 6f);
 
                 // Let's the ghost move foward the next fixed update
                 _canMove = true;

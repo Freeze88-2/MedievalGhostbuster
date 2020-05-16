@@ -18,7 +18,8 @@ namespace AI.Movement
         {
             for (int i = 0; i < _aIEntities.Length; i++)
             {
-                if (current == _aIEntities[i] || current == null) continue;
+                if (_aIEntities[i] == null || current == _aIEntities[i] 
+                    || current == null) continue;
 
                 Vector3 dir = current.transform.position -
                     _aIEntities[i].transform.position;
