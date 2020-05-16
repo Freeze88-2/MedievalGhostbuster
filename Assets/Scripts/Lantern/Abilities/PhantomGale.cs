@@ -8,6 +8,7 @@ namespace Lantern.Abilities
         [SerializeField] private float _coneRadiusX = 3f;
         [SerializeField] private float _coneRadiusY = 0.5f;
         [SerializeField] private float _coneLenght = 5f;
+        [SerializeField] private GameObject _particles;
 
         private List<RaycastHit> rays = new List<RaycastHit>();
         private List<IEntity> alreadyCounted = new List<IEntity>();
@@ -57,6 +58,9 @@ namespace Lantern.Abilities
                 }
             }
             PushEntities();
+            GameObject particle = Instantiate(_particles);
+            particle.transform.position = _player.transform.position;
+            particle.transform.rotation = _player.transform.rotation;
 
             HabilityEnded = true;
         }
