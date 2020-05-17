@@ -5,9 +5,9 @@ namespace Lantern.Abilities
 {
     public class MedicKnight : MonoBehaviour, IAbility
     {
-        [SerializeField] private float _healAmount = 0f;
-        [SerializeField] private float _healTime = 0f;
-        [SerializeField] private float _healTicks = 0f;
+        [SerializeField] private float _healAmount = 10f;
+        [SerializeField] private float _healTime = 5f;
+        [SerializeField] private float _healTicks = 0.2f;
 
         private IEntity _player;
         private WaitForSeconds _wait;
@@ -43,7 +43,7 @@ namespace Lantern.Abilities
         private IEnumerator HealPlayer()
         {
             _isHealing = true;
-            while ((int)_timer <= _healTime)
+            while (_timer <= _healTime)
             {
                 // ------- Heal Player ----------
                 _player.Heal(_healAmount);

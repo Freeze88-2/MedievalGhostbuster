@@ -434,7 +434,7 @@ MonoBehaviour:
   _coneRadiusX: 3
   _coneRadiusY: 1
   _coneLenght: 5
-  _particles: {fileID: 2420432373206917450, guid: 3191ee51cf0a1a14a8cc5b51138a06de,
+  _particles: {fileID: 3196981662584194806, guid: fef19318d45750448bb802740dd06d9c,
     type: 3}
 --- !u!114 &1912942033649842046
 MonoBehaviour:
@@ -448,8 +448,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a3dd95bf9572c41aabd97c77a04468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _duration: 6
-  _particles: {fileID: 951494124985562615, guid: 0bfa0c92df500ef478f745c3f106eed1,
+  _duration: 5
+  _particles: {fileID: 6134200593900302444, guid: bfe2274ec44533841b599c0f71fa79ca,
+    type: 3}
+  _postProcessing: {fileID: 828887270159883676, guid: a14d7c8eee201d14b94716295ab6c8a8,
     type: 3}
 --- !u!114 &1912942033649842045
 MonoBehaviour:
@@ -463,6 +465,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 600e5c593fc4d204fbdf49761c29f23a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _particles: {fileID: 537711570319653500, guid: e4b69d1e2e7b0024c9b5141bbb92db1b,
+    type: 3}
+  _tickTime: 0.2
 --- !u!1 &8764514254847386696
 GameObject:
   m_ObjectHideFlags: 0

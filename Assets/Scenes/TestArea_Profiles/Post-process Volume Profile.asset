@@ -58,8 +58,8 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   colorFilter:
-    overrideState: 0
-    value: {r: 1, g: 1, b: 1, a: 1}
+    overrideState: 1
+    value: {r: 0.2863564, g: 0.88625693, b: 0.9339623, a: 1}
   hueShift:
     overrideState: 0
     value: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
     value: 0
   mixerRedOutRedIn:
     overrideState: 0
-    value: 100
+    value: 118.2
   mixerRedOutGreenIn:
     overrideState: 0
     value: 0
@@ -85,32 +85,32 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   mixerGreenOutRedIn:
-    overrideState: 1
+    overrideState: 0
     value: 0
   mixerGreenOutGreenIn:
-    overrideState: 1
+    overrideState: 0
     value: 100
   mixerGreenOutBlueIn:
-    overrideState: 1
+    overrideState: 0
     value: 0
   mixerBlueOutRedIn:
-    overrideState: 1
-    value: 0
+    overrideState: 0
+    value: -118.9
   mixerBlueOutGreenIn:
-    overrideState: 1
-    value: 0
+    overrideState: 0
+    value: -39.4
   mixerBlueOutBlueIn:
-    overrideState: 1
-    value: 100
+    overrideState: 0
+    value: 91.56
   lift:
-    overrideState: 1
-    value: {x: 0.8267821, y: 1, z: 0.9346974, w: 0}
+    overrideState: 0
+    value: {x: 0.7692025, y: 1, z: 0.96196616, w: 0}
   gamma:
-    overrideState: 1
-    value: {x: 0.8931976, y: 1, z: 0.9936347, w: 0}
+    overrideState: 0
+    value: {x: 0.72573155, y: 0.84867144, z: 1, w: 0}
   gain:
-    overrideState: 1
-    value: {x: 0, y: 1, z: 0.97704935, w: 0}
+    overrideState: 0
+    value: {x: 0.69007766, y: 0.87099975, z: 1, w: 0}
   masterCurve:
     overrideState: 1
     value:
@@ -1323,37 +1323,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b924e2dad56384a8df2a1e111bb675, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
   mode:
-    overrideState: 0
+    overrideState: 1
     value: 0
   color:
-    overrideState: 0
+    overrideState: 1
     value: {r: 0, g: 0, b: 0, a: 1}
   center:
-    overrideState: 0
+    overrideState: 1
     value: {x: 0.5, y: 0.5}
   intensity:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 0.22
   smoothness:
-    overrideState: 0
-    value: 0.2
+    overrideState: 1
+    value: 1
   roundness:
-    overrideState: 0
+    overrideState: 1
     value: 1
   rounded:
-    overrideState: 0
+    overrideState: 1
     value: 0
   mask:
-    overrideState: 0
+    overrideState: 1
     value: {fileID: 0}
     defaultState: 1
   opacity:
-    overrideState: 0
+    overrideState: 1
     value: 1
 --- !u!114 &11400000
 MonoBehaviour:

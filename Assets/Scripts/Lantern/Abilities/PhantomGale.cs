@@ -8,18 +8,18 @@ namespace Lantern.Abilities
         [SerializeField] private float _coneRadiusX = 3f;
         [SerializeField] private float _coneRadiusY = 0.5f;
         [SerializeField] private float _coneLenght = 5f;
-        [SerializeField] private GameObject _particles;
+        [SerializeField] private float _pushForce = 20f;
+        [SerializeField] private GameObject _particles = null;
 
         private List<RaycastHit> rays = new List<RaycastHit>();
         private List<IEntity> alreadyCounted = new List<IEntity>();
         private GameObject _player;
 
+        public bool HabilityEnded { get; private set; }
         public (GhostColor, GhostColor) AbilityColors
         {
             get => (GhostColor.Red, GhostColor.Green);
         }
-
-        public bool HabilityEnded { get; private set; }
 
         private void Start()
         {
@@ -69,13 +69,16 @@ namespace Lantern.Abilities
         {
             for (int i = 0; i < rays.Count; i++)
             {
-                IEntity ghost = rays[i].collider.gameObject.GetComponent<IEntity>();
+                IEntity ghost = rays[i].collider.gameObject
+                    .GetComponent<IEntity>();
 
                 if (ghost != null && !alreadyCounted.Contains(ghost))
                 {
                     alreadyCounted.Add(ghost);
 
-                    rays[i].collider.attachedRigidbody.AddExplosionForce(50f, _player.transform.position, 100f, 5f, ForceMode.Impulse);
+                    rays[i].collider.attachedRigidbody.AddExplosionForce(
+                        _pushForce, _player.transform.position,
+                        100f, 5f, ForceMode.Impulse);
                 }
             }
         }
