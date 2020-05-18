@@ -125,9 +125,9 @@ namespace AI.Movement
             if (_canMove)
             {
                 // Checks if the ghost has something below
-                if (Physics.Raycast(transform.position, -transform.up, 1f))
+                if (Physics.Raycast(transform.position, -transform.up, 0.2f))
                 {
-                    rb.AddForce(-(vel));
+                    rb.AddForce(-vel);
 
                     if (rb.velocity.magnitude > Speed)
                     {

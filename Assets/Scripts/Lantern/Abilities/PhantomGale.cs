@@ -12,7 +12,7 @@ namespace Lantern.Abilities
         [SerializeField] private GameObject _particles = null;
 
         private List<RaycastHit> rays = new List<RaycastHit>();
-        private List<IEntity> alreadyCounted = new List<IEntity>();
+        private List<Collider> alreadyCounted = new List<Collider>();
         private GameObject _player;
 
         public bool HabilityEnded { get; private set; }
@@ -58,9 +58,7 @@ namespace Lantern.Abilities
                 }
             }
             PushEntities();
-            GameObject particle = Instantiate(_particles);
-            particle.transform.position = _player.transform.position;
-            particle.transform.rotation = _player.transform.rotation;
+            Instantiate(_particles, _player.transform);
 
             HabilityEnded = true;
         }
@@ -69,16 +67,16 @@ namespace Lantern.Abilities
         {
             for (int i = 0; i < rays.Count; i++)
             {
-                IEntity ghost = rays[i].collider.gameObject
-                    .GetComponent<IEntity>();
+                Collider entity = rays[i].collider.gameObject
+                    .GetComponent<Collider>();
 
-                if (ghost != null && !alreadyCounted.Contains(ghost))
+                if (entity != null && !alreadyCounted.Contains(entity))
                 {
-                    alreadyCounted.Add(ghost);
+                    alreadyCounted.Add(entity);
 
                     rays[i].collider.attachedRigidbody.AddExplosionForce(
                         _pushForce, _player.transform.position,
-                        100f, 5f, ForceMode.Impulse);
+                        200f, 2f, ForceMode.Impulse);
                 }
             }
         }

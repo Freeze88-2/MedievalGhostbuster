@@ -62,13 +62,12 @@ namespace Lantern
                             Time.fixedDeltaTime;
 
                         if (Vector3.Distance(other.transform.position,
-                            transform.position) < 0.1f &&
+                            transform.position) < 0.3f &&
                             !lantern.Colors[1].HasValue)
                         {
                             lantern.StoreColor(ghost.GColor);
 
                             Destroy(other.gameObject);
-                            _alreadyCought = null;
                         }
                     }
                     else

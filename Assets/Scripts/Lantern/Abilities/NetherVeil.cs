@@ -71,9 +71,9 @@ namespace Lantern.Abilities
                 timer += Time.deltaTime % 60;
 
                 yield return null;
-
-                ResetHability();
             }
+
+            ResetHability();
         }
 
         private void ResetHability()

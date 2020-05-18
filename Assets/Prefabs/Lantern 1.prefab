@@ -434,6 +434,7 @@ MonoBehaviour:
   _coneRadiusX: 3
   _coneRadiusY: 1
   _coneLenght: 5
+  _pushForce: 20
   _particles: {fileID: 3196981662584194806, guid: fef19318d45750448bb802740dd06d9c,
     type: 3}
 --- !u!114 &1912942033649842046

@@ -35,8 +35,10 @@ namespace Lantern.Abilities
 
             for (int i = 0; i < ghosts.Length; i++)
             {
-                _ghosts.Add(ghosts[i].gameObject.GetComponent<IEntity>());
-
+                if (ghosts[i].CompareTag("GhostEnemy"))
+                {
+                    _ghosts.Add(ghosts[i].gameObject.GetComponent<IEntity>());
+                }
                 if (i >= 3) break;
             }
             if (ghosts.Length >= 1)
