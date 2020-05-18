@@ -41,17 +41,31 @@ namespace Lantern.Abilities
                 {
                     IEntity ghost = cols[i].gameObject.GetComponent<IEntity>();
 
-                    if (Vector3.Distance(cols[i].transform.position,
-                        _player.transform.position) < _freezingRadius)
+                    if (ghost != null)
                     {
-                        ghost.Speed = 0f;
+                        if (Vector3.Distance(cols[i].transform.position,
+                            _player.transform.position) < _freezingRadius)
+                        {
+                            ghost.Speed = 0f;
+                        }
+                        else
+                        {
+                            ghost.Speed /= 2;
+                        }
                     }
                     else
                     {
-                        ghost.Speed /= 2;
+                        if (Vector3.Distance(cols[i].transform.position,
+                            _player.transform.position) < _freezingRadius)
+                        {
+                            cols[i].attachedRigidbody.velocity = Vector3.zero;
+                        }
+                        else
+                        {
+                            cols[i].attachedRigidbody.velocity /= 2;
+                        }
                     }
                 }
-
                 StartCoroutine(ResetSpeed(cols));
             }
         }
@@ -74,7 +88,10 @@ namespace Lantern.Abilities
             {
                 IEntity ghost = cols[i].gameObject.GetComponent<IEntity>();
 
-                ghost.Speed = ghost.MaxSpeed;
+                if (ghost != null)
+                {
+                    ghost.Speed = ghost.MaxSpeed;
+                }
             }
             _isReseting = false;
             HabilityEnded = true;

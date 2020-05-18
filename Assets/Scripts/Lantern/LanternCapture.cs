@@ -31,50 +31,69 @@ namespace Lantern
         {
             if (other.CompareTag("GhostEnemy"))
             {
-                IEntity ghost = other.gameObject.GetComponent<IEntity>();
+                CaptureGhost(other);
+            }
+            else if (other.CompareTag("EssenceWell"))
+            {
+                CaptureEssence(other);
+            }
 
-                if (_alreadyCought != null && ghost != _alreadyCought)
+
+        }
+        private void CaptureGhost(Collider other)
+        {
+            IEntity ghost = other.gameObject.GetComponent<IEntity>();
+
+            if (_alreadyCought != null && ghost != _alreadyCought)
+            {
+                _ignored.Add(ghost);
+            }
+            if (!_ignored.Contains(ghost))
+            {
+                float catchResistence = (ghost.MaxHp - ghost.Hp) + 40;
+
+                int captureChance = Random.Range(0, 100);
+
+                if (captureChance < catchResistence
+                    && !lantern.Colors[1].HasValue
+                    || ghost == _alreadyCought)
+                {
+                    ghost.IsTargatable = false;
+                    _alreadyCought = ghost;
+
+                    Vector3 vel = -(transform.position -
+                        other.transform.position).normalized;
+
+                    vel *= Vector3.Distance(transform.position,
+                        other.transform.position) -
+                        Vector3.Distance(_col.bounds.max,
+                        transform.position) * 100;
+
+                    other.attachedRigidbody.velocity += vel *
+                        Time.fixedDeltaTime;
+
+                    if (Vector3.Distance(other.transform.position,
+                        transform.position) < 0.3f &&
+                        !lantern.Colors[1].HasValue)
+                    {
+                        lantern.StoreColor(ghost.GColor);
+
+                        Destroy(other.gameObject);
+                    }
+                }
+                else
                 {
                     _ignored.Add(ghost);
                 }
-                if (!_ignored.Contains(ghost))
-                {
-                    float catchResistence = (ghost.MaxHp - ghost.Hp) + 40;
-
-                    int captureChance = Random.Range(0, 100);
-
-                    if (captureChance < catchResistence
-                        && !lantern.Colors[1].HasValue
-                        || ghost == _alreadyCought)
-                    {
-                        ghost.IsTargatable = false;
-                        _alreadyCought = ghost;
-
-                        Vector3 vel = -(transform.position -
-                            other.transform.position).normalized;
-
-                        vel *= Vector3.Distance(transform.position,
-                            other.transform.position) -
-                            Vector3.Distance(_col.bounds.max,
-                            transform.position) * 100;
-
-                        other.attachedRigidbody.velocity += vel *
-                            Time.fixedDeltaTime;
-
-                        if (Vector3.Distance(other.transform.position,
-                            transform.position) < 0.3f &&
-                            !lantern.Colors[1].HasValue)
-                        {
-                            lantern.StoreColor(ghost.GColor);
-
-                            Destroy(other.gameObject);
-                        }
-                    }
-                    else
-                    {
-                        _ignored.Add(ghost);
-                    }
-                }
+            }
+        }
+        private void CaptureEssence(Collider other)
+        {
+            if (_alreadyCought == null)
+            {
+                IEntity structure = other.gameObject.GetComponent<IEntity>();
+                lantern.StoreColor(structure.GColor);
+                _alreadyCought = structure;
             }
         }
     }
