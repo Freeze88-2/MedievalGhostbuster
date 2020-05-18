@@ -19,16 +19,16 @@ public class MovementController : MonoBehaviour
     {
         _speed                          = 5.0f;
         _jumpForce                      = 10.0f;
-        _gravity                        = 20.0f;
-        _rotationSpeed                  = 0.1f;
+        // _gravity = 20.0f -> Floaty
+        // _gravity = 30.0f -> Sharper
+        _gravity                        = 30.0f;
+        _rotationSpeed                  = 0.3f;
         _mainCamera                     = Camera.main;
         _cc                             = GetComponent<CharacterController>();
     }
 
-    
     void Update()
     {
-        ApplyGravity();
         JumpCheck();                 
         PlayerMovementAndRotation();
     }
@@ -37,10 +37,16 @@ public class MovementController : MonoBehaviour
     {
         if(_cc.isGrounded)
         {
+            _verticalVelocity = 0.0f;
+
             if (Input.GetButtonDown("Jump"))
             {
                 ApplyJump();
             }
+        }
+        else
+        {
+            ApplyGravity();
         }          
     }
 
