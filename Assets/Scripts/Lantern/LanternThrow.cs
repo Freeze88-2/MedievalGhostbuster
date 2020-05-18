@@ -5,7 +5,7 @@ namespace Lantern
 {
     public class LanternThrow : MonoBehaviour
     {
-        [SerializeField] private int _secondsToDespawn = 3;
+        [SerializeField] private float _secondsToDespawn = 3;
         [SerializeField] private float _maxDistance = 15f;
         [SerializeField] private Transform _player = null;
         [SerializeField] private GameObject _cursor = null;

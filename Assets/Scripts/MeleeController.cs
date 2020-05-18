@@ -36,7 +36,6 @@ public class MeleeController : MonoBehaviour
         if (GetCollider.enabled)
         {
             _timer += Time.deltaTime % 60;
-            Debug.Log(_timer);
         }
         if (_timer > 0.35f && GetCollider.enabled)
         {

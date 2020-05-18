@@ -48,7 +48,7 @@ namespace AI.Movement
 
             bevs = new IBehaviour[3] { 
                 new AISeek(), 
-                new AISeparation(ss, 1f), 
+                new AISeparation(ss, 2f), 
                 new AIObstacleAvoidance(ss) };
 
             // Checks if the area exists
@@ -78,21 +78,22 @@ namespace AI.Movement
                     vel = Vector3.zero;
                     for (int i = 0; i < bevs.Length; i++)
                     {
-                        Vector3 cur = bevs[i].GetOutput(this, i == 0 ? nextPoint.Value : Vector3.zero).Velocity;
+                        Vector3 cur = bevs[i].GetOutput(this, i == 0 ? 
+                            nextPoint.Value : Vector3.zero).Velocity;
 
                         vel += cur;
                     }
                 }
             }
-            //// Checks if the target exists and the distance is less than 2.5
-            //if (target != null && Vector3.Distance(transform.position,
-            //    target.transform.position) < 2.5f)
-            //{
-            //    // Attacks the target
-            //    Attack();
-            //    // Stops the ghost from moving
-            //    _canMove = false;
-            //}
+            // Checks if the target exists and the distance is less than 2.5
+            if (target != null && Vector3.Distance(transform.position,
+                target.transform.position) < 2.5f)
+            {
+                // Attacks the target
+                Attack();
+                // Stops the ghost from moving
+                _canMove = false;
+            }
             // Checks if the point received has a value
             if (nextPoint.HasValue && IsTargatable)
             {
@@ -125,7 +126,7 @@ namespace AI.Movement
             if (_canMove)
             {
                 // Checks if the ghost has something below
-                if (Physics.Raycast(transform.position, -transform.up, 0.2f))
+                if (Physics.Raycast(transform.position, -transform.up, 0.1f))
                 {
                     rb.AddForce(-vel);
 
