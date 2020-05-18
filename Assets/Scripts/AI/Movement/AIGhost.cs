@@ -37,6 +37,7 @@ public class AIGhost : MonoBehaviour, IEntity
     {
         // subtracts the amount from the hp
         Hp -= amount;
+        Debug.Log(Hp);
     }
     /// <summary>
     /// Adds the specefied amount to the hp from the entity
