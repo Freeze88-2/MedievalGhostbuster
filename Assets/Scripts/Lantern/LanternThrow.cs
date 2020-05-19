@@ -77,7 +77,7 @@ namespace Lantern
                         _cursor.transform.position = hit.point;
 
                         if (Input.GetKeyDown(KeyCode.E) && 
-                            behaviour.Colors.Length < 2)
+                            !behaviour.Colors[1].HasValue)
                         {
                             if (!_capturer.activeSelf)
                             {
