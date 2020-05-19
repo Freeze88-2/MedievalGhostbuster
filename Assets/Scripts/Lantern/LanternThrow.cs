@@ -76,7 +76,8 @@ namespace Lantern
 
                         _cursor.transform.position = hit.point;
 
-                        if (Input.GetKeyDown(KeyCode.E))
+                        if (Input.GetKeyDown(KeyCode.E) && 
+                            behaviour.Colors.Length < 2)
                         {
                             if (!_capturer.activeSelf)
                             {
@@ -141,14 +142,14 @@ namespace Lantern
 
         private void AbilityCast()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 behaviour.EmptyLantern();
             }
-            if (Input.GetKey(KeyCode.Space))
-            {
-                behaviour.ShowColorsIn();
-            }
+            //if (Input.GetKey(KeyCode.Space))
+            //{
+            //    behaviour.ShowColorsIn();
+            //}
             if (Input.GetKeyDown(KeyCode.E))
             {
                 IAbility ability = behaviour.GetAbility();
