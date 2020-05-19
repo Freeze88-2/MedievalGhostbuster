@@ -14,6 +14,7 @@ public class PressurePlate : MonoBehaviour
     private Vector3 _initialPos;
     private Vector3 _wantedPos;
     private bool _active;
+    private GameObject _current;
 
     // Start is called before the first frame update
     void Start()
@@ -54,19 +55,32 @@ public class PressurePlate : MonoBehaviour
         {
             if (!other.CompareTag("GameController"))
             {
-                StartCoroutine(PushButtonDown());
+                _active = true;
+                if (_current == null)
+                {
+                    _current = other.gameObject;
+                    PushButtonDown();
+                }
             }
         }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        _current = null;
+        StartCoroutine(PushButtonUp());
+    }
 
-    private IEnumerator PushButtonDown()
+    private void PushButtonDown()
     {
         _active = true;
         if (_dir == (Direction)0 || _dir == (Direction)2 )
         {
             DoPuzzleAction(_active);
         }
+    }
 
+    private IEnumerator PushButtonUp()
+    {
         yield return _wait;
 
         _active = false;
