@@ -32,9 +32,11 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        
         _rotationSpeed                  = 1.0f;
         _smooth                         = 3.0f;
-        
         _mainCamera.enabled             = true; 
         _leftShoulderCamera.enabled     = false; 
         _rightShoulderCamera.enabled    = false;
