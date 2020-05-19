@@ -11,6 +11,7 @@ namespace Lantern
         private Collider _col;
         private List<IEntity> _ignored;
         private IEntity _alreadyCought;
+        private GameObject _currentGhost;
 
         // Start is called before the first frame update
         private void Awake()
@@ -25,6 +26,7 @@ namespace Lantern
         {
             _ignored.Clear();
             _alreadyCought = null;
+            _currentGhost = null;
         }
 
         private void OnTriggerStay(Collider other)
@@ -58,8 +60,12 @@ namespace Lantern
                     && !lantern.Colors[1].HasValue
                     || ghost == _alreadyCought)
                 {
-                    ghost.IsTargatable = false;
-                    _alreadyCought = ghost;
+                    if (_currentGhost == null)
+                    {
+                        _currentGhost = other.gameObject;
+                        ghost.IsTargatable = false;
+                        _alreadyCought = ghost;
+                    }
 
                     Vector3 vel = -(transform.position -
                         other.transform.position).normalized;
@@ -67,13 +73,15 @@ namespace Lantern
                     vel *= Vector3.Distance(transform.position,
                         other.transform.position) -
                         Vector3.Distance(_col.bounds.max,
-                        transform.position) * 100;
+                        transform.position) * 70;
 
                     other.attachedRigidbody.velocity += vel *
                         Time.fixedDeltaTime;
 
+                    _currentGhost.transform.localScale *= 0.8f;
+
                     if (Vector3.Distance(other.transform.position,
-                        transform.position) < 0.3f &&
+                        transform.position) < 0.5f &&
                         !lantern.Colors[1].HasValue)
                     {
                         lantern.StoreColor(ghost.GColor);

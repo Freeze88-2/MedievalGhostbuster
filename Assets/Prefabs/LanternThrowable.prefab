@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1912942031743051748}
   - component: {fileID: 1912942031743051749}
   m_Layer: 11
-  m_Name: Lantern 1
+  m_Name: LanternThrowable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -434,7 +434,7 @@ MonoBehaviour:
   _coneRadiusX: 3
   _coneRadiusY: 1
   _coneLenght: 5
-  _pushForce: 20
+  _pushForce: 30
   _particles: {fileID: 3196981662584194806, guid: fef19318d45750448bb802740dd06d9c,
     type: 3}
 --- !u!114 &1912942033649842046

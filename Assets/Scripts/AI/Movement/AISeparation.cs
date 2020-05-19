@@ -27,7 +27,7 @@ namespace AI.Movement
 
                 if (distance < _maxDistance)
                 {
-                    float amount = 90 / distance * distance;
+                    float amount = 120 / distance * distance;
 
                     return new SteeringBehaviour(-(amount * dir.normalized), 0f);
                 }

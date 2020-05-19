@@ -15,9 +15,10 @@ namespace AI.Movement
         public SteeringBehaviour GetOutput(AIEntity current, Vector3 velocity)
         {
             //return new SteeringBehaviour();
+            float dynamicLen = current.Velocity.magnitude / current.Speed;
 
-            Vector3 ahead = current.transform.position + current.Velocity.normalized * diameter;
-            Vector3 ahead2 = current.transform.position + current.Velocity.normalized * diameter * 0.5f;
+            Vector3 ahead = current.transform.position + current.Velocity.normalized * dynamicLen;
+            Vector3 ahead2 = current.transform.position + current.Velocity.normalized * dynamicLen * 0.5f;
             Vector3 avoidance = Vector3.zero;
 
             AIEntity mostThreatening = FindMostThreateningObstacle(current, ahead, ahead2);
@@ -29,7 +30,7 @@ namespace AI.Movement
 
                 avoidance = avoidance.normalized;
                 avoidance.y = 0;
-                avoidance *= 200f;
+                avoidance *= 150f;
             }
             return new SteeringBehaviour(-avoidance, 0f);
         }

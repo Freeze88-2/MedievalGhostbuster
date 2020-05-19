@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete("Use MovementController instead")]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float      _speed;

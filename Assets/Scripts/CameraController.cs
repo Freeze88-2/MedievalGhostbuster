@@ -7,14 +7,14 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Camera         _mainCamera;
     [SerializeField] private Camera         _leftShoulderCamera;
     [SerializeField] private Camera         _rightShoulderCamera;
-    private int                             _playerLayer;
-    private CameraType                      _currentActiveCamera;
-    public Transform                        Player;
+    [SerializeField] private Transform      _player;
+    [SerializeField] private bool           _drawGizmos = true;
+    private CameraType                      _currentActiveCamera;    
     private float                           _rotationSpeed;
-    private float                           _mouseX, _mouseY;
-    private float                           _minDistance, _maxDistance;      
+    private float                           _mouseX, _mouseY;   
     private float                           _smooth;
     private float                           _range;
+    private int                             _playerLayer;
     private const string                    PLAYER_LAYER = "Player";
 
     // Change Y_OFFSET according to model (0.9 for capsule, 0.4 for skeleton)
@@ -28,20 +28,19 @@ public class CameraController : MonoBehaviour
         => Input.GetKeyDown(KeyCode.LeftAlt);
 
     private Vector3 TargetPosition 
-        => Player.position + new Vector3(0, Y_OFFSET, 0);
+        => _player.position + new Vector3(0, Y_OFFSET, 0);
 
     void Start()
     {
         _rotationSpeed                  = 1.0f;
         _smooth                         = 3.0f;
-        _range                          = Vector3.Distance(TargetPosition, transform.position);
-        _minDistance                    = 1.0f; 
-        _maxDistance                    = _range; 
+        
         _mainCamera.enabled             = true; 
         _leftShoulderCamera.enabled     = false; 
         _rightShoulderCamera.enabled    = false;
         _playerLayer                    = LayerMask.NameToLayer(PLAYER_LAYER);
-        ChangeCameras(CameraType.Main); 
+        _range         = Vector3.Distance(TargetPosition, transform.position);
+        ChangeCameras(CameraType.Main);
     }
 
     void LateUpdate() 
@@ -53,8 +52,8 @@ public class CameraController : MonoBehaviour
     private void FixedUpdate() 
     {
         if (!Physics.Linecast 
-            (TargetPosition, transform.position - 
-            (transform.forward), out _cullingHit))
+            (TargetPosition, TargetPosition +  (-transform.forward * _range)
+            , out _cullingHit))
         {
             _cullingHit = default; 
         }
@@ -112,7 +111,7 @@ public class CameraController : MonoBehaviour
                         break;                
                 }
             }
-            Player.rotation = Quaternion.Euler(0, _mouseX, 0);
+            _player.rotation = Quaternion.Euler(0, _mouseX, 0);
         }
         else if (_currentActiveCamera != CameraType.Main)
         {
@@ -159,8 +158,11 @@ public class CameraController : MonoBehaviour
 
     void OnDrawGizmos() 
     {
+        if (!_drawGizmos) return;
+
         Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(TargetPosition, transform.position - transform.forward);
+        Gizmos.DrawLine(TargetPosition, 
+            TargetPosition + (-transform.forward * _range));
         Gizmos.DrawSphere(TargetPosition, 0.02f);
     }
 }
