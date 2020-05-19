@@ -14,12 +14,21 @@ namespace Lantern.Abilities
         private WaitForSeconds _wait;
         private bool _isReseting;
 
+        public bool HabilityEnded { get; private set; }
+
         public (GhostColor, GhostColor) AbilityColors
         {
             get => (GhostColor.Blue, GhostColor.Blue);
         }
 
-        public bool HabilityEnded { get; private set; }
+        // Start is called before the first frame update
+        private void Start()
+        {
+            _isReseting = false;
+            HabilityEnded = false;
+            _player = GameObject.FindGameObjectWithTag("Player");
+            _wait = new WaitForSeconds(_durationTime);
+        }
 
         public void ActivateAbility()
         {
@@ -44,7 +53,7 @@ namespace Lantern.Abilities
                     if (ghost != null)
                     {
                         if (Vector3.Distance(cols[i].transform.position,
-                            _player.transform.position) < _freezingRadius)
+                            _player.transform.position) <= _freezingRadius)
                         {
                             ghost.Speed = 0f;
                         }
@@ -69,16 +78,6 @@ namespace Lantern.Abilities
                 StartCoroutine(ResetSpeed(cols));
             }
         }
-
-        // Start is called before the first frame update
-        private void Start()
-        {
-            _isReseting = false;
-            HabilityEnded = false;
-            _player = GameObject.FindGameObjectWithTag("Player");
-            _wait = new WaitForSeconds(_durationTime);
-        }
-
         private IEnumerator ResetSpeed(Collider[] cols)
         {
             _isReseting = true;

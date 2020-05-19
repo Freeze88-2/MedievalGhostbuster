@@ -48,7 +48,7 @@ namespace AI.Movement
 
             bevs = new IBehaviour[3] { 
                 new AISeek(), 
-                new AISeparation(ss, 2f), 
+                new AISeparation(ss, 2.2f), 
                 new AIObstacleAvoidance(ss) };
 
             // Checks if the area exists
@@ -67,8 +67,18 @@ namespace AI.Movement
             // Stores the next point from AIPathing
             Vector3? nextPoint = null;
 
+
+            // Checks if the target exists and the distance is less than 2.5
+            if (target != null && Vector3.Distance(transform.position,
+                target.transform.position) < 2f)
+            {
+                // Attacks the target
+                Attack();
+                // Stops the ghost from moving
+                _canMove = false;
+            }
             // Checks if the area exists and can hit the player
-            if (area != null && _player.IsTargatable)
+            else if (area != null && _player.IsTargatable)
             {
                 // Gets a vector3 form the pathfinding
                 nextPoint = _ailogic.GetPoint(gameObject.transform.position,
@@ -84,15 +94,6 @@ namespace AI.Movement
                         vel += cur;
                     }
                 }
-            }
-            // Checks if the target exists and the distance is less than 2.5
-            if (target != null && Vector3.Distance(transform.position,
-                target.transform.position) < 2.5f)
-            {
-                // Attacks the target
-                Attack();
-                // Stops the ghost from moving
-                _canMove = false;
             }
             // Checks if the point received has a value
             if (nextPoint.HasValue && IsTargatable)
