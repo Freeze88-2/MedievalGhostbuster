@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = true;
+        Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         
         _rotationSpeed                  = 1.0f;

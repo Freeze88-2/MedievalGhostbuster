@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Koala Company
-  productName: Mebivell's Ghostbuster
+  productName: Mibivell's Ghostbuster
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.004004982, g: 0.04352638, b: 0.09433961, a: 1}
