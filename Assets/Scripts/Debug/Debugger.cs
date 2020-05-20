@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CostumDebug 
 {
@@ -11,17 +12,20 @@ namespace CostumDebug
         // Target canvas
         [SerializeField] private Canvas         _canvas = null;
         // Array of A* algorithms
-        private GameObject[] astar;
+        private GameObject[] _astar;
         // Array of Ghosts
-        private GameObject[] aIs;
+        private GameObject[] _aIs;
+        // The player on the game
+        private GameObject _player;
 
         /// <summary>
         /// Start is called before the first frame update
         /// </summary>
         private void Start()
         {
-            aIs = GameObject.FindGameObjectsWithTag("GhostEnemy");
-            astar = GameObject.FindGameObjectsWithTag("GhostArea");
+            _aIs = GameObject.FindGameObjectsWithTag("GhostEnemy");
+            _astar = GameObject.FindGameObjectsWithTag("GhostArea");
+            _player = GameObject.FindGameObjectWithTag("Player");
         }
 
         /// <summary>
@@ -29,9 +33,19 @@ namespace CostumDebug
         /// </summary>
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Backslash))
+            if (Input.GetKeyDown(KeyCode.Backslash) 
+                && !_canvas.gameObject.activeSelf)
             {
                 _canvas.gameObject.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else if (Input.GetKeyDown(KeyCode.Backslash)
+                && _canvas.gameObject.activeSelf)
+            {
+                _canvas.gameObject.SetActive(false);
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
         }
 
@@ -45,23 +59,32 @@ namespace CostumDebug
             switch (inp)
             {
                 case "/help":
-                    _inputfield.text = "Commands:\n/help for all commands\n/aipathon to turn on AI pathing\n/aipath to turn off AI pathing";
+                    _inputfield.text = "Commands:\n" +
+                        "/help for all commands\n" +
+                        "/aipathon to turn on AI pathing\n" +
+                        "/aipath to turn off AI pathing\n" +
+                        "/reloadlvl to start again";
                     break;
 
                 case "/aipathon":
-                    DebugObject(true, aIs); ResetText();
+                    DebugObject(true, _aIs); ResetText();
                     break;
 
                 case "/aipathoff":
-                    DebugObject(false, aIs); ResetText();
+                    DebugObject(false, _aIs); ResetText();
                     break;
 
                 case "/aiareaon":
-                    DebugObject(true, astar); ResetText();
+                    DebugObject(true, _astar); ResetText();
                     break;
 
                 case "/aiareaoff":
-                    DebugObject(false, astar); ResetText();
+                    DebugObject(false, _astar); ResetText();
+                    break;
+
+                case "/reloadlvl":
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                    ResetText();
                     break;
             }
         }
@@ -83,6 +106,8 @@ namespace CostumDebug
         {
             for (int i = 0; i < objs.Count(); i++)
             {
+                if (objs[i] == null) continue;
+
                 objs[i].GetComponent<IDebug>().RunDebug(todo);
             }
         }
