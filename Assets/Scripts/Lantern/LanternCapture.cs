@@ -6,7 +6,9 @@ namespace Lantern
     public class LanternCapture : MonoBehaviour
     {
         [SerializeField] private GameObject objs = null;
+        [SerializeField] private AudioClip _lanternCaptureSound;
 
+        private AudioSource _lanternCaptureSource;
         public LanternBehaviour lantern;
         private Collider _col;
         private List<IEntity> _ignored;
@@ -20,6 +22,7 @@ namespace Lantern
             _col = GetComponent<Collider>();
             lantern = new LanternBehaviour(abs);
             _ignored = new List<IEntity>();
+            _lanternCaptureSource = GetComponent<AudioSource>();
         }
 
         private void OnEnable()
@@ -39,8 +42,6 @@ namespace Lantern
             {
                 CaptureEssence(other);
             }
-
-
         }
         private void CaptureGhost(Collider other)
         {
@@ -85,6 +86,8 @@ namespace Lantern
                         !lantern.Colors[1].HasValue)
                     {
                         lantern.StoreColor(ghost.GColor);
+                        
+                        CaptureGhostSound(_lanternCaptureSource);
 
                         Destroy(other.gameObject);
                     }
@@ -103,6 +106,14 @@ namespace Lantern
                 lantern.StoreColor(structure.GColor);
                 _alreadyCought = structure;
             }
+        }
+
+        private void CaptureGhostSound(AudioSource _lanternCaptureSource)
+        {
+            _lanternCaptureSource.clip = _lanternCaptureSound;
+            _lanternCaptureSource.volume = Random.Range(0.6f, 0.8f);
+            _lanternCaptureSource.pitch = Random.Range(0.8f, 1f);
+            _lanternCaptureSource.Play();
         }
     }
 }

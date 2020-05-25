@@ -15,18 +15,19 @@ namespace Lantern
         [SerializeField] private Camera right;
         [SerializeField] private AudioClip _lanternThrowSound;
         [SerializeField] private AudioClip _lanternCollisionSound;
+        [SerializeField] private AudioSource _lanternThrowSource;
+        [SerializeField] private AudioSource _lanternCollisionSource;
+        [SerializeField] private AudioSource _abilitySource;
 
         private GameObject _capturer;
         private Rigidbody _lanternRB;
         private LanternBehaviour behaviour;
         private LineRenderer _line;
-        private AudioSource _audio;
         private float _activeTime;
 
         // Start is called before the first frame update
         private void Start()
         {
-            _audio = GetComponent<AudioSource>();
             _line = GetComponent<LineRenderer>();
             _lanternRB = GetComponent<Rigidbody>();
             _capturer = GameObject.Find("Lantern_Object");
@@ -90,7 +91,7 @@ namespace Lantern
 
                                 _lanternRB.velocity = calcVel;
 
-                                PlaySound(_audio);
+                                PlaySound(_lanternThrowSource);
                             }   
                         }
                     }
@@ -163,7 +164,7 @@ namespace Lantern
                 if (ability != null)
                 {
                     ability.ActivateAbility();
-                    ability.PlaySound(_audio);
+                    ability.PlaySound(_abilitySource);
                     StartCoroutine(CheckAbilityStatus(ability));
                 }
             }
@@ -178,12 +179,12 @@ namespace Lantern
             behaviour.EmptyLantern();
         }
 
-        private void PlaySound(AudioSource _audio)
+        private void PlaySound(AudioSource _lanternThrowSource)
         {
-            _audio.clip = _lanternThrowSound;
-            _audio.volume = Random.Range(0.6f, 0.8f);
-            _audio.pitch = Random.Range(0.8f, 1f);
-            _audio.Play();
+            _lanternThrowSource.clip = _lanternThrowSound;
+            _lanternThrowSource.volume = Random.Range(0.6f, 0.8f);
+            _lanternThrowSource.pitch = Random.Range(0.8f, 1f);
+            _lanternThrowSource.Play();
         }
 
         /// <summary>
@@ -193,10 +194,10 @@ namespace Lantern
         /// <param name="other">The Collision data associated with this collision.</param>
         void OnCollisionEnter(Collision other)
         {
-            _audio.clip = _lanternCollisionSound;
-            _audio.volume = Random.Range(0.3f, 0.5f);
-            _audio.pitch = Random.Range(0.8f, 1f);
-            _audio.Play();
+            _lanternCollisionSource.clip = _lanternCollisionSound;
+            _lanternCollisionSource.volume = Random.Range(0.3f, 0.5f);
+            _lanternCollisionSource.pitch = Random.Range(0.8f, 1f);
+            _lanternCollisionSource.Play();
         }
     }
 }
