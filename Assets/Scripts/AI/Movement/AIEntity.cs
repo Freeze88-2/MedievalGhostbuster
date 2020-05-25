@@ -1,5 +1,6 @@
 ﻿using AI.PathFinding.GridGeneration;
 using UnityEngine;
+using System.Collections;
 
 namespace AI.Movement
 {
@@ -63,6 +64,10 @@ namespace AI.Movement
         /// </summary>
         protected Rigidbody rb;
 
+        
+        [SerializeField] private AudioClip _deathSound;
+        private AudioSource _audio;
+
         /// <summary>
         /// Assigns the variables from IEntity to the ones given
         /// </summary>
@@ -82,10 +87,12 @@ namespace AI.Movement
             // Set's if this ghost can perform actions or be performed on
             Speed = _maxSpeed;
             IsTargatable = true;
+
+            _audio = GetComponent<AudioSource>();
         }
 
         /// <summary>
-        /// Subtract the specefied amount of hp from the entity
+        /// Subtract the specified amount of hp from the entity
         /// </summary>
         /// <param name="amount"> The amount of hp to be subtracted </param>
         public void DealDamage(float amount)
@@ -96,19 +103,35 @@ namespace AI.Movement
             // Checks if the hp is 0
             if (Hp == 0)
             {
+                _audio.clip = _deathSound;
+                _audio.volume = Random.Range(0.5f, 1.0f);
+                _audio.pitch = Random.Range(0.5f, 1.0f);
+                _audio.Play();
+
+                IsTargatable = false;
+
                 // Kills the ghost
-                Destroy(gameObject);
+                StartCoroutine(KillGhost());
             }
         }
 
         /// <summary>
-        /// Adds the specefied amount to the hp from the entity
+        /// Adds the specified amount to the hp from the entity
         /// </summary>
         /// <param name="amount"></param>
         public void Heal(float amount)
         {
             // Adds hp to the player capped at the defined max hp
             Hp = Mathf.Min(Hp + amount, MaxHp);
+        }
+
+        private IEnumerator KillGhost()
+        {
+            while (_audio.isPlaying)
+            {
+                yield return null;
+            }
+            Destroy(gameObject);
         }
     }
 }

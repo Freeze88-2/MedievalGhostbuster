@@ -41,7 +41,7 @@ public class MovementController : MonoBehaviour
     {
         if(_cc.isGrounded)
         {
-            _verticalVelocity = -_gravity;
+            _verticalVelocity = -0.1f;
 
             if (Input.GetButtonDown("Jump"))
             {
