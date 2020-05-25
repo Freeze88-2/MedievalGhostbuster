@@ -10,6 +10,8 @@ namespace Lantern.Abilities
         [SerializeField] private float _coneLenght = 5f;
         [SerializeField] private float _pushForce = 20f;
         [SerializeField] private GameObject _particles = null;
+        [Tooltip("Sound Effects")]
+        [SerializeField] private AudioClip _sound;
 
         private List<RaycastHit> rays = new List<RaycastHit>();
         private List<Collider> alreadyCounted = new List<Collider>();
@@ -62,6 +64,13 @@ namespace Lantern.Abilities
 
             HabilityEnded = true;
         }
+
+        public void PlaySound(AudioSource audio)
+        {
+            audio.clip = _sound;
+            audio.Play();
+        }
+
 
         private void PushEntities()
         {

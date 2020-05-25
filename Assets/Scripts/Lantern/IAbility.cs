@@ -1,4 +1,6 @@
-﻿namespace Lantern
+﻿using UnityEngine;
+
+namespace Lantern
 {
     public interface IAbility
     {
@@ -6,5 +8,6 @@
         (GhostColor, GhostColor) AbilityColors { get; }
 
         void ActivateAbility();
+        void PlaySound(AudioSource audio);
     }
 }

@@ -8,6 +8,8 @@ namespace Lantern.Abilities
         [SerializeField] private float _dashSpeed = 25f;
         [SerializeField] private int _dashDuration = 10;
         [SerializeField] private int _nOfDahses = 3;
+        [Tooltip("Sound Effects")]
+        [SerializeField] private AudioClip _sound;
 
         private CharacterController _playerRb;
         private WaitForSecondsRealtime _wait;
@@ -47,6 +49,12 @@ namespace Lantern.Abilities
                 _timer = 0;
                 _dashes = _nOfDahses;
             }
+        }
+
+        public void PlaySound(AudioSource audio)
+        {
+            audio.clip = _sound;
+            audio.Play();
         }
 
         private IEnumerator Dash()

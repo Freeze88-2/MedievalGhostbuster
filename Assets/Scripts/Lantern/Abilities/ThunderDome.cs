@@ -8,6 +8,8 @@ namespace Lantern.Abilities
     {
         [SerializeField] private GameObject _particles = null;
         [SerializeField] private float _tickTime = 0.2f;
+        [Tooltip("Sound Effects")]
+        [SerializeField] private AudioClip _sound;
 
         private List<IEntity> _ghosts;
         private GameObject _player;
@@ -46,6 +48,12 @@ namespace Lantern.Abilities
                 StartCoroutine(DestroyGhost());
                 HabilityEnded = true;
             }
+        }
+
+        public void PlaySound(AudioSource audio)
+        {
+            audio.clip = _sound;
+            audio.Play();
         }
 
         private IEnumerator DestroyGhost()

@@ -9,6 +9,8 @@ namespace Lantern.Abilities
         [SerializeField] private float _radius = 15f;
         [SerializeField] private float _freezingRadius = 7f;
         [SerializeField] private GameObject _freezeEffect = null;
+        [Tooltip("Sound Effects")]
+        [SerializeField] private AudioClip _sound;
 
         private GameObject _player;
         private WaitForSeconds _wait;
@@ -78,6 +80,13 @@ namespace Lantern.Abilities
                 StartCoroutine(ResetSpeed(cols));
             }
         }
+
+        public void PlaySound(AudioSource audio)
+        {
+            audio.clip = _sound;
+            audio.Play();
+        }
+
         private IEnumerator ResetSpeed(Collider[] cols)
         {
             _isReseting = true;

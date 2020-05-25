@@ -16,13 +16,15 @@ namespace Lantern
 
         private GameObject _capturer;
         private Rigidbody _lanternRB;
-        private float _activeTime;
         private LanternBehaviour behaviour;
         private LineRenderer _line;
+        private AudioSource _audio;
+        private float _activeTime;
 
         // Start is called before the first frame update
         private void Start()
         {
+            _audio = GetComponent<AudioSource>();
             _line = GetComponent<LineRenderer>();
             _lanternRB = GetComponent<Rigidbody>();
             _capturer = GameObject.Find("Lantern_Object");
@@ -157,6 +159,7 @@ namespace Lantern
                 if (ability != null)
                 {
                     ability.ActivateAbility();
+                    ability.PlaySound(_audio);
                     StartCoroutine(CheckAbilityStatus(ability));
                 }
             }

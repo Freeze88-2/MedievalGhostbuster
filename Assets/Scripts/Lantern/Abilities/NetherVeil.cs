@@ -8,6 +8,8 @@ namespace Lantern.Abilities
         [SerializeField] private float _duration = 6f;
         [SerializeField] private GameObject _particles = null;
         [SerializeField] private GameObject _postProcessing = null;
+        [Tooltip("Sound Effects")]
+        [SerializeField] private AudioClip _sound;
 
         private IEntity _player;
         private GameObject _playerObj;
@@ -45,6 +47,11 @@ namespace Lantern.Abilities
                 StopCoroutine(InNetherInstance());
                 ResetHability();
             }
+        }
+        public void PlaySound(AudioSource audio)
+        {
+            audio.clip = _sound;
+            audio.Play();
         }
 
         private IEnumerator InNetherInstance()

@@ -8,6 +8,8 @@ namespace Lantern.Abilities
         [SerializeField] private float _healAmount = 10f;
         [SerializeField] private float _healTime = 5f;
         [SerializeField] private float _healTicks = 0.2f;
+        [Tooltip("Sound Effects")]
+        [SerializeField] private AudioClip _sound;
 
         private IEntity _player;
         private WaitForSeconds _wait;
@@ -38,6 +40,12 @@ namespace Lantern.Abilities
                 HabilityEnded = false;
                 StartCoroutine(HealPlayer());
             }
+        }
+
+        public void PlaySound(AudioSource audio)
+        {
+            audio.clip = _sound;
+            audio.Play();
         }
 
         private IEnumerator HealPlayer()
