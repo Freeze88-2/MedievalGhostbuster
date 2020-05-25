@@ -13,6 +13,8 @@ namespace Lantern
         [SerializeField] private Camera one;
         [SerializeField] private Camera left;
         [SerializeField] private Camera right;
+        [SerializeField] private AudioClip _lanternThrowSound;
+        [SerializeField] private AudioClip _lanternCollisionSound;
 
         private GameObject _capturer;
         private Rigidbody _lanternRB;
@@ -87,7 +89,9 @@ namespace Lantern
                                 transform.position = _player.position;
 
                                 _lanternRB.velocity = calcVel;
-                            }
+
+                                PlaySound(_audio);
+                            }   
                         }
                     }
                     else
@@ -172,6 +176,27 @@ namespace Lantern
                 yield return null;
             }
             behaviour.EmptyLantern();
+        }
+
+        private void PlaySound(AudioSource _audio)
+        {
+            _audio.clip = _lanternThrowSound;
+            _audio.volume = Random.Range(0.6f, 0.8f);
+            _audio.pitch = Random.Range(0.8f, 1f);
+            _audio.Play();
+        }
+
+        /// <summary>
+        /// OnCollisionEnter is called when this collider/rigidbody has begun
+        /// touching another rigidbody/collider.
+        /// </summary>
+        /// <param name="other">The Collision data associated with this collision.</param>
+        void OnCollisionEnter(Collision other)
+        {
+            _audio.clip = _lanternCollisionSound;
+            _audio.volume = Random.Range(0.3f, 0.5f);
+            _audio.pitch = Random.Range(0.8f, 1f);
+            _audio.Play();
         }
     }
 }
