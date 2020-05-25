@@ -5,12 +5,15 @@ using UnityEngine;
 public class MeleeController : MonoBehaviour
 {
     [SerializeField] private Animator   GetAnimator;
+    [SerializeField] private AudioClip  _attackSound;
     private Collider                    GetCollider;
     private List<IEntity>               _damagedGhosts;
+    private AudioSource                 _audio;
     private float                       _timer;
 
     private void Start() 
     {
+        _audio                          = GetComponent<AudioSource>();
         GetCollider                     = GetComponent<Collider>();
         GetAnimator                     = GetComponentInParent<Animator>();
         _timer                          = 0.0f;
@@ -29,6 +32,8 @@ public class MeleeController : MonoBehaviour
             {
                 GetCollider.enabled = true;
 
+                //PlaySound(_audio);
+
                 //_damagedGhosts.Clear();
             }
         }
@@ -39,6 +44,7 @@ public class MeleeController : MonoBehaviour
         }
         if (_timer > 0.35f && GetCollider.enabled)
         {
+            PlaySound(_audio);
             GetCollider.enabled = false;
             _timer = 0.0f;
             _damagedGhosts.Clear();    
@@ -57,5 +63,13 @@ public class MeleeController : MonoBehaviour
                 _damagedGhosts.Add(bulliedGhost);
             }
         }
+    }
+
+    private void PlaySound(AudioSource _audio)
+    {
+        _audio.clip = _attackSound;
+        _audio.volume = Random.Range(0.35f, 0.55f);
+        _audio.Play();
+
     }
 }

@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    [SerializeField] private Camera     _mainCamera;
-    private float                       _speed;
-    private float                       _rotationSpeed;
-    private float                       _inputX;
-    private float                       _inputZ;
-    private float                       _verticalVelocity;
-    private float                       _gravity;
-    private float                       _jumpForce;
-    private Vector3                     _moveDirection;
-    private CharacterController         _cc;
+    [SerializeField] private Camera         _mainCamera;
+    [SerializeField] private AudioClip      _stepsSound;
+    [SerializeField] private AudioClip      _armorSound;
+    [SerializeField] private AudioSource    _stepsSource;
+    [SerializeField] private AudioSource    _armorSource;
+    [SerializeField] private float          _verticalVelocity;
+    private float                           _speed;
+    private float                           _rotationSpeed;
+    private float                           _inputX;
+    private float                           _inputZ;
+    private float                           _gravity;
+    private float                           _jumpForce;
+    private Vector3                         _moveDirection;
+    private CharacterController             _cc;
     
     void Start()
     {
@@ -37,11 +41,12 @@ public class MovementController : MonoBehaviour
     {
         if(_cc.isGrounded)
         {
-            _verticalVelocity = 0.0f;
+            _verticalVelocity = -0.1f;
 
             if (Input.GetButtonDown("Jump"))
             {
                 ApplyJump();
+                //ArmorSound(_armorSource);
             }
         }
         else
@@ -88,5 +93,34 @@ public class MovementController : MonoBehaviour
         _moveDirection.y = _verticalVelocity;
         
         _cc.Move(_moveDirection * Time.deltaTime);
+
+        StepsSound(_stepsSource);
+        ArmorSound(_armorSource);
+    }
+
+    private void StepsSound(AudioSource _stepsSource)
+    {
+        _stepsSource.clip = _stepsSound;
+
+        if (_cc.isGrounded == true && _stepsSource.isPlaying == false 
+            && (_moveDirection.x != 0 || _moveDirection.z != 0))
+        {
+            _stepsSource.volume = Random.Range(0.3f, 0.4f);
+            _stepsSource.pitch = Random.Range(0.7f, 1f);
+            _stepsSource.Play();    
+        }
+    }
+
+    private void ArmorSound(AudioSource _armorSource)
+    {
+        _armorSource.clip = _armorSound;
+
+        if (_armorSource.isPlaying == false && _cc.isGrounded == true 
+            && (_moveDirection.x != 0 || _moveDirection.z != 0))
+        {
+            _armorSource.volume = Random.Range(0.2f, 0.3f);
+            _armorSource.pitch = Random.Range(0.8f, 1.0f);
+            _armorSource.Play();             
+        }
     }
 }
