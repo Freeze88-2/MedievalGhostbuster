@@ -8,7 +8,12 @@ public struct SteeringBehaviour
 
     public SteeringBehaviour(Vector3 velocity, float angle)
     {
-        Angle = angle;
         Velocity = velocity;
+        Angle = angle;
+    }
+
+    public static SteeringBehaviour operator +(SteeringBehaviour left, SteeringBehaviour right)
+    {
+        return new SteeringBehaviour(left.Velocity + right.Velocity, left.Angle + right.Angle);
     }
 }

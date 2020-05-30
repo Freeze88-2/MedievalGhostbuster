@@ -9,7 +9,7 @@ namespace AI.Movement
             Vector3 velocity = current.transform.position - target;
             velocity = velocity.normalized * 50;
 
-            return new SteeringBehaviour(velocity, 0);
+            return new SteeringBehaviour(-velocity, 0f);
         }
     }
 }

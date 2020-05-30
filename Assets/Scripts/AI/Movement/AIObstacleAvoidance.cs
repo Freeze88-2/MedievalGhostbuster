@@ -5,7 +5,6 @@ namespace AI.Movement
     public class AIObstacleAvoidance : IBehaviour
     {
         private readonly AIEntity[] _aIEntities;
-        private readonly float diameter = 5;
 
         public AIObstacleAvoidance(AIEntity[] allGhosts)
         {
@@ -32,7 +31,7 @@ namespace AI.Movement
                 avoidance.y = 0;
                 avoidance *= 150f;
             }
-            return new SteeringBehaviour(-avoidance, 0f);
+            return new SteeringBehaviour(avoidance, 0f);
         }
 
         private AIEntity FindMostThreateningObstacle(AIEntity ent, Vector3 ahead, Vector3 ahead2)

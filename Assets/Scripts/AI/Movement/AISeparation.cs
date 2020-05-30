@@ -29,7 +29,7 @@ namespace AI.Movement
                 {
                     float amount = 120 / distance * distance;
 
-                    return new SteeringBehaviour(-(amount * dir.normalized), 0f);
+                    return new SteeringBehaviour((amount * dir.normalized), 0f);
                 }
             }
 

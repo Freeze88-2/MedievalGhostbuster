@@ -22,7 +22,7 @@ namespace AI.Movement
         // If the ghost can move on the next fixed update
         private bool _canMove;
 
-        private Vector3 vel;
+        private SteeringBehaviour vel;
 
         private IBehaviour[] bevs;
 
@@ -46,10 +46,11 @@ namespace AI.Movement
                 ss[i] = objs[i].GetComponent<AIEntity>();
             }
 
-            bevs = new IBehaviour[3] { 
-                new AISeek(), 
-                new AISeparation(ss, 2.2f), 
-                new AIObstacleAvoidance(ss) };
+            bevs = new IBehaviour[4] {
+                new AISeek(),
+                new AISeparation(ss, 2.2f),
+                new AIObstacleAvoidance(ss),
+                new AIRotateToTarget()};
 
             // Checks if the area exists
             if (area != null)
@@ -85,29 +86,18 @@ namespace AI.Movement
                     target.transform.position);
                 if (nextPoint.HasValue)
                 {
-                    vel = Vector3.zero;
+                    vel = new SteeringBehaviour();
+
                     for (int i = 0; i < bevs.Length; i++)
                     {
-                        Vector3 cur = bevs[i].GetOutput(this, i == 0 ? 
-                            nextPoint.Value : Vector3.zero).Velocity;
-
-                        vel += cur;
+                         vel += bevs[i].GetOutput(this, i == 0 ?
+                            nextPoint.Value : Vector3.zero);
                     }
                 }
             }
             // Checks if the point received has a value
             if (nextPoint.HasValue && IsTargatable)
             {
-                // Calculates the direction of current point to the next point
-                Vector3 dir = nextPoint.Value - transform.position;
-                // Resets the value of Y to 0
-                dir.y = 0;
-
-                // Rotates gradually the Ghost towards the direction
-                transform.rotation = Quaternion.Lerp(transform.rotation,
-                    Quaternion.LookRotation(dir), Time.deltaTime *
-                    MaxSpeed * 6f);
-
                 // Let's the ghost move foward the next fixed update
                 _canMove = true;
             }
@@ -129,7 +119,8 @@ namespace AI.Movement
                 // Checks if the ghost has something below
                 if (Physics.Raycast(transform.position, -transform.up, 0.1f))
                 {
-                    rb.AddForce(-vel);
+                    rb.AddForce(vel.Velocity);
+                    transform.rotation = Quaternion.Euler(0f, vel.Angle, 0f);
 
                     if (rb.velocity.magnitude > Speed)
                     {
