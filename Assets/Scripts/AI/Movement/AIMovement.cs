@@ -68,10 +68,12 @@ namespace AI.Movement
             // Stores the next point from AIPathing
             Vector3? nextPoint = null;
 
+            float distanceToTarget = Vector3.Distance(transform.position,
+                target.transform.position);
 
             // Checks if the target exists and the distance is less than 2.5
-            if (target != null && Vector3.Distance(transform.position,
-                target.transform.position) < 2f)
+            if (target != null && distanceToTarget < 2.3f && 
+                distanceToTarget > 1.8f)
             {
                 // Attacks the target
                 Attack();
@@ -81,30 +83,22 @@ namespace AI.Movement
             // Checks if the area exists and can hit the player
             else if (area != null && _player.IsTargatable)
             {
+                _canMove = true;
+
                 // Gets a vector3 form the pathfinding
                 nextPoint = _ailogic.GetPoint(gameObject.transform.position,
                     target.transform.position);
+
                 if (nextPoint.HasValue)
                 {
                     vel = new SteeringBehaviour();
 
                     for (int i = 0; i < bevs.Length; i++)
                     {
-                         vel += bevs[i].GetOutput(this, i == 0 ?
-                            nextPoint.Value : Vector3.zero);
+                        vel += bevs[i].GetOutput(this, i == 0 ?
+                           nextPoint.Value : Vector3.zero);
                     }
                 }
-            }
-            // Checks if the point received has a value
-            if (nextPoint.HasValue && IsTargatable)
-            {
-                // Let's the ghost move foward the next fixed update
-                _canMove = true;
-            }
-            else
-            {
-                // Doesn't let the ghost move foward the next fixed update
-                _canMove = false;
             }
         }
 

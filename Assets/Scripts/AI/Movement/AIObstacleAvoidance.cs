@@ -29,7 +29,7 @@ namespace AI.Movement
 
                 avoidance = avoidance.normalized;
                 avoidance.y = 0;
-                avoidance *= 150f;
+                avoidance *= 140f;
             }
             return new SteeringBehaviour(avoidance, 0f);
         }
