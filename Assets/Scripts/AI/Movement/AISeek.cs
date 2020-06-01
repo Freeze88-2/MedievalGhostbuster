@@ -7,7 +7,7 @@ namespace AI.Movement
         public SteeringBehaviour GetOutput(AIEntity current, Vector3 target)
         {
             Vector3 velocity = current.transform.position - target;
-            velocity = velocity.normalized * 50;
+            velocity = velocity.normalized * 40;
 
             return new SteeringBehaviour(-velocity, 0f);
         }

@@ -14,7 +14,7 @@ namespace AI.PathFinding.GridGeneration
         [SerializeField] private LayerMask unwalkablemask = default;
 
         // The size of the area
-        [SerializeField] private Vector3 areaSize = Vector3.one;
+        [SerializeField] public Vector3 areaSize = Vector3.one;
 
         // The size of the each node
         [SerializeField] private float nodeRadius = 0.3f;

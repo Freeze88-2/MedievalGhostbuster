@@ -9,9 +9,6 @@ namespace AI.Movement
     /// </summary>
     public class AIEntity : MonoBehaviour, IEntity
     {
-        // -- Target given --
-        [SerializeField] public GameObject target = null;
-
         // -- Designated area --
         [SerializeField] protected GameObject area = null;
 
@@ -26,6 +23,12 @@ namespace AI.Movement
 
         // The current hp of the ghost
         [SerializeField] private float _hp = 100f;
+
+        // Audio to be player on death
+        [SerializeField] private AudioClip _deathSound;
+
+        // Respective AudioSource
+        private AudioSource _audio;
 
         /// <summary>
         /// The color of the ghost
@@ -63,10 +66,6 @@ namespace AI.Movement
         /// The rigidbody attached to this gameobject
         /// </summary>
         protected Rigidbody rb;
-
-        
-        [SerializeField] private AudioClip _deathSound;
-        private AudioSource _audio;
 
         /// <summary>
         /// Assigns the variables from IEntity to the ones given

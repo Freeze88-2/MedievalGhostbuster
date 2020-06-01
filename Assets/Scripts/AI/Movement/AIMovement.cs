@@ -22,10 +22,17 @@ namespace AI.Movement
         // If the ghost can move on the next fixed update
         private bool _canMove;
 
-        private SteeringBehaviour vel;
+        // Stores the value of the velocity and angle
+        private SteeringBehaviour _steerBehaviours;
 
-        private IBehaviour[] bevs;
+        // Array of all behaviours
+        private IBehaviour[] _behaviours;
 
+        // Creates a new AIBrainController
+        private AIBrainController _brain;
+
+        // Stores the current target
+        private Vector3 target;
         /// <summary>
         /// Use this for initialization
         /// </summary>
@@ -33,8 +40,14 @@ namespace AI.Movement
         {
             // Calls the base class start
             base.Start();
+
+            // Creates the AIBrain
+            _brain = new AIBrainController(area, gameObject);
+
             // Finds the IEntity component of the player
-            _player = target.GetComponent<IEntity>();
+            _player = GameObject.FindGameObjectWithTag("Player")
+                .GetComponent<IEntity>();
+
             // Gives a default value to _canMove
             _canMove = false;
 
@@ -46,9 +59,9 @@ namespace AI.Movement
                 ss[i] = objs[i].GetComponent<AIEntity>();
             }
 
-            bevs = new IBehaviour[4] {
+            _behaviours = new IBehaviour[4] {
                 new AISeek(),
-                new AISeparation(ss, 2.2f),
+                new AISeparation(ss, 1.8f),
                 new AIObstacleAvoidance(ss),
                 new AIRotateToTarget()};
 
@@ -65,18 +78,17 @@ namespace AI.Movement
         /// </summary>
         private void Update()
         {
-            // Stores the next point from AIPathing
-            Vector3? nextPoint = null;
+            target = _brain.GetDecision();
 
             float distanceToTarget = Vector3.Distance(transform.position,
-                target.transform.position);
+                target);
 
             // Checks if the target exists and the distance is less than 2.5
             if (target != null && distanceToTarget < 2.3f && 
                 distanceToTarget > 1.8f)
             {
                 // Attacks the target
-                Attack();
+                Attack(target);
                 // Stops the ghost from moving
                 _canMove = false;
             }
@@ -85,19 +97,22 @@ namespace AI.Movement
             {
                 _canMove = true;
 
+                // Stores the next point from AIPathing
                 // Gets a vector3 form the pathfinding
-                nextPoint = _ailogic.GetPoint(gameObject.transform.position,
-                    target.transform.position);
-
+                Vector3? nextPoint = _ailogic.GetPoint
+                    (gameObject.transform.position, target);
                 if (nextPoint.HasValue)
                 {
-                    vel = new SteeringBehaviour();
+                    _steerBehaviours = new SteeringBehaviour();
 
-                    for (int i = 0; i < bevs.Length; i++)
+                    for (int i = 0; i < _behaviours.Length; i++)
                     {
-                        vel += bevs[i].GetOutput(this, i == 0 ?
-                           nextPoint.Value : Vector3.zero);
+                        _steerBehaviours += _behaviours[i].GetOutput(this, nextPoint.Value);
                     }
+                }
+                else
+                {
+                    _canMove = false;
                 }
             }
         }
@@ -113,8 +128,10 @@ namespace AI.Movement
                 // Checks if the ghost has something below
                 if (Physics.Raycast(transform.position, -transform.up, 0.1f))
                 {
-                    rb.AddForce(vel.Velocity);
-                    transform.rotation = Quaternion.Euler(0f, vel.Angle, 0f);
+                    rb.velocity = _steerBehaviours.Velocity;
+
+                    transform.rotation = Quaternion.Euler(0f, 
+                        _steerBehaviours.Angle, 0f);
 
                     if (rb.velocity.magnitude > Speed)
                     {
@@ -127,9 +144,9 @@ namespace AI.Movement
         //--------------------------------------------------------------//
         //                          Temporary                           //
         //--------------------------------------------------------------//
-        private void Attack()
+        private void Attack(Vector3 target)
         {
-            Vector3 dir = target.transform.position - transform.position;
+            Vector3 dir = target - transform.position;
             // Resets the value of Y to 0
             dir.y = 0;
 
@@ -138,10 +155,8 @@ namespace AI.Movement
                 Quaternion.LookRotation(dir), Time.deltaTime *
                 MaxSpeed * 6f);
 
-            IEntity player = target.GetComponent<IEntity>();
-
-            if (player != null)
-                player.DealDamage(1f);
+            if (_player != null)
+                _player.DealDamage(1f);
         }
 
         /// <summary>
@@ -211,7 +226,7 @@ namespace AI.Movement
                 _line.positionCount += 1;
                 // Sets the position of the point to the position of the target
                 _line.SetPosition(_line.positionCount - 1,
-                    target.transform.position);
+                    target);
                 // Waits for the _end of the frame
                 yield return new WaitForEndOfFrame();
             }

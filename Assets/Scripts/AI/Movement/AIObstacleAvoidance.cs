@@ -11,10 +11,10 @@ namespace AI.Movement
             _aIEntities = allGhosts;
         }
 
-        public SteeringBehaviour GetOutput(AIEntity current, Vector3 velocity)
+        public SteeringBehaviour GetOutput(AIEntity current, Vector3 target)
         {
             //return new SteeringBehaviour();
-            float dynamicLen = current.Velocity.magnitude / current.Speed;
+            float dynamicLen = 2 *(current.Velocity.magnitude / current.Speed);
 
             Vector3 ahead = current.transform.position + current.Velocity.normalized * dynamicLen;
             Vector3 ahead2 = current.transform.position + current.Velocity.normalized * dynamicLen * 0.5f;
@@ -29,7 +29,7 @@ namespace AI.Movement
 
                 avoidance = avoidance.normalized;
                 avoidance.y = 0;
-                avoidance *= 140f;
+                avoidance *= 20f;
             }
             return new SteeringBehaviour(avoidance, 0f);
         }
@@ -40,7 +40,7 @@ namespace AI.Movement
 
             for (int i = 0; i < _aIEntities.Length; i++)
             {
-                if (_aIEntities[i] == null) continue;
+                if (_aIEntities[i] == null ||_aIEntities[i] == ent) continue;
 
                 AIEntity obstacle = _aIEntities[i];
                 bool collision = LineIntersectsCircle(ahead, ahead2, obstacle.transform.position);
@@ -59,7 +59,7 @@ namespace AI.Movement
 
         private bool LineIntersectsCircle(Vector3 ahead, Vector3 ahead2, Vector3 center)
         {
-            return Distance(center, ahead) <= 2 || Distance(center, ahead2) <= 2;
+            return Distance(center, ahead) <= 1.5f || Distance(center, ahead2) <= 1.5f;
         }
         private float Distance(Vector3 a, Vector3 b)
         {
