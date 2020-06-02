@@ -34,7 +34,7 @@ namespace AI.Movement
                 if (distance < _maxDistance)
                 {
                     float amount = 20 / distance * distance;
-                    amount = 0;
+
                     vel += amount * dir.normalized;
                 }
             }

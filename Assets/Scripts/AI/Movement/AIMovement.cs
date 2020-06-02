@@ -61,8 +61,8 @@ namespace AI.Movement
 
             _behaviours = new IBehaviour[4] {
                 new AISeek(),
-                new AISeparation(ss, 1.8f),
-                new AIObstacleAvoidance(ss),
+                new AISeparation(ss, 1.2f),
+                new AIObstacleAvoidance(ss, 2f),
                 new AIRotateToTarget()};
 
             // Checks if the area exists
