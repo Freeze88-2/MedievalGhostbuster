@@ -60,11 +60,11 @@ public class AIBrainController
     {
         Debug.Log("Roaming");
 
-        float x = Random.Range(-_area.areaSize.x, -_area.areaSize.x + 1);
+        float x = Random.Range(-(_area.areaSize.x -1), _area.areaSize.x);
         x += _area.transform.position.x;
         
-        float z = Random.Range(-_area.areaSize.z, -_area.areaSize.z + 1);
-        z += _area.transform.position.z;
+        float z = Random.Range(-(_area.areaSize.z -1), _area.areaSize.z);
+        z +=  _area.transform.position.z;
 
         _desiredPos = new Vector3(x, 0, z);
     }

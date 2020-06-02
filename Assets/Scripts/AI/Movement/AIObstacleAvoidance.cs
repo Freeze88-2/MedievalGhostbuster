@@ -5,7 +5,7 @@ namespace AI.Movement
     public class AIObstacleAvoidance : IBehaviour
     {
         private readonly AIEntity[] _aIEntities;
-
+        private bool isNeraby;
         public AIObstacleAvoidance(AIEntity[] allGhosts)
         {
             _aIEntities = allGhosts;
@@ -29,7 +29,7 @@ namespace AI.Movement
 
                 avoidance = avoidance.normalized;
                 avoidance.y = 0;
-                avoidance *= 20f;
+                avoidance *= Mathf.Abs(Vector3.Distance(mostThreatening.transform.position, current.transform.position) - 2f) * 100f;
             }
             return new SteeringBehaviour(avoidance, 0f);
         }
@@ -43,27 +43,19 @@ namespace AI.Movement
                 if (_aIEntities[i] == null ||_aIEntities[i] == ent) continue;
 
                 AIEntity obstacle = _aIEntities[i];
-                bool collision = LineIntersectsCircle(ahead, ahead2, obstacle.transform.position);
+                bool collision = Vector3.Distance(ent.transform.position, obstacle.transform.position) < 2f;
 
+                
                 if (collision && (mostThreatening == null ||
-                            Distance(ent.transform.position,
+                            Vector3.Distance(ent.transform.position,
                             obstacle.transform.position) <
-                            Distance(ent.transform.position,
+                            Vector3.Distance(ent.transform.position,
                             mostThreatening.transform.position)))
                 {
                     mostThreatening = obstacle;
                 }
             }
             return mostThreatening;
-        }
-
-        private bool LineIntersectsCircle(Vector3 ahead, Vector3 ahead2, Vector3 center)
-        {
-            return Distance(center, ahead) <= 1.5f || Distance(center, ahead2) <= 1.5f;
-        }
-        private float Distance(Vector3 a, Vector3 b)
-        {
-            return Mathf.Sqrt((a.x - b.x) * (a.x - b.x) + (a.z - b.z) * (a.z - b.z));
         }
     }
 }

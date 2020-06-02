@@ -84,8 +84,7 @@ namespace AI.Movement
                 target);
 
             // Checks if the target exists and the distance is less than 2.5
-            if (target != null && distanceToTarget < 2.3f && 
-                distanceToTarget > 1.8f)
+            if (target != null && distanceToTarget < 1.5f)
             {
                 // Attacks the target
                 Attack(target);
@@ -101,6 +100,7 @@ namespace AI.Movement
                 // Gets a vector3 form the pathfinding
                 Vector3? nextPoint = _ailogic.GetPoint
                     (gameObject.transform.position, target);
+
                 if (nextPoint.HasValue)
                 {
                     _steerBehaviours = new SteeringBehaviour();
