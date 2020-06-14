@@ -9,8 +9,9 @@ namespace AI.Movement
     /// </summary>
     public class AIEntity : MonoBehaviour, IEntity
     {
-        // -- Designated area --
-        [SerializeField] protected GameObject area = null;
+
+        // Audio to be player on death
+        [SerializeField] private AudioClip _deathSound = null;
 
         // The color of the ghost
         [SerializeField] private GhostColor _gcolor = GhostColor.Blue;
@@ -24,8 +25,9 @@ namespace AI.Movement
         // The current hp of the ghost
         [SerializeField] private float _hp = 100f;
 
-        // Audio to be player on death
-        [SerializeField] private AudioClip _deathSound;
+
+        // Designated area
+        protected GridGenerator area;
 
         // Respective AudioSource
         private AudioSource _audio;
@@ -72,7 +74,6 @@ namespace AI.Movement
         /// </summary>
         protected virtual void Start()
         {
-            area.GetComponent<GridGenerator>().StartGridGeneration();
             // Gets the rigidbody of this gameobject
             rb = GetComponent<Rigidbody>();
             // Sets the color to the one of the editor
@@ -85,9 +86,22 @@ namespace AI.Movement
             Hp = _hp;
             // Set's if this ghost can perform actions or be performed on
             Speed = _maxSpeed;
+            // If the Entity can move
             IsTargatable = true;
-
+            // The audio source of the object
             _audio = GetComponent<AudioSource>();
+
+            Collider[] col = Physics.OverlapSphere(transform.position, 5);
+
+            for (int i = 0; i < col.Length; i++)
+            {
+                if (col[i].gameObject.CompareTag("GhostArea"))
+                {
+                    area = col[i].gameObject.GetComponent<GridGenerator>();
+
+                    break;
+                }
+            }
         }
 
         /// <summary>

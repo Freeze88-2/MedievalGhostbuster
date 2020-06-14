@@ -31,11 +31,33 @@ namespace AI.PathFinding.GridGeneration
         // A line renderer for debugging
         private LineRenderer _line;
 
+        // The collider of this area to detect if the player is inside
+        private BoxCollider col;
+
+        // Bool to store if the player is inside
+        public bool PlayerIsInside { get; private set; }
+
+        // Bool if the grid was already generated
+        public bool IsGenerated { get; private set; }
+
+        private void Start()
+        {
+            // Adds a collider to this object
+            col = gameObject.AddComponent<BoxCollider>();
+            col.size = areaSize;
+
+            StartGridGeneration();
+        }
+
         /// <summary>
         /// Called to generate the grid
         /// </summary>
         public void StartGridGeneration()
         {
+            // Sets the ISGenerated to true
+            IsGenerated = true;
+            // Sets the collider to be trigger
+            col.isTrigger = true;
             // Finds the diameter of the node
             nodeDiameter = nodeRadius * 2;
             // Finds the size on the X of the area
@@ -208,6 +230,23 @@ namespace AI.PathFinding.GridGeneration
                     Gizmos.color = a.Walkable ? a.GhostID != null ? Color.blue : Color.green : Color.red;
                     Gizmos.DrawWireCube(a.Position, new Vector3(1, 0, 1) * nodeDiameter);
                 }
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                PlayerIsInside = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+
+            if (other.CompareTag("Player"))
+            {
+                PlayerIsInside = false;
             }
         }
     }

@@ -1,4 +1,11 @@
-﻿using AI.PathFinding.GridGeneration;
+﻿/*
+ * |---------------------------------------------------|
+ * |                                                   |
+ * |          André please cleanup this mess!          |
+ * |                                                   |
+ * |---------------------------------------------------|
+ */
+
 using CostumDebug;
 using System.Collections;
 using UnityEngine;
@@ -10,6 +17,9 @@ namespace AI.Movement
     /// </summary>
     public class AIMovement : AIEntity, IDebug
     {
+        // Stores the current target
+        private Vector3? nextPoint;
+
         // Provides a point for the AI to move to
         private AIPathing _ailogic;
 
@@ -33,6 +43,7 @@ namespace AI.Movement
 
         // Stores the current target
         private Vector3 target;
+
         /// <summary>
         /// Use this for initialization
         /// </summary>
@@ -41,17 +52,24 @@ namespace AI.Movement
             // Calls the base class start
             base.Start();
 
-            // Creates the AIBrain
-            _brain = new AIBrainController(area, gameObject);
+            // Finds the Player gameobject
+            GameObject tempPlayer = GameObject.FindGameObjectWithTag("Player");
 
             // Finds the IEntity component of the player
-            _player = GameObject.FindGameObjectWithTag("Player")
-                .GetComponent<IEntity>();
+            _player = tempPlayer.GetComponent<IEntity>();
+
+            // Creates the AIBrain
+            _brain = new AIBrainController(area, gameObject, tempPlayer);
+
+            // Creates a new AIPathing passing in the _grid
+            _ailogic = new AIPathing(area);
+
 
             // Gives a default value to _canMove
             _canMove = false;
 
             GameObject[] objs = GameObject.FindGameObjectsWithTag("GhostEnemy");
+
             AIEntity[] ss = new AIEntity[objs.Length];
 
             for (int i = 0; i < objs.Length; i++)
@@ -59,18 +77,13 @@ namespace AI.Movement
                 ss[i] = objs[i].GetComponent<AIEntity>();
             }
 
-            _behaviours = new IBehaviour[4] {
+            _behaviours = new IBehaviour[4]
+            {
                 new AISeek(),
                 new AISeparation(ss, 1.2f),
                 new AIObstacleAvoidance(ss, 2f),
-                new AIRotateToTarget()};
-
-            // Checks if the area exists
-            if (area != null)
-            {
-                // Creates a new AIPathing passing in the _grid
-                _ailogic = new AIPathing(area.GetComponent<GridGenerator>());
-            }
+                new AIRotateToTarget()
+            };
         }
 
         /// <summary>
@@ -78,28 +91,34 @@ namespace AI.Movement
         /// </summary>
         private void Update()
         {
+            Vector3 oldTarget = target;
+
             target = _brain.GetDecision();
 
-            float distanceToTarget = Vector3.Distance(transform.position,
-                target);
+            //float distanceToTarget = Vector3.Distance(transform.position,
+            //    target);
 
-            // Checks if the target exists and the distance is less than 2.5
-            if (target != null && distanceToTarget < 1.5f)
-            {
-                // Attacks the target
-                Attack(target);
-                // Stops the ghost from moving
-                _canMove = false;
-            }
+            //// Checks if the target exists and the distance is less than 2.5
+            //if (target != null && distanceToTarget < 1.5f)
+            //{
+            //    // Attacks the target
+            //    Attack(target);
+            //    // Stops the ghost from moving
+            //    _canMove = false;
+            //}
+
             // Checks if the area exists and can hit the player
-            else if (area != null && _player.IsTargatable)
+            if (_player.IsTargatable)
             {
                 _canMove = true;
 
-                // Stores the next point from AIPathing
-                // Gets a vector3 form the pathfinding
-                Vector3? nextPoint = _ailogic.GetPoint
-                    (gameObject.transform.position, target);
+                if (oldTarget != target)
+                {
+                    // Stores the next point from AIPathing
+                    // Gets a vector3 form the path-finding
+                    nextPoint = _ailogic.GetPoint
+                        (gameObject.transform.position, target);
+                }
 
                 if (nextPoint.HasValue)
                 {
@@ -107,7 +126,8 @@ namespace AI.Movement
 
                     for (int i = 0; i < _behaviours.Length; i++)
                     {
-                        _steerBehaviours += _behaviours[i].GetOutput(this, nextPoint.Value);
+                        _steerBehaviours +=
+                            _behaviours[i].GetOutput(this, nextPoint.Value);
                     }
                 }
                 else
@@ -130,7 +150,7 @@ namespace AI.Movement
                 {
                     rb.velocity = _steerBehaviours.Velocity;
 
-                    transform.rotation = Quaternion.Euler(0f, 
+                    transform.rotation = Quaternion.Euler(0f,
                         _steerBehaviours.Angle, 0f);
 
                     if (rb.velocity.magnitude > Speed)
@@ -160,7 +180,7 @@ namespace AI.Movement
         }
 
         /// <summary>
-        /// Setups a debug _line on the game
+        /// Setups a debug _line in the game
         /// </summary>
         /// <param name="active"> Activate or deactivate the debug </param>
         public void RunDebug(bool active)

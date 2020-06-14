@@ -25,6 +25,7 @@ public class GridGeneratorEditor : Editor
         serializedObject.ApplyModifiedProperties();
 
         GridGenerator gridScript = (GridGenerator)target;
+
         if (GUILayout.Button("Generate"))
         {
             gridScript.StartGridGeneration();

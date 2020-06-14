@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AI.PathFinding.GridGeneration;
+using AI.Movement;
 
 public class AIBrainController
 {
@@ -13,26 +14,25 @@ public class AIBrainController
     private GameObject _choosenObj;
     private IEntity _choosenGhost;
     private int counter;
+    private GameObject _player;
 
-    public AIBrainController(GameObject area, GameObject ai)
+    public AIBrainController(GridGenerator area, GameObject ai, GameObject player)
     {
-        _area = area.GetComponent<GridGenerator>();
+        _area = area;
         _ai = ai;
+        _player = player;
 
         GenerateTree();
     }
     private void GenerateTree()
     {
         IDecisionTreeNode freeRoam = new ActionNode(FreeRoam);
-        IDecisionTreeNode interact = new ActionNode(Interaction);
-        IDecisionTreeNode objectInt = new ActionNode(ObjectInteraction);
-        IDecisionTreeNode ghostInt = new ActionNode(GhostInteraction);
+        IDecisionTreeNode objectInteraction = new ActionNode(ObjectInteraction);
+        IDecisionTreeNode ghostInteraction = new ActionNode(GhostInteraction);
 
-        IDecisionTreeNode interactionNodes = new DecisionNode(RandomBinaryDecision, objectInt, ghostInt);
+        IDecisionTreeNode interactionNodes = new DecisionNode(RandomBinaryDecision, objectInteraction, ghostInteraction);
         root = new DecisionNode(RandomBinaryDecision, freeRoam, interactionNodes);
     }
-
-
 
     public Vector3 GetDecision()
     {
@@ -46,15 +46,26 @@ public class AIBrainController
         }
         return _desiredPos;
     }
+    private bool GetDesiredBehaviour() =>_area.PlayerIsInside;
+
+    private bool GetPlayerIsNear()
+    {
+        float distanceToPlayer = Vector3.Distance(
+            _ai.transform.position, _player.transform.position);
+
+        return distanceToPlayer <= 1.5f ? true : false;
+    }
+
+    //private bool HasSpaceNearPlayer()
+    //{
+
+    //}
     private bool RandomBinaryDecision()
     {
         float binaryDesision = Random.value;
 
         return binaryDesision > 0.5f ? true : false;
     }
-
-
-
 
     private void FreeRoam()
     {
@@ -67,22 +78,6 @@ public class AIBrainController
         z +=  _area.transform.position.z;
 
         _desiredPos = new Vector3(x, 0, z);
-    }
-
-    private void Interaction()
-    {
-        Debug.Log("Interacting");
-
-        if (_choosenObj != null)
-        {
-            _choosenObj.SetActive(false);
-        }
-
-        _choosenGhost.IsTargatable = true;
-        _choosenGhost = null;
-        _choosenObj = null;
-
-        _desiredPos = _ai.transform.position;
     }
 
     private void ObjectInteraction()
@@ -103,6 +98,7 @@ public class AIBrainController
 
         _desiredPos = choosenCol.transform.position;
     }
+
     private void GhostInteraction()
     {
         Debug.Log("Interacting with ghost");

@@ -27,9 +27,6 @@ namespace AI.Movement
         // Instance of the pathfinding algorithm
         private readonly AStarAlgorithm _aStar;
 
-        //////// Unique ID of the ghost
-        //////private readonly int _iD;
-
         /// <summary>
         /// Creates a new AIPathing for the AI to manage the target and position
         /// </summary>
@@ -42,9 +39,6 @@ namespace AI.Movement
             this._grid = _grid;
             // Creates a new A* algorithm
             _aStar = new AStarAlgorithm();
-
-            ////////// Creates a unique ID for this ghost
-            ////////_iD = System.DateTime.Now.Millisecond + Random.Range(0, 10000);
         }
 
         /// <summary>
