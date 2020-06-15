@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
 
-public class ActionNode : IDecisionTreeNode , IGameAction
+public class ActionNode : IDecisionTreeNode, IGameAction
 {
     private readonly Action gameAction;
 

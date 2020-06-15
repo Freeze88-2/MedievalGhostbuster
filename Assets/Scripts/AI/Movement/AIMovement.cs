@@ -29,9 +29,6 @@ namespace AI.Movement
         // The player entity
         private IEntity _player;
 
-        // The player gameobjet
-        private GameObject _playerObj;
-
         // If the ghost can move on the next fixed update
         private bool _canMove;
 
@@ -41,8 +38,6 @@ namespace AI.Movement
         // Array of all behaviours
         private IBehaviour[] _behaviours;
 
-        // Creates a new AIBrainController
-        private AIBrainController _brain;
 
         // Stores the current target
         private Vector3 target;
@@ -55,18 +50,11 @@ namespace AI.Movement
             // Calls the base class start
             base.Start();
 
-            // Finds the Player gameobject
-            _playerObj = GameObject.FindGameObjectWithTag("Player");
-
             // Finds the IEntity component of the player
-            _player = _playerObj.GetComponent<IEntity>();
-
-            // Creates the AIBrain
-            _brain = new AIBrainController(area, gameObject, _playerObj);
+            _player = _playerScript.gameObject.GetComponent<IEntity>();
 
             // Creates a new AIPathing passing in the _grid
             _ailogic = new AIPathing(area);
-
 
             // Gives a default value to _canMove
             _canMove = false;
@@ -94,8 +82,6 @@ namespace AI.Movement
         /// </summary>
         private void Update()
         {
-            Vector3 oldTarget = target;
-
             target = _brain.GetDecision();
 
             // Checks if the area exists and can hit the player
@@ -107,7 +93,6 @@ namespace AI.Movement
                 // Gets a vector3 form the path-finding
                 nextPoint = _ailogic.GetPoint
                     (gameObject.transform.position, target);
-
 
                 if (nextPoint.HasValue && target != Vector3.zero)
                 {
@@ -131,12 +116,15 @@ namespace AI.Movement
         /// </summary>
         private void FixedUpdate()
         {
+            SetAnimation(_canMove);
+
             // If the ghost can move
             if (_canMove)
             {
                 // Checks if the ghost has something below
                 if (Physics.Raycast(transform.position, -transform.up, 0.1f))
                 {
+
                     rb.velocity = _steerBehaviours.Velocity;
 
                     transform.rotation = Quaternion.Euler(0f,
@@ -220,14 +208,6 @@ namespace AI.Movement
                     target);
                 // Waits for the _end of the frame
                 yield return new WaitForEndOfFrame();
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (_brain.attackingTag)
-            {
-                _playerObj.GetComponent<DummyPlayer>().NOfGhostsAround -= 1;
             }
         }
     }

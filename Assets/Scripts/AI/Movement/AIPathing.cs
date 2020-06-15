@@ -6,13 +6,11 @@ using UnityEngine;
 namespace AI.Movement
 {
     /// <summary>
-    /// Checks pathfinding and returns a point
+    /// Checks path finding and returns a point
     /// </summary>
     public class AIPathing
     {
-        /// <summary>
-        /// List of _points found by the pathfinding
-        /// </summary>
+        // List of _points found by the path finding
         public List<Vector3> Path { get; private set; }
 
         // The designated area of the ghost
@@ -24,12 +22,13 @@ namespace AI.Movement
         // The ending node
         private Node _end;
 
-        // Instance of the pathfinding algorithm
+        // Instance of the path finding algorithm
         private readonly AStarAlgorithm _aStar;
 
         // Old target give
         private Node _oldTarget;
 
+        // The index to get the point on the list
         private int index = 0;
 
         /// <summary>
@@ -54,32 +53,48 @@ namespace AI.Movement
         /// <returns> The next position to move to </returns>
         public Vector3? GetPoint(Vector3 init, Vector3 target)
         {
+            // Saves the old target not
             _oldTarget = _end;
 
-
+            // Finds the node where the target is at
             _end = _grid.GetClosestNode(target - _grid.transform.position);
 
+            // Checks if the target changed, if so it runs the path finding
             if (_end != null && _end != _oldTarget)
             {
+                // Finds the node where the AI is at
                 _start = _grid.GetClosestNode(init - _grid.transform.position);
 
+                // Calculates the points on the path
                 Path = _aStar.CalculatePath(_start, _end);
+
+                // Resets the index of the Path List
                 index = 0;
             }
 
+            // Checks if the current index can be accessed on the list
             if (Path != null && Path.Count >= index + 1)
             {
+                // Creates a temporary point with the next position to move to
                 Vector3 point = Path[index];
 
-                Node currentPos = _grid.GetClosestNode(init - _grid.transform.position);
+                // Finds the current node the AI is at 
+                Node currentPos = 
+                    _grid.GetClosestNode(init - _grid.transform.position);
 
+                // Checks if the AI is at the wanted position
                 if (point == currentPos.Position)
+                {
+                    // Next time gets the next index
                     index++;
+                }
 
+                // Returns the wanted position
                 return point;
             }
             else
             {
+                // Returns no point
                 return null;
             }
         }

@@ -1,6 +1,6 @@
 ﻿using AI.PathFinding.GridGeneration;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 namespace AI.Movement
 {
@@ -9,7 +9,6 @@ namespace AI.Movement
     /// </summary>
     public class AIEntity : MonoBehaviour, IEntity
     {
-
         // Audio to be player on death
         [SerializeField] private AudioClip _deathSound = null;
 
@@ -25,12 +24,20 @@ namespace AI.Movement
         // The current hp of the ghost
         [SerializeField] private float _hp = 100f;
 
+        // Respective AudioSource
+        private AudioSource _audio;
+
+        // Respective Animator
+        private Animator _anim;
 
         // Designated area
         protected GridGenerator area;
 
-        // Respective AudioSource
-        private AudioSource _audio;
+        // Creates a new AIBrainController
+        protected AIBrainController _brain;
+
+        // The gameObject of the player;
+        protected DummyPlayer _playerScript;
 
         /// <summary>
         /// The color of the ghost
@@ -58,14 +65,17 @@ namespace AI.Movement
         public float Hp { get; private set; }
 
         /// <summary>
-        /// If this ghost can be targetted
+        /// If this ghost can be targeted
         /// </summary>
         public bool IsTargatable { get; set; }
 
+        /// <summary>
+        /// The current velocity of this AI
+        /// </summary>
         public Vector3 Velocity => rb.velocity;
 
         /// <summary>
-        /// The rigidbody attached to this gameobject
+        /// The <see cref="Rigidbody"/> attached to this game object
         /// </summary>
         protected Rigidbody rb;
 
@@ -74,8 +84,15 @@ namespace AI.Movement
         /// </summary>
         protected virtual void Start()
         {
-            // Gets the rigidbody of this gameobject
+            GetArea();
+            _playerScript = GameObject.FindGameObjectWithTag("Player").
+                GetComponent<DummyPlayer>();
+            // Gets the animator of the AI
+            _anim = GetComponent<Animator>();
+            // Gets the RigidBody of this game object
             rb = GetComponent<Rigidbody>();
+            // The audio source of the object
+            _audio = GetComponent<AudioSource>();
             // Sets the color to the one of the editor
             GColor = _gcolor;
             // Sets the Maximum hp to the one of the editor
@@ -88,9 +105,21 @@ namespace AI.Movement
             Speed = _maxSpeed;
             // If the Entity can move
             IsTargatable = true;
-            // The audio source of the object
-            _audio = GetComponent<AudioSource>();
+            // Creates the AIBrain
+            _brain = new AIBrainController
+                (area, gameObject, _playerScript, _anim);
+        }
 
+        protected void SetAnimation(bool walking)
+        {
+            _anim.SetBool("Fly Forward", walking);
+        }
+
+        /// <summary>
+        /// Finds the area the ghost is in
+        /// </summary>
+        private void GetArea()
+        {
             Collider[] col = Physics.OverlapSphere(transform.position, 5);
 
             for (int i = 0; i < col.Length; i++)
@@ -103,7 +132,6 @@ namespace AI.Movement
                 }
             }
         }
-
         /// <summary>
         /// Subtract the specified amount of hp from the entity
         /// </summary>
@@ -114,8 +142,10 @@ namespace AI.Movement
             Hp = Mathf.Max(Hp - amount, 0);
 
             // Checks if the hp is 0
-            if (Hp == 0)
+            if (Hp <= 0)
             {
+                _anim.SetTrigger("Die");
+
                 _audio.clip = _deathSound;
                 _audio.volume = Random.Range(0.5f, 1.0f);
                 _audio.pitch = Random.Range(0.5f, 1.0f);
@@ -123,8 +153,17 @@ namespace AI.Movement
 
                 IsTargatable = false;
 
+                if (_brain.attackingTag)
+                {
+                    _playerScript.NOfGhostsAround -= 1;
+                }
+
                 // Kills the ghost
                 StartCoroutine(KillGhost());
+            }
+            else
+            {
+                _anim.SetTrigger("Take Damage");
             }
         }
 

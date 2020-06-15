@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using AI.PathFinding.GridGeneration;
 using UnityEngine;
-using AI.PathFinding.GridGeneration;
-using AI.Movement;
 
 public class AIBrainController
 {
@@ -13,20 +10,24 @@ public class AIBrainController
     private IEntity _choosenGhost;
     private GameObject _choosenObj;
     private int counter;
-    private int changeCirclePosCounter;
+    private int attackDelayTimer;
     private DummyPlayer _player;
+    private Animator _anim;
+    private bool _wasPlayerInArea;
     public bool attackingTag { get; set; }
 
-    public AIBrainController(GridGenerator area, GameObject ai, GameObject player)
+    public AIBrainController(GridGenerator area, GameObject ai, DummyPlayer player, Animator anim)
     {
-        _player = player.GetComponent<DummyPlayer>();
+        _player = player;
+        _anim = anim;
         _area = area;
         _ai = ai;
 
-        changeCirclePosCounter = 200;
+        attackDelayTimer = 100;
 
         GenerateTree();
     }
+
     private void GenerateTree()
     {
         IDecisionTreeNode freeRoam = new ActionNode(FreeRoam);
@@ -47,7 +48,7 @@ public class AIBrainController
     public Vector3 GetDecision()
     {
         counter++;
-
+        
         if (counter >= 200 || GetDesiredBehaviour())
         {
             ActionNode act = root.MakeDecision() as ActionNode;
@@ -57,7 +58,19 @@ public class AIBrainController
         return _desiredPos;
     }
 
-    private bool GetDesiredBehaviour() => _area.PlayerIsInside;
+    private bool GetDesiredBehaviour() 
+    {
+        if(!_wasPlayerInArea && _area.PlayerIsInside)
+        {
+            _wasPlayerInArea = true;
+            _anim.SetTrigger("Cast Spell");
+        }
+        if (!_area.PlayerIsInside)
+        {
+            _wasPlayerInArea = false;
+        }
+        return _area.PlayerIsInside; 
+    }
 
     private bool HasSpaceNearPlayer()
         => _player.NOfGhostsAround < 4 || attackingTag;
@@ -78,6 +91,8 @@ public class AIBrainController
 
     private void Attack()
     {
+        attackDelayTimer++;
+
         Vector3 dir = _ai.transform.position - _player.transform.position;
         // Resets the value of Y to 0
         dir.y = 0;
@@ -86,17 +101,25 @@ public class AIBrainController
         _ai.transform.rotation = Quaternion.Lerp(_ai.transform.rotation,
             Quaternion.LookRotation(-dir), Time.deltaTime * 30);
 
-        if (!attackingTag)
+        if (attackDelayTimer >= 100)
         {
-            _player.NOfGhostsAround += 1;
+
+            if (!attackingTag)
+            {
+                _player.NOfGhostsAround += 1;
+            }
+
+            attackingTag = true;
+
+            _desiredPos = Vector3.zero;
+
+            _anim.SetTrigger("Bite Attack");
+
+            if (_player != null)
+                _player.DealDamage(1f);
+
+            attackDelayTimer = 0;
         }
-
-        attackingTag = true;
-
-        _desiredPos = Vector3.zero;
-
-        if (_player != null)
-            _player.DealDamage(1f);
     }
 
     private void CirclePlayer()
@@ -168,5 +191,4 @@ public class AIBrainController
     {
         _desiredPos = _player.gameObject.transform.position;
     }
-
 }

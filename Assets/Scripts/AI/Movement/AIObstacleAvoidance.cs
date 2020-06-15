@@ -15,9 +15,9 @@ namespace AI.Movement
 
         public SteeringBehaviour GetOutput(AIEntity current, Vector3 target)
         {
-            float dynamicLen = 2 *(current.Velocity.magnitude / current.Speed);
+            float dynamicLen = 2 * (current.Velocity.magnitude / current.Speed);
 
-            Vector3 ahead = current.transform.position + 
+            Vector3 ahead = current.transform.position +
                 current.Velocity.normalized * dynamicLen;
 
             Vector3 avoidance = Vector3.zero;
@@ -30,7 +30,7 @@ namespace AI.Movement
                 avoidance.z = ahead.z - mostThreatening.transform.position.z;
 
                 float pushForce = Vector3.Distance(
-                    mostThreatening.transform.position, 
+                    mostThreatening.transform.position,
                     current.transform.position) - _detectionRadius;
 
                 avoidance = avoidance.normalized;
@@ -45,11 +45,11 @@ namespace AI.Movement
 
             for (int i = 0; i < _aIEntities.Length; i++)
             {
-                if (_aIEntities[i] == null ||_aIEntities[i] == ent) continue;
+                if (_aIEntities[i] == null || _aIEntities[i] == ent) continue;
 
                 AIEntity obstacle = _aIEntities[i];
 
-                bool collision = Vector3.Distance(ent.transform.position, 
+                bool collision = Vector3.Distance(ent.transform.position,
                     obstacle.transform.position) < _detectionRadius;
 
                 if (collision && (mostThreatening == null ||

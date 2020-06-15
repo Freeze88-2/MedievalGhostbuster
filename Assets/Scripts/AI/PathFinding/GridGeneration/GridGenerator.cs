@@ -243,7 +243,6 @@ namespace AI.PathFinding.GridGeneration
 
         private void OnTriggerExit(Collider other)
         {
-
             if (other.CompareTag("Player"))
             {
                 PlayerIsInside = false;

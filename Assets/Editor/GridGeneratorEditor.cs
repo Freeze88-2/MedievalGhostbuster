@@ -1,6 +1,6 @@
-﻿using UnityEditor;
+﻿using AI.PathFinding.GridGeneration;
+using UnityEditor;
 using UnityEngine;
-using AI.PathFinding.GridGeneration;
 
 [CustomEditor(typeof(GridGenerator))]
 [CanEditMultipleObjects]
