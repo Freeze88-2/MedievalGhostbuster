@@ -194,8 +194,8 @@ GameObject:
   - component: {fileID: 3925940674380384439}
   - component: {fileID: 3925940674380384438}
   - component: {fileID: 3925940674380384457}
-  - component: {fileID: 3925940674380384456}
   - component: {fileID: 1280695057158683826}
+  - component: {fileID: 3925940674380384456}
   m_Layer: 13
   m_Name: GhostGreen
   m_TagString: GhostEnemy
@@ -276,25 +276,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &3925940674380384456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3925940674380384459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1e977533cd3a2e4a84ad947694b441a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  area: {fileID: 0}
-  _gcolor: 1
-  _maxSpeed: 1.5
-  _maxHp: 150
-  _hp: 10
-  _deathSound: {fileID: 8300000, guid: 31a0e87f1089541409bae6cd95947f3d, type: 3}
 --- !u!82 &1280695057158683826
 AudioSource:
   m_ObjectHideFlags: 0
@@ -391,6 +372,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3925940674380384456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3925940674380384459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e977533cd3a2e4a84ad947694b441a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deathSound: {fileID: 8300000, guid: 31a0e87f1089541409bae6cd95947f3d, type: 3}
+  _gcolor: 1
+  _maxSpeed: 1.5
+  _maxHp: 150
+  _hp: 10
 --- !u!1 &3925940674640332541
 GameObject:
   m_ObjectHideFlags: 0

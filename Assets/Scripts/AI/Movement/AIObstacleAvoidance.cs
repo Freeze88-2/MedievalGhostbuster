@@ -34,7 +34,7 @@ namespace AI.Movement
                     current.transform.position) - _detectionRadius;
 
                 avoidance = avoidance.normalized;
-                avoidance *= Mathf.Abs(pushForce * 100f);
+                avoidance *= Mathf.Abs(pushForce * 150f);
             }
             return new SteeringBehaviour(avoidance, 0f);
         }

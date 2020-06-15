@@ -27,6 +27,11 @@ namespace AI.Movement
         // Instance of the pathfinding algorithm
         private readonly AStarAlgorithm _aStar;
 
+        // Old target give
+        private Node _oldTarget;
+
+        private int index = 0;
+
         /// <summary>
         /// Creates a new AIPathing for the AI to manage the target and position
         /// </summary>
@@ -49,18 +54,29 @@ namespace AI.Movement
         /// <returns> The next position to move to </returns>
         public Vector3? GetPoint(Vector3 init, Vector3 target)
         {
-            _start = _grid.GetClosestNode(init - _grid.transform.position);
+            _oldTarget = _end;
+
 
             _end = _grid.GetClosestNode(target - _grid.transform.position);
 
-            if (_start != null && _end != null)
+            if (_end != null && _end != _oldTarget)
             {
+                _start = _grid.GetClosestNode(init - _grid.transform.position);
+
                 Path = _aStar.CalculatePath(_start, _end);
+                index = 0;
             }
 
-            if (Path != null && Path.Count > 0)
+            if (Path != null && Path.Count >= index + 1)
             {
-                return Path[0];
+                Vector3 point = Path[index];
+
+                Node currentPos = _grid.GetClosestNode(init - _grid.transform.position);
+
+                if (point == currentPos.Position)
+                    index++;
+
+                return point;
             }
             else
             {

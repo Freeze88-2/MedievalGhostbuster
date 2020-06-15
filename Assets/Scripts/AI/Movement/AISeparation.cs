@@ -17,18 +17,15 @@ namespace AI.Movement
         public SteeringBehaviour GetOutput(AIEntity current, Vector3 target)
         {
             Vector3 vel = Vector3.zero;
-            Vector3 dir = current.transform.position - target;
 
-            for (int i = -1; i < _aIEntities.Length; i++)
+            for (int i = 0; i < _aIEntities.Length; i++)
             {
-                if (i > -1)
-                {
-                    if (_aIEntities[i] == null || current == _aIEntities[i]
-                        || current == null) continue;
+                if (_aIEntities[i] == null || current == _aIEntities[i]
+                    || current == null) continue;
 
-                    dir = current.transform.position -
-                         _aIEntities[i].transform.position;
-                }
+                Vector3 dir = current.transform.position -
+                     _aIEntities[i].transform.position;
+
                 float distance = dir.magnitude;
 
                 if (distance < _maxDistance)

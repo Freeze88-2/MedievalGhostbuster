@@ -29,6 +29,9 @@ namespace AI.Movement
         // The player entity
         private IEntity _player;
 
+        // The player gameobjet
+        private GameObject _playerObj;
+
         // If the ghost can move on the next fixed update
         private bool _canMove;
 
@@ -53,13 +56,13 @@ namespace AI.Movement
             base.Start();
 
             // Finds the Player gameobject
-            GameObject tempPlayer = GameObject.FindGameObjectWithTag("Player");
+            _playerObj = GameObject.FindGameObjectWithTag("Player");
 
             // Finds the IEntity component of the player
-            _player = tempPlayer.GetComponent<IEntity>();
+            _player = _playerObj.GetComponent<IEntity>();
 
             // Creates the AIBrain
-            _brain = new AIBrainController(area, gameObject, tempPlayer);
+            _brain = new AIBrainController(area, gameObject, _playerObj);
 
             // Creates a new AIPathing passing in the _grid
             _ailogic = new AIPathing(area);
@@ -95,32 +98,18 @@ namespace AI.Movement
 
             target = _brain.GetDecision();
 
-            //float distanceToTarget = Vector3.Distance(transform.position,
-            //    target);
-
-            //// Checks if the target exists and the distance is less than 2.5
-            //if (target != null && distanceToTarget < 1.5f)
-            //{
-            //    // Attacks the target
-            //    Attack(target);
-            //    // Stops the ghost from moving
-            //    _canMove = false;
-            //}
-
             // Checks if the area exists and can hit the player
             if (_player.IsTargatable)
             {
                 _canMove = true;
 
-                if (oldTarget != target)
-                {
-                    // Stores the next point from AIPathing
-                    // Gets a vector3 form the path-finding
-                    nextPoint = _ailogic.GetPoint
-                        (gameObject.transform.position, target);
-                }
+                // Stores the next point from AIPathing
+                // Gets a vector3 form the path-finding
+                nextPoint = _ailogic.GetPoint
+                    (gameObject.transform.position, target);
 
-                if (nextPoint.HasValue)
+
+                if (nextPoint.HasValue && target != Vector3.zero)
                 {
                     _steerBehaviours = new SteeringBehaviour();
 
@@ -159,24 +148,6 @@ namespace AI.Movement
                     }
                 }
             }
-        }
-
-        //--------------------------------------------------------------//
-        //                          Temporary                           //
-        //--------------------------------------------------------------//
-        private void Attack(Vector3 target)
-        {
-            Vector3 dir = target - transform.position;
-            // Resets the value of Y to 0
-            dir.y = 0;
-
-            // Rotates gradually the Ghost towards the direction
-            transform.rotation = Quaternion.Lerp(transform.rotation,
-                Quaternion.LookRotation(dir), Time.deltaTime *
-                MaxSpeed * 6f);
-
-            if (_player != null)
-                _player.DealDamage(1f);
         }
 
         /// <summary>
@@ -249,6 +220,14 @@ namespace AI.Movement
                     target);
                 // Waits for the _end of the frame
                 yield return new WaitForEndOfFrame();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_brain.attackingTag)
+            {
+                _playerObj.GetComponent<DummyPlayer>().NOfGhostsAround -= 1;
             }
         }
     }

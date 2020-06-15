@@ -10,17 +10,20 @@ public class AIBrainController
     private readonly GameObject _ai;
     private IDecisionTreeNode root;
     private Vector3 _desiredPos;
-    private GameObject[] _interactables;
-    private GameObject _choosenObj;
     private IEntity _choosenGhost;
+    private GameObject _choosenObj;
     private int counter;
-    private GameObject _player;
+    private int changeCirclePosCounter;
+    private DummyPlayer _player;
+    public bool attackingTag { get; set; }
 
     public AIBrainController(GridGenerator area, GameObject ai, GameObject player)
     {
+        _player = player.GetComponent<DummyPlayer>();
         _area = area;
         _ai = ai;
-        _player = player;
+
+        changeCirclePosCounter = 200;
 
         GenerateTree();
     }
@@ -29,16 +32,23 @@ public class AIBrainController
         IDecisionTreeNode freeRoam = new ActionNode(FreeRoam);
         IDecisionTreeNode objectInteraction = new ActionNode(ObjectInteraction);
         IDecisionTreeNode ghostInteraction = new ActionNode(GhostInteraction);
+        IDecisionTreeNode circlePlayer = new ActionNode(CirclePlayer);
+        IDecisionTreeNode attackPlayer = new ActionNode(Attack);
+        IDecisionTreeNode getToPlayer = new ActionNode(GetPlayerPosition);
 
         IDecisionTreeNode interactionNodes = new DecisionNode(RandomBinaryDecision, objectInteraction, ghostInteraction);
-        root = new DecisionNode(RandomBinaryDecision, freeRoam, interactionNodes);
+        IDecisionTreeNode canAttack = new DecisionNode(GetPlayerIsNear, attackPlayer, getToPlayer);
+        IDecisionTreeNode attackingNodes = new DecisionNode(HasSpaceNearPlayer, canAttack, circlePlayer);
+        IDecisionTreeNode normalBehaviour = new DecisionNode(RandomBinaryDecision, freeRoam, interactionNodes);
+
+        root = new DecisionNode(GetDesiredBehaviour, attackingNodes, normalBehaviour);
     }
 
     public Vector3 GetDecision()
     {
         counter++;
 
-        if (counter >= 200)
+        if (counter >= 200 || GetDesiredBehaviour())
         {
             ActionNode act = root.MakeDecision() as ActionNode;
             act.Execute();
@@ -46,44 +56,73 @@ public class AIBrainController
         }
         return _desiredPos;
     }
-    private bool GetDesiredBehaviour() =>_area.PlayerIsInside;
+
+    private bool GetDesiredBehaviour() => _area.PlayerIsInside;
+
+    private bool HasSpaceNearPlayer()
+        => _player.NOfGhostsAround < 4 || attackingTag;
 
     private bool GetPlayerIsNear()
     {
         float distanceToPlayer = Vector3.Distance(
             _ai.transform.position, _player.transform.position);
 
-        return distanceToPlayer <= 1.5f ? true : false;
+        if (!(distanceToPlayer <= 2f) && attackingTag)
+        {
+            _player.NOfGhostsAround -= 1;
+            attackingTag = false;
+        }
+
+        return distanceToPlayer <= 2f;
     }
 
-    //private bool HasSpaceNearPlayer()
-    //{
-
-    //}
-    private bool RandomBinaryDecision()
+    private void Attack()
     {
-        float binaryDesision = Random.value;
+        Vector3 dir = _ai.transform.position - _player.transform.position;
+        // Resets the value of Y to 0
+        dir.y = 0;
 
-        return binaryDesision > 0.5f ? true : false;
+        // Rotates gradually the Ghost towards the direction
+        _ai.transform.rotation = Quaternion.Lerp(_ai.transform.rotation,
+            Quaternion.LookRotation(-dir), Time.deltaTime * 30);
+
+        if (!attackingTag)
+        {
+            _player.NOfGhostsAround += 1;
+        }
+
+        attackingTag = true;
+
+        _desiredPos = Vector3.zero;
+
+        if (_player != null)
+            _player.DealDamage(1f);
     }
+
+    private void CirclePlayer()
+    {
+        Vector3 dir = _ai.transform.position - _player.transform.position;
+
+        dir = dir.normalized * 5;
+
+        _desiredPos = _player.transform.position + dir;
+    }
+
+    private bool RandomBinaryDecision() => Random.value > 0.5f ? true : false;
 
     private void FreeRoam()
     {
-        Debug.Log("Roaming");
-
-        float x = Random.Range(-(_area.areaSize.x -1), _area.areaSize.x);
+        float x = Random.Range(-(_area.areaSize.x - 1), _area.areaSize.x);
         x += _area.transform.position.x;
-        
-        float z = Random.Range(-(_area.areaSize.z -1), _area.areaSize.z);
-        z +=  _area.transform.position.z;
+
+        float z = Random.Range(-(_area.areaSize.z - 1), _area.areaSize.z);
+        z += _area.transform.position.z;
 
         _desiredPos = new Vector3(x, 0, z);
     }
 
     private void ObjectInteraction()
     {
-        Debug.Log("Interacting with objects");
-
         Collider[] col = Physics.OverlapSphere(_ai.transform.position,
             10f, LayerMask.GetMask("Interactable"));
 
@@ -101,8 +140,6 @@ public class AIBrainController
 
     private void GhostInteraction()
     {
-        Debug.Log("Interacting with ghost");
-
         Collider[] col = Physics.OverlapSphere(_ai.transform.position,
             10f, LayerMask.GetMask("Entity"));
 
@@ -126,4 +163,10 @@ public class AIBrainController
             }
         }
     }
+
+    private void GetPlayerPosition()
+    {
+        _desiredPos = _player.gameObject.transform.position;
+    }
+
 }

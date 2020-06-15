@@ -48,8 +48,7 @@ public class DummyPlayer : MonoBehaviour, IEntity
     /// </summary>
     public bool IsTargatable { get; set; }
 
-    public Vector3 position => transform.position;
-    public (int, Vector3) ghostsPositions { get; set; }
+    public int NOfGhostsAround { get; set; }
 
     /// <summary>
     /// The rigidbody attached to this gameobject
