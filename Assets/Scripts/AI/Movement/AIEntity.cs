@@ -1,4 +1,5 @@
 ﻿using AI.PathFinding.GridGeneration;
+using AI.DecisionTrees;
 using System.Collections;
 using UnityEngine;
 
@@ -110,8 +111,13 @@ namespace AI.Movement
                 (area, gameObject, _playerScript, _anim);
         }
 
+        /// <summary>
+        /// Uses the animator to change between idle and "Fly Forward"
+        /// </summary>
+        /// <param name="walking"> Bool if it should be set or not </param>
         protected void SetAnimation(bool walking)
         {
+            // Sets the animator bool to the one given
             _anim.SetBool("Fly Forward", walking);
         }
 
@@ -120,14 +126,18 @@ namespace AI.Movement
         /// </summary>
         private void GetArea()
         {
+            // Searches for the colliders on a 5 unit radius 
             Collider[] col = Physics.OverlapSphere(transform.position, 5);
 
+            // Searches through all the colliders
             for (int i = 0; i < col.Length; i++)
             {
+                // Checks if that collider is a "GhostArea"
                 if (col[i].gameObject.CompareTag("GhostArea"))
                 {
+                    // Gets the GridGenerator of that component
                     area = col[i].gameObject.GetComponent<GridGenerator>();
-
+                    // Exits the loop
                     break;
                 }
             }
@@ -144,17 +154,22 @@ namespace AI.Movement
             // Checks if the hp is 0
             if (Hp <= 0)
             {
+                // Sets the animation to of the ghost to die
                 _anim.SetTrigger("Die");
 
+                // Plays the death sound
                 _audio.clip = _deathSound;
                 _audio.volume = Random.Range(0.5f, 1.0f);
                 _audio.pitch = Random.Range(0.5f, 1.0f);
                 _audio.Play();
 
+                // Doesn't allow the ghost to move
                 IsTargatable = false;
 
-                if (_brain.attackingTag)
+                // Checks if the AI is trying to attack the player
+                if (_brain.AttackingTag)
                 {
+                    // Removes one from the number of ghosts around the player
                     _playerScript.NOfGhostsAround -= 1;
                 }
 
@@ -163,6 +178,7 @@ namespace AI.Movement
             }
             else
             {
+                // Plays the damage animation
                 _anim.SetTrigger("Take Damage");
             }
         }
@@ -179,10 +195,12 @@ namespace AI.Movement
 
         private IEnumerator KillGhost()
         {
+            // Checks if the audio is still playing
             while (_audio.isPlaying)
             {
                 yield return null;
             }
+            // When it stops destroys the ghost
             Destroy(gameObject);
         }
     }

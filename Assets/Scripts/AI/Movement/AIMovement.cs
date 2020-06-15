@@ -1,19 +1,11 @@
-﻿/*
- * |---------------------------------------------------|
- * |                                                   |
- * |          André please cleanup this mess!          |
- * |                                                   |
- * |---------------------------------------------------|
- */
-
-using CostumDebug;
+﻿using CostumDebug;
 using System.Collections;
 using UnityEngine;
 
 namespace AI.Movement
 {
     /// <summary>
-    /// Calculates and applies to the gameobject the movement
+    /// Calculates and applies to the game object the movement
     /// </summary>
     public class AIMovement : AIEntity, IDebug
     {
@@ -35,7 +27,7 @@ namespace AI.Movement
         // Stores the value of the velocity and angle
         private SteeringBehaviour _steerBehaviours;
 
-        // Array of all behaviours
+        // Array of all behaviors
         private IBehaviour[] _behaviours;
 
 
@@ -59,20 +51,25 @@ namespace AI.Movement
             // Gives a default value to _canMove
             _canMove = false;
 
+            // Finds all game objects that are ghosts
             GameObject[] objs = GameObject.FindGameObjectsWithTag("GhostEnemy");
 
-            AIEntity[] ss = new AIEntity[objs.Length];
+            // Creates a new Array of AIEntity
+            AIEntity[] enteties = new AIEntity[objs.Length];
 
+            // Cycles through all the objs 
             for (int i = 0; i < objs.Length; i++)
             {
-                ss[i] = objs[i].GetComponent<AIEntity>();
+                // Adds the AIEntity script of that object to the array
+                enteties[i] = objs[i].GetComponent<AIEntity>();
             }
 
+            // Creates a new Array of IBehaviours with the wanted ones
             _behaviours = new IBehaviour[4]
             {
                 new AISeek(),
-                new AISeparation(ss, 1.2f),
-                new AIObstacleAvoidance(ss, 2f),
+                new AISeparation(enteties, 1.2f),
+                new AIObstacleAvoidance(enteties, 2f),
                 new AIRotateToTarget()
             };
         }
@@ -85,7 +82,7 @@ namespace AI.Movement
             target = _brain.GetDecision();
 
             // Checks if the area exists and can hit the player
-            if (_player.IsTargatable)
+            if (_player.IsTargatable && IsTargatable)
             {
                 _canMove = true;
 
@@ -109,6 +106,10 @@ namespace AI.Movement
                     _canMove = false;
                 }
             }
+            else
+            {
+                _canMove = false;
+            }
         }
 
         /// <summary>
@@ -124,14 +125,17 @@ namespace AI.Movement
                 // Checks if the ghost has something below
                 if (Physics.Raycast(transform.position, -transform.up, 0.1f))
                 {
-
+                    // Changes the rigid body velocity to the behavior one
                     rb.velocity = _steerBehaviours.Velocity;
 
+                    // Sets the rotation of the ghost to the angle
                     transform.rotation = Quaternion.Euler(0f,
                         _steerBehaviours.Angle, 0f);
 
+                    // Checks if the velocity is bigger than the speed
                     if (rb.velocity.magnitude > Speed)
                     {
+                        // Normalizes the velocity and multiplies by speed
                         rb.velocity = rb.velocity.normalized * Speed;
                     }
                 }
@@ -152,7 +156,7 @@ namespace AI.Movement
             // If its to activate the _line
             if (active)
             {
-                // Adds a _line render to the gameobject
+                // Adds a _line render to the game object
                 _line = gameObject.AddComponent<LineRenderer>();
 
                 // Creates a sorting layer
@@ -167,7 +171,7 @@ namespace AI.Movement
                 _line.startWidth = 0.05f;
                 // Sets the width of the _line at the _end
                 _line.endWidth = 0.05f;
-                // The _line uses worldspace coordinates
+                // The _line uses world space coordinates
                 _line.useWorldSpace = true;
 
                 // Starts the drawing of the _line
@@ -176,7 +180,7 @@ namespace AI.Movement
         }
 
         /// <summary>
-        /// Coroutine for drawing the _line everyframe
+        /// Coroutine for drawing the _line every frame
         /// </summary>
         /// <returns> A _wait _timer </returns>
         private IEnumerator DebugLine()
@@ -189,7 +193,7 @@ namespace AI.Movement
                 // Set's the first position to the current position
                 _line.SetPosition(0, transform.position);
 
-                // Runs through every point found by the pathfinding
+                // Runs through every point found by the path finding
                 for (int i = 0; i < _ailogic.Path.Count; i++)
                 {
                     if (i + 1 < _ailogic.Path.Count)
