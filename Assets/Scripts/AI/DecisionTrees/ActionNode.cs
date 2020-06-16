@@ -1,4 +1,6 @@
 ﻿using System;
+using UnityEngine;
+
 namespace AI.DecisionTrees
 {
     /// <summary>
@@ -7,13 +9,13 @@ namespace AI.DecisionTrees
     public class ActionNode : IDecisionTreeNode, IGameAction
     {
         // Stores an Action
-        private readonly Action gameAction;
+        private readonly Func<Vector3> gameAction;
 
         /// <summary>
         /// Constructor of the ActionNode
         /// </summary>
         /// <param name="gameAction"> The method to be run </param>
-        public ActionNode(Action gameAction)
+        public ActionNode(Func<Vector3> gameAction)
         {
             // Assigns the gameAction the Action given
             this.gameAction = gameAction;
@@ -22,9 +24,9 @@ namespace AI.DecisionTrees
         /// <summary>
         /// Runs the Action 
         /// </summary>
-        public void Execute()
+        public Vector3 Execute()
         {
-            gameAction();
+            return gameAction();
         }
 
         /// <summary>
