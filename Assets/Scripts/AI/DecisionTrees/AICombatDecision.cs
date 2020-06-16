@@ -8,7 +8,9 @@ namespace AI.DecisionTrees
         private readonly DummyPlayer _player;
         private readonly GameObject _ai;
         private readonly Animator _anim;
+        private readonly IEntity _ghost;
         public bool AttackingTag { get; private set; }
+
         public IDecisionTreeNode AttackingNodes { get; }
 
         public AICombatDecision(DummyPlayer player, GameObject ai, Animator anim)
@@ -16,20 +18,26 @@ namespace AI.DecisionTrees
             _player = player;
             _ai = ai;
             _anim = anim;
-
+            _ghost = ai.GetComponent<IEntity>();
             attackDelayTimer = 100;
 
             IDecisionTreeNode circlePlayer = new ActionNode(CirclePlayer);
+
             IDecisionTreeNode attackPlayer = new ActionNode(Attack);
+
             IDecisionTreeNode getToPlayer = new ActionNode(GetPlayerPosition);
 
-            IDecisionTreeNode canAttack = new DecisionNode(GetPlayerIsNear, attackPlayer, getToPlayer);
-            AttackingNodes = new DecisionNode(HasSpaceNearPlayer, canAttack, circlePlayer);
+            IDecisionTreeNode canAttack = new DecisionNode
+                (GetPlayerIsNear, attackPlayer, getToPlayer);
+
+            AttackingNodes = new DecisionNode
+                (HasSpaceNearPlayer, canAttack, circlePlayer);
         }
 
         public void PlayerIsInArea()
         {
             _anim.SetTrigger("Cast Spell");
+            _ghost.IsTargatable = true;
         }
 
         private bool HasSpaceNearPlayer()
@@ -89,9 +97,7 @@ namespace AI.DecisionTrees
             return _player.transform.position + dir;
         }
 
-        private Vector3 GetPlayerPosition()
-        {
-            return _player.gameObject.transform.position;
-        }
+        private Vector3 GetPlayerPosition() =>
+            _player.gameObject.transform.position;
     }
 }

@@ -6,9 +6,7 @@ namespace AI.DecisionTrees
     public class AIBrainController
     {
         private readonly GridGenerator _area;
-
         private Vector3 _desiredPos;
-        private readonly IDecisionTreeNode root;
 
         private bool _wasPlayerInArea;
         private int counter;
@@ -19,11 +17,12 @@ namespace AI.DecisionTrees
 
         public bool AttackingTag => combat.AttackingTag;
 
-        public AIBrainController(GridGenerator area, GameObject ai, DummyPlayer player, Animator anim)
+        private readonly IDecisionTreeNode root;
+
+        public AIBrainController(GridGenerator area, GameObject ai, 
+            DummyPlayer player, Animator anim)
         {
             _area = area;
-
-            
 
             _rndTimeForDecision = Random.Range(190, 200);
             _desiredPos = Vector3.zero;
@@ -45,6 +44,7 @@ namespace AI.DecisionTrees
             if (!_area.PlayerIsInside)
             {
                 _wasPlayerInArea = false;
+                normal.UpdateRotation();
             }
             return _area.PlayerIsInside;
         }

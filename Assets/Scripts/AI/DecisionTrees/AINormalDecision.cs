@@ -4,55 +4,78 @@ namespace AI.DecisionTrees
 {
     public class AINormalDecision
     {
-        private bool _firstTimeInteracting;
-
+        private readonly float x;
+        private readonly float z;
+        private readonly GameObject _ai;
         private GameObject _choosenGhost;
         private GameObject _choosenObj;
-        private readonly GameObject _ai;
-        private float x, z;
         private Vector3 _areaPos;
+        private IEntity _ghost;
+        private bool _firstTimeInteracting;
 
         public IDecisionTreeNode NormalBehaviour { get; }
 
         public AINormalDecision(GameObject ai, float x, float z, Vector3 area)
         {
-            _ai = ai;
             this.x = x;
             this.z = z;
+
+            _ai = ai;
             _areaPos = area;
             _firstTimeInteracting = true;
 
             IDecisionTreeNode freeRoam = new ActionNode(FreeRoam);
-            IDecisionTreeNode getObjectPos = new ActionNode(ObjectInteraction);
-            IDecisionTreeNode getGhostPos = new ActionNode(GhostInteraction);
-            IDecisionTreeNode interactWithObject = new ActionNode(InteractWithObject);
-            IDecisionTreeNode interactWithGhost = new ActionNode(InteractWithGhost);
 
-            IDecisionTreeNode ghostIteractionNodes = new DecisionNode(IsNearGhost, interactWithGhost, getGhostPos);
-            IDecisionTreeNode objectInteractionNodes = new DecisionNode(IsNearObject, interactWithObject, getObjectPos);
-            IDecisionTreeNode interactionNodes = new DecisionNode(ConditionalRandomDecision, objectInteractionNodes, ghostIteractionNodes);
-            NormalBehaviour = new DecisionNode(ConditionalRandomDecision, freeRoam, interactionNodes);
+            IDecisionTreeNode getObjectPos = new ActionNode(ObjectInteraction);
+
+            IDecisionTreeNode getGhostPos = new ActionNode(GhostInteraction);
+
+            IDecisionTreeNode objInt = new ActionNode(InteractWithObject);
+
+            IDecisionTreeNode ghostInt = new ActionNode(InteractWithGhost);
+
+            IDecisionTreeNode ghostIntNode = new DecisionNode
+                (IsNearGhost, ghostInt, getGhostPos);
+
+            IDecisionTreeNode objIntNode = new DecisionNode
+                (IsNearObject, objInt, getObjectPos);
+
+            IDecisionTreeNode interactionNodes = new DecisionNode
+                (ConditionalRandomDecision, objIntNode, ghostIntNode);
+
+            NormalBehaviour = new DecisionNode
+                (ConditionalRandomDecision, freeRoam, interactionNodes);
         }
 
         public void UpdateRotation()
         {
-            if (_choosenGhost != null && !_firstTimeInteracting)
+            if ((_choosenGhost != null || _choosenObj != null)
+                && !_firstTimeInteracting)
             {
-                Vector3 dir = _ai.transform.position - _choosenGhost.transform.position;
+                Vector3 intPos = _choosenObj == null ?
+                    _choosenGhost.transform.position :
+                    _choosenObj.transform.position;
+
+                Vector3 dir = _ai.transform.position - intPos;
                 // Resets the value of Y to 0
                 dir.y = 0;
 
                 // Rotates gradually the Ghost towards the direction
-                _ai.transform.rotation = Quaternion.Lerp(_ai.transform.rotation,
+                _ai.transform.rotation =
+                    Quaternion.Lerp(_ai.transform.rotation,
                     Quaternion.LookRotation(-dir), Time.deltaTime * 30);
 
-                Vector3 dir2 = _choosenGhost.transform.position - _ai.transform.position;
-                // Resets the value of Y to 0
-                dir2.y = 0;
+                if (_choosenGhost != null)
+                {
+                    Vector3 dir2 = intPos - _ai.transform.position;
+                    // Resets the value of Y to 0
+                    dir2.y = 0;
 
-                // Rotates gradually the Ghost towards the direction
-                _choosenGhost.transform.rotation = Quaternion.Lerp(_choosenGhost.transform.rotation,
-                    Quaternion.LookRotation(-dir2), Time.deltaTime * 30);
+                    // Rotates gradually the Ghost towards the direction
+                    _choosenGhost.transform.rotation =
+                        Quaternion.Lerp(_choosenGhost.transform.rotation,
+                        Quaternion.LookRotation(-dir2), Time.deltaTime * 30);
+                }
             }
         }
 
@@ -88,11 +111,9 @@ namespace AI.DecisionTrees
 
         private Vector3 FreeRoam()
         {
-            float rndX = Random.Range(-(x - 1), x);
-            rndX += _areaPos.x;
+            float rndX = Random.Range(-(x - 1), x) + _areaPos.x;
 
-            float rndZ = Random.Range(-(z - 1), z);
-            rndZ += _areaPos.z;
+            float rndZ = Random.Range(-(z - 1), z) + _areaPos.z;
 
             return new Vector3(rndX, 0, rndZ);
         }
@@ -112,13 +133,8 @@ namespace AI.DecisionTrees
                 Collider choosenCol = col[Random.Range(0, col.Length)];
 
                 _choosenObj = choosenCol.gameObject;
-
-                return choosenCol.transform.position;
             }
-            else
-            {
-                return _choosenObj.transform.position;
-            }
+            return _choosenObj.transform.position;
         }
 
         private Vector3 GhostInteraction()
@@ -128,19 +144,17 @@ namespace AI.DecisionTrees
                 Collider[] col = Physics.OverlapSphere(_ai.transform.position,
                     5f, LayerMask.GetMask("Entity"));
 
-                if (col.Length <= 0)
-                {
-                    return FreeRoam();
-                }
-
                 for (int i = 0; i < col.Length; i++)
                 {
                     if (col[i].CompareTag("GhostEnemy"))
                     {
                         Collider ghost = col[i];
 
-                        if (!ghost.gameObject.GetComponent<IEntity>().IsTargatable)
+                        _ghost = ghost.gameObject.GetComponent<IEntity>();
+
+                        if (!_ghost.IsTargatable)
                         {
+                            _ghost = null;
                             continue;
                         }
 
@@ -152,56 +166,38 @@ namespace AI.DecisionTrees
 
                 return FreeRoam();
             }
-            else
-            {
-                return _choosenGhost.transform.position;
-            }
+            return _choosenGhost.transform.position;
         }
 
         private Vector3 InteractWithGhost()
         {
-            if (_firstTimeInteracting)
-            {
-                _choosenGhost.GetComponent<Animator>().SetTrigger("Defend");
-                _choosenGhost.GetComponent<IEntity>().IsTargatable = false;
+            InteractionLogic();
 
-                _firstTimeInteracting = false;
-            }
-            else if (!_firstTimeInteracting)
-            {
-                _choosenGhost.GetComponent<IEntity>().IsTargatable = true;
+            _ghost.IsTargatable = _firstTimeInteracting;
 
-                _choosenGhost = null;
-
-                _firstTimeInteracting = true;
-            }
             return Vector3.zero;
         }
 
         private Vector3 InteractWithObject()
         {
-            Vector3 dir = _ai.transform.position - _choosenObj.transform.position;
-            // Resets the value of Y to 0
-            dir.y = 0;
+            InteractionLogic();
 
-            // Rotates gradually the Ghost towards the direction
-            _ai.transform.rotation = Quaternion.Lerp(_ai.transform.rotation,
-                Quaternion.LookRotation(-dir), Time.deltaTime * 30);
+            return Vector3.zero;
+        }
 
+        private void InteractionLogic()
+        {
             if (_firstTimeInteracting)
             {
-                _choosenObj.SetActive(false);
-
                 _firstTimeInteracting = false;
             }
             else if (!_firstTimeInteracting)
             {
                 _choosenObj = null;
+                _choosenGhost = null;
 
                 _firstTimeInteracting = true;
             }
-
-            return Vector3.zero;
         }
     }
 }
