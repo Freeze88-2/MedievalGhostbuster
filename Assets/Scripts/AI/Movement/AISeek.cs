@@ -4,7 +4,7 @@ namespace AI.Movement
 {
     /// <summary>
     /// Returns a <see cref="SteeringBehaviour"/>
-    /// with a velocity to where the AI target 
+    /// with a velocity to where the AI target
     /// </summary>
     public class AISeek : IBehaviour
     {
@@ -13,7 +13,7 @@ namespace AI.Movement
         /// </summary>
         /// <param name="current"> The AI to be moved </param>
         /// <param name="target"> The target position of the AI </param>
-        /// <returns> A new  <see cref="SteeringBehaviour"/> 
+        /// <returns> A new  <see cref="SteeringBehaviour"/>
         /// with a velocity </returns>
         public SteeringBehaviour GetOutput(AIEntity current, Vector3 target)
         {

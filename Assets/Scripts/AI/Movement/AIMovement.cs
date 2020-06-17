@@ -30,7 +30,6 @@ namespace AI.Movement
         // Array of all behaviors
         private IBehaviour[] _behaviours;
 
-
         // Stores the current target
         private Vector3 target;
 
@@ -57,7 +56,7 @@ namespace AI.Movement
             // Creates a new Array of AIEntity
             AIEntity[] enteties = new AIEntity[objs.Length];
 
-            // Cycles through all the objs 
+            // Cycles through all the objs
             for (int i = 0; i < objs.Length; i++)
             {
                 // Adds the AIEntity script of that object to the array

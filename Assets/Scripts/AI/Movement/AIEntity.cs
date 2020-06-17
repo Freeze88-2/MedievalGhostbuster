@@ -1,5 +1,5 @@
-﻿using AI.PathFinding.GridGeneration;
-using AI.DecisionTrees;
+﻿using AI.DecisionTrees;
+using AI.PathFinding.GridGeneration;
 using System.Collections;
 using UnityEngine;
 
@@ -25,6 +25,9 @@ namespace AI.Movement
         // The current hp of the ghost
         [SerializeField] private float _hp = 100f;
 
+        // The current hp of the ghost
+        [SerializeField] private float _damageAmount = 1f;
+
         // Respective AudioSource
         private AudioSource _audio;
 
@@ -43,17 +46,22 @@ namespace AI.Movement
         /// <summary>
         /// The color of the ghost
         /// </summary>
-        public GhostColor GColor { get; private set; }
+        public GhostColor GColor => _gcolor;
 
         /// <summary>
         /// The current hp of the ghost
         /// </summary>
-        public float MaxHp { get; private set; }
+        public float MaxHp => _maxHp;
 
         /// <summary>
         /// Maximum speed of the entity
         /// </summary>
-        public float MaxSpeed { get; private set; }
+        public float MaxSpeed => _maxSpeed;
+
+        /// <summary>
+        /// The amount of damage the ghost should deal
+        /// </summary>
+        public float DamageAmount => _damageAmount;
 
         /// <summary>
         /// The current speed of the ghost
@@ -94,12 +102,6 @@ namespace AI.Movement
             rb = GetComponent<Rigidbody>();
             // The audio source of the object
             _audio = GetComponent<AudioSource>();
-            // Sets the color to the one of the editor
-            GColor = _gcolor;
-            // Sets the Maximum hp to the one of the editor
-            MaxHp = _maxHp;
-            // Sets the Maximum speed to the one of the editor
-            MaxSpeed = _maxSpeed;
             // Sets the current hp to the one of the editor
             Hp = _hp;
             // Set's if this ghost can perform actions or be performed on
@@ -126,7 +128,7 @@ namespace AI.Movement
         /// </summary>
         private void GetArea()
         {
-            // Searches for the colliders on a 5 unit radius 
+            // Searches for the colliders on a 5 unit radius
             Collider[] col = Physics.OverlapSphere(transform.position, 5);
 
             // Searches through all the colliders
@@ -142,6 +144,7 @@ namespace AI.Movement
                 }
             }
         }
+
         /// <summary>
         /// Subtract the specified amount of hp from the entity
         /// </summary>
@@ -193,6 +196,10 @@ namespace AI.Movement
             Hp = Mathf.Min(Hp + amount, MaxHp);
         }
 
+        /// <summary>
+        /// Coroutine to check if the ghost sound as done playing on not
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator KillGhost()
         {
             // Checks if the audio is still playing

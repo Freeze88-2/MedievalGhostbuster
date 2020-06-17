@@ -57,7 +57,9 @@ namespace AI.PathFinding.GridGeneration
             // Sets the ISGenerated to true
             IsGenerated = true;
             // Sets the collider to be trigger
+#if (!UNITY_EDITOR)  
             col.isTrigger = true;
+#endif
             // Finds the diameter of the node
             nodeDiameter = nodeRadius * 2;
             // Finds the size on the X of the area

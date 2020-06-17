@@ -14,7 +14,7 @@ namespace AI.Movement
         private readonly float _detectionRadius;
 
         /// <summary>
-        /// Constructor of the AISeparation  
+        /// Constructor of the AISeparation
         /// </summary>
         /// <param name="entities"> All the entities found </param>
         /// <param name="maxDis"> The maximum range of detection </param>
@@ -30,15 +30,15 @@ namespace AI.Movement
         /// </summary>
         /// <param name="current"> The AI to be moved </param>
         /// <param name="target"> The target position of the AI </param>
-        /// <returns> A new  <see cref="SteeringBehaviour"/> 
+        /// <returns> A new  <see cref="SteeringBehaviour"/>
         /// with a angle </returns>
         public SteeringBehaviour GetOutput(AIEntity current, Vector3 target)
         {
             // Defines the distance of detection according to the velocity
-            float dynamicLen = 2 * 
+            float dynamicLen = 2 *
                 (current.Velocity.magnitude / current.Speed);
 
-            // Defines a vector for the detection 
+            // Defines a vector for the detection
             Vector3 ahead = current.transform.position +
                 current.Velocity.normalized * dynamicLen;
 
@@ -87,7 +87,7 @@ namespace AI.Movement
                 // Checks if the AI is not the one given or non-existing
                 if (_aIEntities[i] == null || _aIEntities[i] == ent) continue;
 
-                // Checks if the distance between the current and AI is less 
+                // Checks if the distance between the current and AI is less
                 // than the given max radius
                 bool collision = Vector3.Distance(ent.transform.position,
                     _aIEntities[i].transform.position) < _detectionRadius;

@@ -780,6 +780,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deathSound: {fileID: 8300000, guid: 31a0e87f1089541409bae6cd95947f3d, type: 3}
   _gcolor: 0
-  _maxSpeed: 2
+  _maxSpeed: 2.5
   _maxHp: 100
   _hp: 10

@@ -22,7 +22,7 @@ namespace AI.DecisionTrees
         }
 
         /// <summary>
-        /// Runs the Action 
+        /// Runs the Action
         /// </summary>
         public Vector3 Execute()
         {

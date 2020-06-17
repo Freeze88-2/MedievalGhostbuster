@@ -14,7 +14,7 @@ namespace AI.Movement
         private readonly float _maxDistance;
 
         /// <summary>
-        /// Constructor of the AISeparation  
+        /// Constructor of the AISeparation
         /// </summary>
         /// <param name="entities"> All the entities found </param>
         /// <param name="maxDis"> The maximum range of detection </param>
@@ -30,7 +30,7 @@ namespace AI.Movement
         /// </summary>
         /// <param name="current"> The AI to be moved </param>
         /// <param name="target"> The target position of the AI </param>
-        /// <returns> A new  <see cref="SteeringBehaviour"/> 
+        /// <returns> A new  <see cref="SteeringBehaviour"/>
         /// with a angle </returns>
         public SteeringBehaviour GetOutput(AIEntity current, Vector3 target)
         {

@@ -44,14 +44,19 @@ public class DummyPlayer : MonoBehaviour, IEntity
     public float Hp { get; private set; }
 
     /// <summary>
-    /// If this player can be targetted
+    /// The amount of damage the ghost should deal
+    /// </summary>
+    public float DamageAmount { get; private set; }
+
+    /// <summary>
+    /// If this player can be targeted
     /// </summary>
     public bool IsTargatable { get; set; }
 
     public int NOfGhostsAround { get; set; }
 
     /// <summary>
-    /// The rigidbody attached to this gameobject
+    /// The rigid body attached to this game object
     /// </summary>
     protected Rigidbody rb;
 
@@ -60,7 +65,7 @@ public class DummyPlayer : MonoBehaviour, IEntity
     /// </summary>
     private void Start()
     {
-        // Gets the rigidbody of this gameobject
+        // Gets the rigid-body of this game object
         rb = GetComponent<Rigidbody>();
         // Sets the color to the one of the editor
         GColor = _gcolor;
@@ -76,7 +81,7 @@ public class DummyPlayer : MonoBehaviour, IEntity
     }
 
     /// <summary>
-    /// Subtract the specefied amount of hp from the entity
+    /// Subtract the specified amount of hp from the entity
     /// </summary>
     /// <param name="amount"> The amount of hp to be subtracted </param>
     public void DealDamage(float amount)
@@ -87,7 +92,7 @@ public class DummyPlayer : MonoBehaviour, IEntity
     }
 
     /// <summary>
-    /// Adds the specefied amount to the hp from the entity
+    /// Adds the specified amount to the hp from the entity
     /// </summary>
     /// <param name="amount"></param>
     public void Heal(float amount)

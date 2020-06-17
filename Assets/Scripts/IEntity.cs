@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Comon methods and properties for an entity in game
+/// Common methods and properties for an entity in game
 /// </summary>
 public interface IEntity
 {
@@ -18,11 +18,15 @@ public interface IEntity
     /// </summary>
     float Hp { get; }
 
-
     /// <summary>
     /// The current speed of the entity
     /// </summary>
     float Speed { get; set; }
+
+    /// <summary>
+    /// The amount of damage the ghost should deal
+    /// </summary>
+    float DamageAmount { get; }
 
     /// <summary>
     /// If this Entity can be targetted

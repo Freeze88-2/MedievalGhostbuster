@@ -78,8 +78,8 @@ namespace AI.Movement
                 // Creates a temporary point with the next position to move to
                 Vector3 point = Path[index];
 
-                // Finds the current node the AI is at 
-                Node currentPos = 
+                // Finds the current node the AI is at
+                Node currentPos =
                     _grid.GetClosestNode(init - _grid.transform.position);
 
                 // Checks if the AI is at the wanted position
