@@ -28,7 +28,7 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
 
             while (transform.position.y < endPos.y)
             {
-                _rb.velocity = transform.up * 1f;
+                _rb.MovePosition(transform.position + transform.up * Time.deltaTime * 0.5f);
                 yield return null;
             }
             _rb.velocity = Vector3.zero;
@@ -37,7 +37,7 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
         {
             while (transform.position.y > _startTransform.y)
             {
-                _rb.velocity = -transform.up * 1f;
+                _rb.MovePosition(transform.position + -transform.up * Time.deltaTime * 0.5f);
                 yield return null;
             }
             _rb.velocity = Vector3.zero;
