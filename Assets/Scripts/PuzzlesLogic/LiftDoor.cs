@@ -6,6 +6,7 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
 {
     private Vector3 _startTransform;
     private Rigidbody _rb;
+    private bool _isRunning;
 
     private void Start()
     {
@@ -15,12 +16,16 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
 
     public void ActivatePuzzlePiece(bool active, float time)
     {
-        StopCoroutine(MoveDoor(false));
-        StartCoroutine(MoveDoor(active));
+        if (!_isRunning)
+        {
+            StartCoroutine(MoveDoor(active));
+        }
     }
 
     private IEnumerator MoveDoor(bool active)
     {
+        _isRunning = true;
+
         if (active)
         {
             Vector3 endPos = transform.position;
@@ -28,7 +33,8 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
 
             while (transform.position.y < endPos.y)
             {
-                _rb.MovePosition(transform.position + transform.up * Time.deltaTime * 0.5f);
+                _rb.MovePosition(transform.position + transform.up *
+                    Time.deltaTime * 0.5f);
                 yield return null;
             }
             _rb.velocity = Vector3.zero;
@@ -37,10 +43,13 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
         {
             while (transform.position.y > _startTransform.y)
             {
-                _rb.MovePosition(transform.position + -transform.up * Time.deltaTime * 0.5f);
+                _rb.MovePosition(transform.position + -transform.up *
+                    Time.deltaTime * 0.5f);
                 yield return null;
             }
             _rb.velocity = Vector3.zero;
         }
+
+        _isRunning = false;
     }
 }

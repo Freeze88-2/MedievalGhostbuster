@@ -23,6 +23,7 @@ public class PressurePlate : MonoBehaviour
             -transform.up, out RaycastHit hit, 100f,
             LayerMask.GetMask("Default"));
 
+        _active = false;
         _wantedPos = hit.point;
         _wantedPos.y -= 0.09f;
         _initialPos = transform.position;
@@ -40,11 +41,13 @@ public class PressurePlate : MonoBehaviour
     {
         if (_active)
         {
-            transform.position = Vector3.Lerp(transform.position, _wantedPos, Time.deltaTime * 2);
+            transform.position = Vector3.Lerp(transform.position, _wantedPos,
+                Time.deltaTime * 2);
         }
         else if (transform.position != _initialPos)
         {
-            transform.position = Vector3.Lerp(transform.position, _initialPos, Time.deltaTime * 2);
+            transform.position = Vector3.Lerp(transform.position, _initialPos, 
+                Time.deltaTime * 2);
         }
     }
 
@@ -55,7 +58,6 @@ public class PressurePlate : MonoBehaviour
         {
             if (!other.CompareTag("GameController"))
             {
-                _active = true;
                 if (_current == null)
                 {
                     _current = other.gameObject;
@@ -72,10 +74,14 @@ public class PressurePlate : MonoBehaviour
 
     private void PushButtonDown()
     {
-        _active = true;
-        if (_dir == (Direction)0 || _dir == (Direction)2 )
+        if (!_active)
         {
-            DoPuzzleAction(_active);
+            _active = true;
+
+            if ((_dir == (Direction)0 || _dir == (Direction)2))
+            {
+                DoPuzzleAction(_active);
+            }
         }
     }
 
@@ -84,6 +90,7 @@ public class PressurePlate : MonoBehaviour
         yield return _wait;
 
         _active = false;
+
         if (_dir == (Direction)1 || _dir == (Direction)2)
         {
             DoPuzzleAction(_active);

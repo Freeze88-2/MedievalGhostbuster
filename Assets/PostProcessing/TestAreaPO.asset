@@ -18,27 +18,27 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 5
+    value: 1.5
   threshold:
     overrideState: 1
-    value: 0.9
+    value: 0.5
   softKnee:
     overrideState: 1
-    value: 0.539
+    value: 0.5
   clamp:
-    overrideState: 1
+    overrideState: 0
     value: 65472
   diffusion:
     overrideState: 1
-    value: 5
+    value: 7.24
   anamorphicRatio:
-    overrideState: 1
+    overrideState: 0
     value: 0
   color:
-    overrideState: 1
+    overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
   fastMode:
-    overrideState: 1
+    overrideState: 0
     value: 0
   dirtTexture:
     overrideState: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
     defaultState: 1
   dirtIntensity:
     overrideState: 1
-    value: 20
+    value: 5
 --- !u!114 &-2645315440165170165
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -65,25 +65,25 @@ MonoBehaviour:
     value: 1
   filtering:
     overrideState: 1
-    value: {x: 50, y: 95}
+    value: {x: 28.254295, y: 72.138336}
   minLuminance:
     overrideState: 1
-    value: 0
+    value: -4.5
   maxLuminance:
     overrideState: 1
-    value: 0
+    value: 4.7
   keyValue:
     overrideState: 1
-    value: 1
+    value: 0.1
   eyeAdaptation:
     overrideState: 1
     value: 0
   speedUp:
     overrideState: 1
-    value: 2
+    value: 10
   speedDown:
     overrideState: 1
-    value: 1
+    value: 10
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,8 +294,8 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   saturation:
-    overrideState: 1
-    value: -3
+    overrideState: 0
+    value: 0
   brightness:
     overrideState: 0
     value: 0
@@ -304,7 +304,7 @@ MonoBehaviour:
     value: 0.27
   contrast:
     overrideState: 1
-    value: -14
+    value: -21
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
