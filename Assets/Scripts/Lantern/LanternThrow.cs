@@ -64,7 +64,8 @@ namespace Lantern
                     new Ray(_player.position, right.transform.forward);
 
                 if (Physics.Raycast(camRay, out RaycastHit hit, 100f,
-                    LayerMask.GetMask("Level") | LayerMask.GetMask("Default")))
+                    LayerMask.GetMask("Level") | LayerMask.GetMask("Default") 
+                    | LayerMask.GetMask("Entity")))
                 {
                     if (hit.distance < _maxDistance)
                     {
@@ -148,7 +149,8 @@ namespace Lantern
                 _line.SetPosition(i, point);
 
                 if (Physics.OverlapSphere(point, 0.1f,
-                    LayerMask.GetMask("Level") | LayerMask.GetMask("Default")).Length > 0 
+                    LayerMask.GetMask("Level") | LayerMask.GetMask("Default") 
+                    | LayerMask.GetMask("Entity")).Length > 0 
                     && _line.positionCount > 10f)
                 {
                     break;
