@@ -8,8 +8,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Camera         _leftShoulderCamera;
     [SerializeField] private Camera         _rightShoulderCamera;
     [SerializeField] private Transform      _player;
-    [SerializeField] private bool           _drawGizmos = true;
-    private CameraType                      _currentActiveCamera;    
+    [SerializeField] private bool           _drawGizmos = true; 
+    private 
+    (GameObject obj, CameraType type)       _currentActiveCamera;  
     private float                           _rotationSpeed;
     private float                           _mouseX, _mouseY;   
     private float                           _smooth;
@@ -19,16 +20,18 @@ public class CameraController : MonoBehaviour
 
     // Change Y_OFFSET according to model (0.9 for capsule, 0.4 for skeleton)
     // This applies to cameraRig Y position (same values)
-    private const float                     Y_OFFSET = 0.4f;
-
+    private const float                     Y_OFFSET = 0.1f;
     private RaycastHit                      _cullingHit;
     private bool FireState                  
         => Input.GetMouseButton(1);
     private bool AltPressed                 
         => Input.GetKeyDown(KeyCode.LeftAlt);
 
-    private Vector3 TargetPosition 
+    public Vector3 TargetPosition 
         => _player.position + new Vector3(0, Y_OFFSET, 0);
+
+    public Vector3 EndPosition 
+        => TargetPosition +  (-transform.forward * _range);
 
     void Start()
     {
@@ -40,6 +43,7 @@ public class CameraController : MonoBehaviour
         _mainCamera.enabled             = true; 
         _leftShoulderCamera.enabled     = false; 
         _rightShoulderCamera.enabled    = false;
+        _currentActiveCamera = (_mainCamera.gameObject, CameraType.Main);
         _playerLayer                    = LayerMask.NameToLayer(PLAYER_LAYER);
         _range         = Vector3.Distance(TargetPosition, transform.position);
         ChangeCameras(CameraType.Main);
@@ -53,17 +57,19 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate() 
     {
-        if (!Physics.Linecast 
-            (TargetPosition, TargetPosition +  (-transform.forward * _range)
-            , out _cullingHit))
+        if (_currentActiveCamera.type == CameraType.Main)
         {
-            _cullingHit = default; 
+            if (!Physics.Linecast 
+                (TargetPosition, EndPosition, out _cullingHit))
+            {
+                _cullingHit = default; 
+            }
         }
     }
     
     void ChangeCameras(CameraType camToActivate)
     {
-        _currentActiveCamera = camToActivate;
+        _currentActiveCamera.type = camToActivate;
 
         switch (camToActivate)
         {
@@ -72,12 +78,15 @@ public class CameraController : MonoBehaviour
                 break;
             case CameraType.Main:
                 ToggleCamera(_mainCamera);
+                _currentActiveCamera.obj = _mainCamera.gameObject;
                 break;
             case CameraType.LeftShoulder:
                 ToggleCamera(_leftShoulderCamera);
+                _currentActiveCamera.obj = _leftShoulderCamera.gameObject;
                 break;
             case CameraType.RightShoulder:
                 ToggleCamera(_rightShoulderCamera);
+                _currentActiveCamera.obj = _rightShoulderCamera.gameObject;
                 break;
         }        
     }
@@ -94,7 +103,7 @@ public class CameraController : MonoBehaviour
         if (FireState)
         {
             // Toggle default camera
-            if(_currentActiveCamera == CameraType.Main)
+            if(_currentActiveCamera.type == CameraType.Main)
             {
                 ChangeCameras(CameraType.RightShoulder);
             }
@@ -102,7 +111,7 @@ public class CameraController : MonoBehaviour
             else if (AltPressed)
             {
                 // Swap the cams
-                switch (_currentActiveCamera)
+                switch (_currentActiveCamera.type)
                 {
                     case CameraType.LeftShoulder:
                         ChangeCameras(CameraType.RightShoulder);
@@ -115,7 +124,7 @@ public class CameraController : MonoBehaviour
             }
             _player.rotation = Quaternion.Euler(0, _mouseX, 0);
         }
-        else if (_currentActiveCamera != CameraType.Main)
+        else if (_currentActiveCamera.type != CameraType.Main)
         {
             ChangeCameras(CameraType.Main);
         }
@@ -143,7 +152,7 @@ public class CameraController : MonoBehaviour
         
         if (_cullingHit.collider == null)
         {
-            desiredCameraPos = TargetPosition + (-transform.forward * _range);
+            desiredCameraPos = EndPosition;
         }
         else
         {
@@ -160,11 +169,10 @@ public class CameraController : MonoBehaviour
 
     void OnDrawGizmos() 
     {
-        if (!_drawGizmos) return;
+        if (!_drawGizmos || !Application.isPlaying) return;
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(TargetPosition, 
-            TargetPosition + (-transform.forward * _range));
+        Gizmos.DrawLine(TargetPosition, EndPosition);
         Gizmos.DrawSphere(TargetPosition, 0.02f);
     }
 }

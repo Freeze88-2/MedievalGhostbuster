@@ -562,7 +562,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18428
+  m_Name: pb_Mesh24704
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1484,6 +1484,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1522210758}
     m_Modifications:
+    - target: {fileID: -4321283803651554847, guid: c7bf4084ee27e2b46ac55037a16f154e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0bd1875a7ac42104f888d97e8539a514, type: 2}
     - target: {fileID: -4216859302048453862, guid: c7bf4084ee27e2b46ac55037a16f154e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1544,6 +1549,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6658250243612865843, guid: c7bf4084ee27e2b46ac55037a16f154e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2f196671ade9aa9459fb7d5187563bcc, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7bf4084ee27e2b46ac55037a16f154e, type: 3}
 --- !u!1 &93358541 stripped
@@ -11007,6 +11017,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1522210758}
     m_Modifications:
+    - target: {fileID: -4321283803651554847, guid: c7bf4084ee27e2b46ac55037a16f154e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0bd1875a7ac42104f888d97e8539a514, type: 2}
     - target: {fileID: -4216859302048453862, guid: c7bf4084ee27e2b46ac55037a16f154e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11067,6 +11082,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch
       objectReference: {fileID: 0}
+    - target: {fileID: 6658250243612865843, guid: c7bf4084ee27e2b46ac55037a16f154e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2f196671ade9aa9459fb7d5187563bcc, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7bf4084ee27e2b46ac55037a16f154e, type: 3}
 --- !u!1001 &483518703
@@ -37658,7 +37678,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh19266
+  m_Name: pb_Mesh25992
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -50362,7 +50382,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-360576
+  m_Name: pb_Mesh24458
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -51075,6 +51095,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1522210758}
     m_Modifications:
+    - target: {fileID: -4321283803651554847, guid: c7bf4084ee27e2b46ac55037a16f154e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0bd1875a7ac42104f888d97e8539a514, type: 2}
     - target: {fileID: -4216859302048453862, guid: c7bf4084ee27e2b46ac55037a16f154e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -51135,6 +51160,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6658250243612865843, guid: c7bf4084ee27e2b46ac55037a16f154e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2f196671ade9aa9459fb7d5187563bcc, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7bf4084ee27e2b46ac55037a16f154e, type: 3}
 --- !u!4 &2141951812 stripped
