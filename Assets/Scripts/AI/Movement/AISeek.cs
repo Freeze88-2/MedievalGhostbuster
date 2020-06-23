@@ -22,6 +22,7 @@ namespace AI.Movement
 
             // Normalizes the vector and multiplies it by 40
             velocity = velocity.normalized * 40;
+            velocity.y = 0;
 
             // Returns a SteeringBehaviour with the velocity inverted
             return new SteeringBehaviour(-velocity, 0f);

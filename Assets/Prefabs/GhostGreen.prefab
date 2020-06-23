@@ -388,7 +388,8 @@ MonoBehaviour:
   _gcolor: 1
   _maxSpeed: 1.5
   _maxHp: 150
-  _hp: 10
+  _hp: 150
+  _damageAmount: 1
 --- !u!1 &3925940674640332541
 GameObject:
   m_ObjectHideFlags: 0

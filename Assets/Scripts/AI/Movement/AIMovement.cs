@@ -78,7 +78,13 @@ namespace AI.Movement
         /// </summary>
         private void Update()
         {
+            
             target = _brain.GetDecision();
+
+            if (name == "Bobby")
+            {
+                target = _playerScript.gameObject.transform.position;
+            }
 
             // Checks if the area exists and can hit the player
             if (_player.IsTargatable && IsTargatable)

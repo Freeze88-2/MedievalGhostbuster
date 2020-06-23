@@ -78,7 +78,7 @@ namespace AI.DecisionTrees
                 (ConditionalRandomDecision, objIntNode, ghostIntNode);
 
             NormalBehaviour = new DecisionNode
-                (ConditionalRandomDecision, freeRoam, interactionNodes);
+                (RandomBinaryDecision, freeRoam, interactionNodes);
         }
 
         /// <summary>
@@ -124,6 +124,22 @@ namespace AI.DecisionTrees
         }
 
         /// <summary>
+        /// Returns true if the random value (0, 1) is less than 0.5 and
+        /// false otherwise
+        /// </summary>
+        /// <returns></returns>
+        private bool RandomBinaryDecision()
+        {
+            if (_choosenObj != null || _choosenGhost != null)
+            {
+                return false;
+            }
+            // Returns true if the random value (0, 1) is less than 0.5 and
+            // false otherwise
+            return Random.value > 0.5f ? true : false;
+        }
+
+        /// <summary>
         /// If it's not interacting with anything chooses randomly, otherwise
         /// returns true if interacting with and object and false if with ghost
         /// </summary>
@@ -142,9 +158,7 @@ namespace AI.DecisionTrees
             }
             else
             {
-                // Returns true if the random value (0, 1) is less than 0.5 and
-                // false otherwise
-                return Random.value > 0.5f ? true : false;
+                return RandomBinaryDecision();
             }
         }
 
@@ -168,7 +182,7 @@ namespace AI.DecisionTrees
         {
             return _choosenObj != null &&
                 Vector3.Distance(_ai.transform.position,
-                _choosenObj.transform.position) <= 2f ? true : false;
+                _choosenObj.transform.position) <= 3f ? true : false;
         }
 
         /// <summary>
@@ -198,7 +212,7 @@ namespace AI.DecisionTrees
             {
                 // Searches on a 5 unit radius for interactables
                 Collider[] col = Physics.OverlapSphere(_ai.transform.position,
-                    5f, LayerMask.GetMask("Interactable"));
+                    10f, LayerMask.GetMask("Interactable"));
 
                 // If there's no objects free roams
                 if (col.Length <= 0)
@@ -207,7 +221,7 @@ namespace AI.DecisionTrees
                 }
 
                 // Gets a random object from the col array
-                Collider choosenCol = col[Random.Range(0, col.Length)];
+                Collider choosenCol = col[Random.Range(0, col.Length -1)];
 
                 // Assigns the _currentObj to the object chosen
                 _choosenObj = choosenCol.gameObject;
@@ -238,8 +252,8 @@ namespace AI.DecisionTrees
                         // Assigns the _ghost to the entity of found
                         _ghost = col[i].gameObject.GetComponent<IEntity>();
 
-                        // If the ghost can't move
-                        if (!_ghost.IsTargatable)
+                        // If the ghost can't move or is itself
+                        if (!_ghost.IsTargatable || col[i].gameObject == _ai)
                         {
                             // Sets the _ghost to null and proceeds to the next
                             _ghost = null;
@@ -286,6 +300,14 @@ namespace AI.DecisionTrees
 
         private Vector3 InteractWithObject()
         {
+            if (_firstTimeInteracting)
+            {
+                Vector3 q = _choosenObj.transform.rotation.eulerAngles;
+
+                _choosenObj.transform.rotation = 
+                    Quaternion.Euler(q.x + 90f, q.y, q.z);
+            }
+
             // Checks if it already interacted or is the first time
             InteractionLogic();
 

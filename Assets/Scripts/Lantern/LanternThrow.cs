@@ -64,7 +64,7 @@ namespace Lantern
                     new Ray(_player.position, right.transform.forward);
 
                 if (Physics.Raycast(camRay, out RaycastHit hit, 100f,
-                    LayerMask.GetMask("Default")))
+                    LayerMask.GetMask("Level") | LayerMask.GetMask("Default")))
                 {
                     if (hit.distance < _maxDistance)
                     {
@@ -75,9 +75,9 @@ namespace Lantern
                             (_player.position, hit.point) / 5;
 
                         Vector3 calcVel = ThrowLantern(hit.point,
-                            _player.position, distance);
+                            _player.position, distance / 2);
 
-                        DrawPath(calcVel, distance);
+                        DrawPath(calcVel, distance / 2);
 
                         _cursor.transform.position = hit.point;
 
@@ -132,18 +132,27 @@ namespace Lantern
 
         private void DrawPath(Vector3 sim, float speed)
         {
-            _line.positionCount = 66;
+            _line.positionCount = 1;
             _line.SetPosition(0, _player.position);
 
-            for (int i = 1; i <= 65; i++)
+            for (int i = 1; i <= 150; i++)
             {
                 float simtime = i / (float)30 * speed;
+
                 Vector3 simss = (sim * simtime + Vector3.up * Physics.gravity.y
                     * simtime * simtime / 2f);
 
                 Vector3 point = simss + _player.position;
 
+                _line.positionCount += 1;
                 _line.SetPosition(i, point);
+
+                if (Physics.OverlapSphere(point, 0.1f,
+                    LayerMask.GetMask("Level") | LayerMask.GetMask("Default")).Length > 0 
+                    && _line.positionCount > 10f)
+                {
+                    break;
+                }
             }
         }
 
@@ -151,7 +160,7 @@ namespace Lantern
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                behaviour.EmptyLantern();
+                behaviour.EmptyLantern(false);
             }
             //if (Input.GetKey(KeyCode.Space))
             //{
@@ -176,7 +185,7 @@ namespace Lantern
             {
                 yield return null;
             }
-            behaviour.EmptyLantern();
+            behaviour.EmptyLantern(true);
         }
 
         private void PlaySound(AudioSource _lanternThrowSource)

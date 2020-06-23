@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LiftDoor : MonoBehaviour , IPuzzleInteractable
+public class LiftDoor : MonoBehaviour, IPuzzleInteractable
 {
     private Vector3 _startTransform;
     private Rigidbody _rb;
@@ -16,13 +16,11 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
 
     public void ActivatePuzzlePiece(bool active, float time)
     {
-        if (!_isRunning)
-        {
-            StartCoroutine(MoveDoor(active));
-        }
+        StopCoroutine(MoveDoor(active, time));
+        StartCoroutine(MoveDoor(active, time));
     }
 
-    private IEnumerator MoveDoor(bool active)
+    private IEnumerator MoveDoor(bool active, float time)
     {
         _isRunning = true;
 
@@ -34,7 +32,7 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
             while (transform.position.y < endPos.y)
             {
                 _rb.MovePosition(transform.position + transform.up *
-                    Time.deltaTime * 0.5f);
+                    Time.deltaTime * time);
                 yield return null;
             }
             _rb.velocity = Vector3.zero;
@@ -44,7 +42,7 @@ public class LiftDoor : MonoBehaviour , IPuzzleInteractable
             while (transform.position.y > _startTransform.y)
             {
                 _rb.MovePosition(transform.position + -transform.up *
-                    Time.deltaTime * 0.5f);
+                    Time.deltaTime * time);
                 yield return null;
             }
             _rb.velocity = Vector3.zero;

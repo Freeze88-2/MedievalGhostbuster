@@ -782,4 +782,5 @@ MonoBehaviour:
   _gcolor: 0
   _maxSpeed: 2.5
   _maxHp: 100
-  _hp: 10
+  _hp: 100
+  _damageAmount: 1

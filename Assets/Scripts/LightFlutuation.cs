@@ -9,9 +9,11 @@ public class LightFlutuation : MonoBehaviour
     private float _initIntensity;
     private float _wantedIntesity;
     private GameObject _player;
+    private Renderer render;
     // Start is called before the first frame update
     void Start()
     {
+        render = GetComponent<Renderer>();
         _player = GameObject.FindGameObjectWithTag("Player");
         _light = GetComponent<Light>();
         _initIntensity = _light.intensity;
@@ -22,12 +24,7 @@ public class LightFlutuation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float dis = Vector3.Distance(transform.position, _player.transform.position);
-
-        RaycastHit[] allCols = Physics.RaycastAll(transform.position, _player.transform.position, 30, LayerMask.GetMask("Default"));
-        bool canPass = allCols.Length == 0;
-
-        if (dis < 35 && canPass)
+        if (render.isVisible)
         {
             _light.enabled = true;
             _light.intensity = Mathf.Lerp(_light.intensity, _wantedIntesity, Time.deltaTime * Random.Range(5, 8));

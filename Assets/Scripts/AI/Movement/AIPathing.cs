@@ -83,7 +83,7 @@ namespace AI.Movement
                     _grid.GetClosestNode(init - _grid.transform.position);
 
                 // Checks if the AI is at the wanted position
-                if (point == currentPos.Position)
+                if (Vector3.Distance(point, currentPos.Position) <= 1)
                 {
                     // Next time gets the next index
                     index++;

@@ -74,7 +74,7 @@ namespace Lantern
                     vel *= Vector3.Distance(transform.position,
                         other.transform.position) -
                         Vector3.Distance(_col.bounds.max,
-                        transform.position) * 70;
+                        transform.position) * 100;
 
                     other.attachedRigidbody.velocity += vel *
                         Time.fixedDeltaTime;
@@ -82,14 +82,16 @@ namespace Lantern
                     _currentGhost.transform.localScale *= 0.8f;
 
                     if (Vector3.Distance(other.transform.position,
-                        transform.position) < 0.5f &&
+                        transform.position) <= 1f &&
                         !lantern.Colors[1].HasValue)
                     {
                         lantern.StoreColor(ghost.GColor);
                         
                         CaptureGhostSound(_lanternCaptureSource);
 
-                        Destroy(other.gameObject);
+                        other.gameObject.SetActive(false);
+
+                        lantern.StoreGhost(other.gameObject, ghost);
                     }
                 }
                 else

@@ -72,6 +72,9 @@ public class PlatformMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        start.y = transform.position.y;
+        end.y = transform.position.y;
+
         if (moveOnXAxis)
         {
             start.z = transform.position.z;

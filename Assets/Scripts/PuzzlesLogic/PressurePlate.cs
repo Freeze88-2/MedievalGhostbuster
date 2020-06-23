@@ -6,6 +6,7 @@ public class PressurePlate : MonoBehaviour
 {
     [SerializeField] private float _neededWeight;
     [SerializeField] private float _activeTiming;
+    [SerializeField] private float _speed;
     [SerializeField] private GameObject[] _gameObjects;
     [SerializeField] private Direction _dir;
 
@@ -101,7 +102,7 @@ public class PressurePlate : MonoBehaviour
     {
         for (int i = 0; i < _pieces.Length; i++)
         {
-            _pieces[i].ActivatePuzzlePiece(activate, _activeTiming);
+            _pieces[i].ActivatePuzzlePiece(activate, _speed);
         }
     }
 }
