@@ -4,39 +4,39 @@ using UnityEngine;
 
 public class PauseGame : MonoBehaviour
 {
-    [SerializeField] private int escCount;
-    [SerializeField] private int tabCount;
-    private Camera menuCam;
+    [SerializeField] private int _escCount;
+    [SerializeField] private int _tabCount;
+    private Camera _menuCam;
 
     void Start()
     {
-        menuCam = GetComponentInChildren<Camera>();
-        menuCam.enabled = false;
-        escCount = 0;
-        tabCount = 0;
+        _menuCam = GetComponentInChildren<Camera>();
+        _menuCam.enabled = false;
+        _escCount = 0;
+        _tabCount = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Pause();
     }
 
     private void Pause()
     {
-        if (Input.GetButtonUp("Pause"))
+        if (Input.GetButtonDown("Pause"))
         {
-            escCount++;
-            if (escCount == 1)
+            _escCount++;
+            if (_escCount == 1)
             {
-                menuCam.enabled = true;
+                _menuCam.enabled = true;
                 Time.timeScale = 0;
             }
-            else if (escCount == 2)
+            else if (_escCount == 2)
             {
-                menuCam.enabled = false;
+                _menuCam.enabled = false;
                 Time.timeScale = 1;
-                escCount = 0;
+                _escCount = 0;
             }
         }
     }
