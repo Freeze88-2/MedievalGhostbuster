@@ -162,10 +162,6 @@ namespace Lantern
             {
                 behaviour.EmptyLantern(false);
             }
-            //if (Input.GetKey(KeyCode.Space))
-            //{
-            //    behaviour.ShowColorsIn();
-            //}
             if (Input.GetKeyDown(KeyCode.E))
             {
                 IAbility ability = behaviour.GetAbility();

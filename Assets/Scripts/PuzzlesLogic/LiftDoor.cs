@@ -6,7 +6,6 @@ public class LiftDoor : MonoBehaviour, IPuzzleInteractable
 {
     private float _startTransform;
     private float _endTransform;
-
     private Rigidbody _rb;
 
     private void Start()

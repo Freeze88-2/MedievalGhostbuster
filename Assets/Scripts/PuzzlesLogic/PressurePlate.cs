@@ -21,8 +21,7 @@ public class PressurePlate : MonoBehaviour
     void Start()
     {
         Physics.Raycast(transform.position,
-            -transform.up, out RaycastHit hit, 100f,
-            LayerMask.GetMask("Default"));
+            -transform.up, out RaycastHit hit, 10f);
 
         _active = false;
         _wantedPos = hit.point;
@@ -55,17 +54,14 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player")
-            || other.attachedRigidbody.mass >= _neededWeight)
+        if (_current == null)
         {
-            if (!other.CompareTag("GameController"))
+            if (other.gameObject.CompareTag("Player")
+            || other.attachedRigidbody.mass >= _neededWeight)
             {
-                if (_current == null)
-                {
-                    _current = other.gameObject;
+                _current = other.gameObject;
 
-                    PushButtonDown();
-                }
+                PushButtonDown();
             }
         }
     }
@@ -83,7 +79,8 @@ public class PressurePlate : MonoBehaviour
 
             for (int i = 0; i < _pieces.Length; i++)
             {
-                if ((_pieces[i].dir == (Direction)0 || _pieces[i].dir == (Direction)2))
+                if ((_pieces[i].dir == (Direction)0 ||
+                    _pieces[i].dir == (Direction)2))
                 {
                     _pieces[i].piece.ActivatePuzzlePiece(_active, _speed);
                 }
@@ -99,7 +96,8 @@ public class PressurePlate : MonoBehaviour
 
         for (int i = 0; i < _pieces.Length; i++)
         {
-            if (_pieces[i].dir == (Direction)1 || _pieces[i].dir == (Direction)2)
+            if (_pieces[i].dir == (Direction)1 ||
+                _pieces[i].dir == (Direction)2)
             {
                 _pieces[i].piece.ActivatePuzzlePiece(_active, _speed);
             }
