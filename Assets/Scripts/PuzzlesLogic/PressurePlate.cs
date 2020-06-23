@@ -8,9 +8,9 @@ public class PressurePlate : MonoBehaviour
     [SerializeField] private float _activeTiming;
     [SerializeField] private float _speed;
     [SerializeField] private GameObject[] _gameObjects;
-    [SerializeField] private Direction _dir;
+    [SerializeField] private Direction[] _dirs;
 
-    private IPuzzleInteractable[] _pieces;
+    private (IPuzzleInteractable piece, Direction dir)[] _pieces;
     private WaitForSeconds _wait;
     private Vector3 _initialPos;
     private Vector3 _wantedPos;
@@ -29,11 +29,12 @@ public class PressurePlate : MonoBehaviour
         _wantedPos.y -= 0.09f;
         _initialPos = transform.position;
         _wait = new WaitForSeconds(_activeTiming);
-        _pieces = new IPuzzleInteractable[_gameObjects.Length];
+        _pieces = new (IPuzzleInteractable, Direction)[_gameObjects.Length];
 
         for (int i = 0; i < _gameObjects.Length; i++)
         {
-            _pieces[i] = _gameObjects[i].GetComponent<IPuzzleInteractable>();
+            _pieces[i].piece = _gameObjects[i].GetComponent<IPuzzleInteractable>();
+            _pieces[i].dir = _dirs[i];
         }
     }
 
@@ -47,14 +48,14 @@ public class PressurePlate : MonoBehaviour
         }
         else if (transform.position != _initialPos)
         {
-            transform.position = Vector3.Lerp(transform.position, _initialPos, 
+            transform.position = Vector3.Lerp(transform.position, _initialPos,
                 Time.deltaTime * 2);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") 
+        if (other.gameObject.CompareTag("Player")
             || other.attachedRigidbody.mass >= _neededWeight)
         {
             if (!other.CompareTag("GameController"))
@@ -62,6 +63,7 @@ public class PressurePlate : MonoBehaviour
                 if (_current == null)
                 {
                     _current = other.gameObject;
+
                     PushButtonDown();
                 }
             }
@@ -79,9 +81,12 @@ public class PressurePlate : MonoBehaviour
         {
             _active = true;
 
-            if ((_dir == (Direction)0 || _dir == (Direction)2))
+            for (int i = 0; i < _pieces.Length; i++)
             {
-                DoPuzzleAction(_active);
+                if ((_pieces[i].dir == (Direction)0 || _pieces[i].dir == (Direction)2))
+                {
+                    _pieces[i].piece.ActivatePuzzlePiece(_active, _speed);
+                }
             }
         }
     }
@@ -92,17 +97,21 @@ public class PressurePlate : MonoBehaviour
 
         _active = false;
 
-        if (_dir == (Direction)1 || _dir == (Direction)2)
+        for (int i = 0; i < _pieces.Length; i++)
         {
-            DoPuzzleAction(_active);
+            if (_pieces[i].dir == (Direction)1 || _pieces[i].dir == (Direction)2)
+            {
+                _pieces[i].piece.ActivatePuzzlePiece(_active, _speed);
+            }
         }
     }
 
-    private void DoPuzzleAction(bool activate)
+    private void OnDrawGizmos()
     {
-        for (int i = 0; i < _pieces.Length; i++)
+        foreach (GameObject a in _gameObjects)
         {
-            _pieces[i].ActivatePuzzlePiece(activate, _speed);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(transform.position, a.transform.position);
         }
     }
 }

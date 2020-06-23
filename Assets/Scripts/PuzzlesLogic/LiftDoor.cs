@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class LiftDoor : MonoBehaviour, IPuzzleInteractable
 {
-    private Vector3 _startTransform;
+    private float _startTransform;
+    private float _endTransform;
+
     private Rigidbody _rb;
-    private bool _isRunning;
 
     private void Start()
     {
-        _startTransform = transform.position;
+        _endTransform = 0;
+        _startTransform = 0;
         _rb = GetComponent<Rigidbody>();
     }
 
@@ -22,14 +24,14 @@ public class LiftDoor : MonoBehaviour, IPuzzleInteractable
 
     private IEnumerator MoveDoor(bool active, float time)
     {
-        _isRunning = true;
-
         if (active)
         {
-            Vector3 endPos = transform.position;
-            endPos.y += 3f;
+            if (_endTransform == 0)
+            {
+                _endTransform = transform.position.y + 3; 
+            }
 
-            while (transform.position.y < endPos.y)
+            while (transform.position.y < _endTransform)
             {
                 _rb.MovePosition(transform.position + transform.up *
                     Time.deltaTime * time);
@@ -39,7 +41,12 @@ public class LiftDoor : MonoBehaviour, IPuzzleInteractable
         }
         else
         {
-            while (transform.position.y > _startTransform.y)
+            if (_startTransform == 0)
+            {
+                _startTransform = transform.position.y - 3;
+            }
+
+            while (transform.position.y > _startTransform)
             {
                 _rb.MovePosition(transform.position + -transform.up *
                     Time.deltaTime * time);
@@ -47,7 +54,5 @@ public class LiftDoor : MonoBehaviour, IPuzzleInteractable
             }
             _rb.velocity = Vector3.zero;
         }
-
-        _isRunning = false;
     }
 }
