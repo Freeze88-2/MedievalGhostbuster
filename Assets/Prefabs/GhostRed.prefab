@@ -783,4 +783,4 @@ MonoBehaviour:
   _maxSpeed: 2.5
   _maxHp: 100
   _hp: 100
-  _damageAmount: 1
+  _damageAmount: 9
