@@ -9,6 +9,7 @@ namespace Lantern.Abilities
         [SerializeField] private float _radius = 15f;
         [SerializeField] private float _freezingRadius = 7f;
         [SerializeField] private GameObject _freezeEffect = null;
+
         [Tooltip("Sound Effects")]
         [SerializeField] private AudioClip _sound;
 
@@ -16,12 +17,16 @@ namespace Lantern.Abilities
         private WaitForSeconds _wait;
         private bool _isReseting;
 
-        public bool HabilityEnded { get; private set; }
-
         public (GhostColor, GhostColor) AbilityColors
         {
             get => (GhostColor.Blue, GhostColor.Blue);
         }
+
+        public bool HabilityEnded { get; private set; }
+
+        public int ID => 6;
+
+        public int NActivations => 1;
 
         // Start is called before the first frame update
         private void Start()

@@ -58,7 +58,7 @@ namespace Lantern
                 int captureChance = Random.Range(0, 100);
 
                 if (captureChance < catchResistence
-                    && !lantern.Colors[1].HasValue
+                    && !lantern.GetColors()[1].HasValue
                     || ghost == _alreadyCought)
                 {
                     if (_currentGhost == null)
@@ -83,7 +83,7 @@ namespace Lantern
 
                     if (Vector3.Distance(other.transform.position,
                         transform.position) <= 1f &&
-                        !lantern.Colors[1].HasValue)
+                        !lantern.GetColors()[1].HasValue)
                     {
                         lantern.StoreColor(ghost.GColor);
                         

@@ -24,6 +24,10 @@ namespace Lantern.Abilities
 
         public bool HabilityEnded { get; private set; }
 
+        public int ID => 5;
+
+        public int NActivations => 1;
+
         // Start is called before the first frame update
         private void Start()
         {

@@ -5,9 +5,10 @@ namespace Lantern.Abilities
 {
     public class DeamonDash : MonoBehaviour, IAbility
     {
+        [SerializeField] private int _nDashes = 3;
         [SerializeField] private float _dashSpeed = 25f;
         [SerializeField] private int _dashDuration = 10;
-        [SerializeField] private int _nOfDahses = 3;
+
         [Tooltip("Sound Effects")]
         [SerializeField] private AudioClip _sound;
 
@@ -21,15 +22,20 @@ namespace Lantern.Abilities
         {
             get => (GhostColor.Red, GhostColor.Red);
         }
+        public int NActivations
+            { get => _dashes; set {NActivations = _nDashes; } }
 
         public bool HabilityEnded { get; private set; }
 
-        private void Start()
+        public int ID => 1;
+
+
+    private void Start()
         {
             _playerRb = GameObject.FindGameObjectWithTag("Player")
                 .GetComponent<CharacterController>();
             _wait = new WaitForSecondsRealtime(0.5f);
-            _dashes = _nOfDahses;
+            _dashes = NActivations;
             _timer = 0;
             _isDashing = false;
             HabilityEnded = false;
@@ -47,7 +53,7 @@ namespace Lantern.Abilities
                 HabilityEnded = true;
                 _isDashing = false;
                 _timer = 0;
-                _dashes = _nOfDahses;
+                _dashes = NActivations;
             }
         }
 
