@@ -18,7 +18,7 @@ public class EasterEgg : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _combination += Input.inputString;
+        _combination += Input.inputString.ToLowerInvariant();
 
         if (_wantedString.Contains(_combination))
         {

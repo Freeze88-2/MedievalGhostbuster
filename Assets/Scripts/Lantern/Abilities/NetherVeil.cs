@@ -61,7 +61,7 @@ namespace Lantern.Abilities
 
             Physics.Raycast(_playerObj.transform.position,
                 -_playerObj.transform.up, out RaycastHit hit, 100f,
-                LayerMask.GetMask("Default"));
+                LayerMask.GetMask("Default") | LayerMask.GetMask("Level"));
 
             _curparticles = Instantiate(_particles, hit.point, Quaternion.identity);
             _po = Instantiate(_postProcessing, _playerObj.transform);
