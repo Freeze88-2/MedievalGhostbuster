@@ -7,6 +7,7 @@ public class PauseGame : MonoBehaviour
     [SerializeField] private int _escCount;
     [SerializeField] private int _tabCount;
     private Camera _menuCam;
+    private bool _isPaused;
 
     void Start()
     {
@@ -14,6 +15,7 @@ public class PauseGame : MonoBehaviour
         _menuCam.enabled = false;
         _escCount = 0;
         _tabCount = 0;
+        _isPaused = false;
     }
 
     // Update is called once per frame
@@ -31,10 +33,16 @@ public class PauseGame : MonoBehaviour
             {
                 _menuCam.enabled = true;
                 Time.timeScale = 0;
+                _isPaused = true;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
             }
             else if (_escCount == 2)
             {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 _menuCam.enabled = false;
+                _isPaused = false;
                 Time.timeScale = 1;
                 _escCount = 0;
             }
