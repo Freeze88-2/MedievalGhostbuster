@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class PauseGame : MonoBehaviour
 {
-    public bool    IsPaused {get; private set;}
-
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _forgeMenu;
+    [SerializeField] private Camera  _menuCam;
     [SerializeField] private int     _escCount;
     [SerializeField] private int     _tabCount;
-    private Camera  _menuCam;
+
+    private bool _isPaused;
 
     void Start()
     {
-        _menuCam = GetComponentInChildren<Camera>();
+        //_menuCam = GetComponentInChildren<Camera>();
         _pauseMenu.SetActive(false);
         _forgeMenu.SetActive(false);
         _menuCam.enabled = false;
         _escCount = 0;
         _tabCount = 0;
-        IsPaused = false;
+        _isPaused = false;
     }
 
     void Update()
@@ -39,7 +39,7 @@ public class PauseGame : MonoBehaviour
                 _pauseMenu.SetActive(true);
                 _menuCam.enabled = true;
                 Time.timeScale = 0;
-                IsPaused = true;
+                _isPaused = true;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
             }
@@ -49,7 +49,7 @@ public class PauseGame : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 _menuCam.enabled = false;
                 _pauseMenu.SetActive(false);
-                IsPaused = false;
+                _isPaused = false;
                 Time.timeScale = 1;
                 _escCount = 0;
             }
@@ -66,13 +66,13 @@ public class PauseGame : MonoBehaviour
                 _forgeMenu.SetActive(true);
                 _menuCam.enabled = true;
                 Time.timeScale = 0;
-                IsPaused = true;
+                _isPaused = true;
             }
             else if (_tabCount == 2)
             {
                 _menuCam.enabled = false;
                 _forgeMenu.SetActive(false);
-                IsPaused = false;
+                _isPaused = false;
                 Time.timeScale = 1;
                 _tabCount = 0;
             }
