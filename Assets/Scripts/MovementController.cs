@@ -18,6 +18,7 @@ public class MovementController : MonoBehaviour
     private float                           _jumpForce;
     private Vector3                         _moveDirection;
     private CharacterController             _cc;
+    private bool                            _gameLoaded;
     
     void Start()
     {
@@ -123,4 +124,33 @@ public class MovementController : MonoBehaviour
             _armorSource.Play();             
         }
     }
+
+    public PlayerSaveData CreateSaveData()
+    {
+        PlayerSaveData saveData = new PlayerSaveData();
+
+        saveData.position       = transform.position;
+        saveData.rotation       = transform.rotation;
+        saveData.velocity       = _moveDirection;
+
+        return saveData;
+    }
+
+    public void ProcessSaveData(PlayerSaveData saveData)
+    {
+        transform.position  = saveData.position;
+        transform.rotation  = saveData.rotation;
+        _moveDirection      = saveData.velocity;
+
+        _gameLoaded         = true;
+        _cc.enabled         = true;
+    }
+}
+
+[System.Serializable]
+public struct PlayerSaveData
+{
+    public Vector3      position;
+    public Quaternion   rotation;
+    public Vector3      velocity;
 }
