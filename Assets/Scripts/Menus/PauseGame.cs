@@ -36,10 +36,12 @@ public class PauseGame : MonoBehaviour
             _escCount++;
             if (_escCount == 1)
             {
+                _forgeMenu.SetActive(false);
                 _pauseMenu.SetActive(true);
                 _menuCam.enabled = true;
                 Time.timeScale = 0;
                 _isPaused = true;
+                _tabCount = 0;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
             }
@@ -51,6 +53,7 @@ public class PauseGame : MonoBehaviour
                 _pauseMenu.SetActive(false);
                 _isPaused = false;
                 Time.timeScale = 1;
+                _tabCount = 0;
                 _escCount = 0;
             }
         }
@@ -63,10 +66,12 @@ public class PauseGame : MonoBehaviour
             _tabCount++;
             if (_tabCount == 1)
             {
+                _pauseMenu.SetActive(false);
                 _forgeMenu.SetActive(true);
                 _menuCam.enabled = true;
                 Time.timeScale = 0;
                 _isPaused = true;
+                _escCount = 0;
             }
             else if (_tabCount == 2)
             {
@@ -75,6 +80,7 @@ public class PauseGame : MonoBehaviour
                 _isPaused = false;
                 Time.timeScale = 1;
                 _tabCount = 0;
+                _escCount = 0;
             }
         }
     }
