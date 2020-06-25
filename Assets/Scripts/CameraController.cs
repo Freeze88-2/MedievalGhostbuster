@@ -169,27 +169,4 @@ public class CameraController : MonoBehaviour
             TargetPosition + (-transform.forward * _range));
         Gizmos.DrawSphere(TargetPosition, 0.02f);
     }
-
-    public CameraSaveData CreateSaveData()
-    {
-        CameraSaveData saveData = new CameraSaveData();
-
-        saveData.rotation = transform.rotation;
-        saveData.position = transform.position;
-
-        return saveData;
-    }
-
-    public void ProcessSaveData(CameraSaveData saveData)
-    {
-        transform.rotation = saveData.rotation;
-        transform.position = saveData.position;
-    }
-}
-
-[System.Serializable]
-public struct CameraSaveData
-{
-    public Vector3      position;
-    public Quaternion   rotation;
 }

@@ -132,6 +132,8 @@ public class MovementController : MonoBehaviour
         saveData.position       = transform.localPosition;
         saveData.rotation       = transform.rotation;
 
+        print(saveData.position + "\t" + saveData.rotation);
+
         return saveData;
     }
 
@@ -139,6 +141,8 @@ public class MovementController : MonoBehaviour
     {
         transform.position  = saveData.position;
         transform.rotation  = saveData.rotation;
+
+        print(transform.position + "\t" + transform.rotation);
 
         _gameLoaded         = true;
         _cc.enabled         = true;

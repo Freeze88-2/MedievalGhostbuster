@@ -15,7 +15,6 @@ public class SaveSystem : MonoBehaviour
     private struct SaveData
     {
         public PlayerSaveData playerSaveData;
-        public CameraSaveData cameraSaveData;
     }
 
     /// <summary>
@@ -50,7 +49,6 @@ public class SaveSystem : MonoBehaviour
         SaveData saveData;
 
         saveData.playerSaveData = movementController.CreateSaveData();
-        saveData.cameraSaveData = cameraController.CreateSaveData();
 
         return saveData;
     }
@@ -74,6 +72,10 @@ public class SaveSystem : MonoBehaviour
 
             ProcessSaveData(saveData);
         }
+        if (!File.Exists(_filePath))
+        {
+            print("There is nothing to load...");
+        }
     }
 
     private SaveData LoadSaveData()
@@ -88,7 +90,6 @@ public class SaveSystem : MonoBehaviour
     private void ProcessSaveData(SaveData saveData)
     {
         movementController.ProcessSaveData(saveData.playerSaveData);
-        cameraController.ProcessSaveData(saveData.cameraSaveData);
 
         print("Game loaded successfully!");
     }
