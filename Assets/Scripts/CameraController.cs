@@ -175,6 +175,7 @@ public class CameraController : MonoBehaviour
         CameraSaveData saveData = new CameraSaveData();
 
         saveData.rotation = transform.rotation;
+        saveData.position = transform.position;
 
         return saveData;
     }
@@ -182,11 +183,13 @@ public class CameraController : MonoBehaviour
     public void ProcessSaveData(CameraSaveData saveData)
     {
         transform.rotation = saveData.rotation;
+        transform.position = saveData.position;
     }
 }
 
 [System.Serializable]
 public struct CameraSaveData
 {
-    public Quaternion   rotation;   
+    public Vector3      position;
+    public Quaternion   rotation;
 }

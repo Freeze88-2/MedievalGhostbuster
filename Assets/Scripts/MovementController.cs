@@ -129,9 +129,8 @@ public class MovementController : MonoBehaviour
     {
         PlayerSaveData saveData = new PlayerSaveData();
 
-        saveData.position       = transform.position;
+        saveData.position       = transform.localPosition;
         saveData.rotation       = transform.rotation;
-        saveData.velocity       = _moveDirection;
 
         return saveData;
     }
@@ -140,7 +139,6 @@ public class MovementController : MonoBehaviour
     {
         transform.position  = saveData.position;
         transform.rotation  = saveData.rotation;
-        _moveDirection      = saveData.velocity;
 
         _gameLoaded         = true;
         _cc.enabled         = true;
@@ -152,5 +150,4 @@ public struct PlayerSaveData
 {
     public Vector3      position;
     public Quaternion   rotation;
-    public Vector3      velocity;
 }
