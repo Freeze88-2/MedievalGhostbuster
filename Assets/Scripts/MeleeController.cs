@@ -68,7 +68,7 @@ public class MeleeController : MonoBehaviour
     private void PlaySound(AudioSource _audio)
     {
         _audio.clip = _attackSound;
-        _audio.volume = Random.Range(0.35f, 0.55f);
+        _audio.volume = Random.Range(0.15f, 0.35f);
         _audio.Play();
 
     }

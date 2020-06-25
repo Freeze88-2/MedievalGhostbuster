@@ -106,7 +106,7 @@ public class MovementController : MonoBehaviour
         if (_cc.isGrounded == true && _stepsSource.isPlaying == false 
             && (_moveDirection.x != 0 || _moveDirection.z != 0))
         {
-            _stepsSource.volume = Random.Range(0.3f, 0.4f);
+            _stepsSource.volume = Random.Range(0.1f, 0.2f);
             _stepsSource.pitch = Random.Range(0.7f, 1f);
             _stepsSource.Play();    
         }
@@ -119,7 +119,7 @@ public class MovementController : MonoBehaviour
         if (_armorSource.isPlaying == false && _cc.isGrounded == true 
             && (_moveDirection.x != 0 || _moveDirection.z != 0))
         {
-            _armorSource.volume = Random.Range(0.2f, 0.3f);
+            _armorSource.volume = Random.Range(0.1f, 0.2f);
             _armorSource.pitch = Random.Range(0.8f, 1.0f);
             _armorSource.Play();             
         }
