@@ -13,7 +13,9 @@ public class MenuButtonController : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         audioSource = GetComponent<AudioSource>();
     }
 
