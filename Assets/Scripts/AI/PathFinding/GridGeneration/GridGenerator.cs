@@ -187,7 +187,10 @@ namespace AI.PathFinding.GridGeneration
                 _line.endWidth = 0.05f;
                 _line.useWorldSpace = true;
 
-                StartCoroutine(DebugLine());
+                if (gameObject.activeInHierarchy)
+                {
+                    StartCoroutine(DebugLine());
+                }
             }
         }
 
@@ -196,6 +199,7 @@ namespace AI.PathFinding.GridGeneration
             while (true)
             {
                 _line.positionCount = 5;
+
                 _line.SetPosition(0, new Vector3(transform.position.x -
                 (areaSize.x / 2), transform.position.y,
                 transform.position.z - (areaSize.z / 2)));
@@ -204,17 +208,20 @@ namespace AI.PathFinding.GridGeneration
                 (areaSize.x / 2), transform.position.y,
                 transform.position.z - (areaSize.z / 2)));
 
-                _line.SetPosition(2, new Vector3(transform.position.z +
-                (areaSize.z / 2), transform.position.y,
-                transform.position.x + (areaSize.x / 2)));
 
-                _line.SetPosition(3, new Vector3(transform.position.z -
-                (areaSize.z / 2), transform.position.y,
-                transform.position.x + (areaSize.x / 2)));
+                _line.SetPosition(2, new Vector3(transform.position.x +
+                (areaSize.x / 2), transform.position.y,
+                transform.position.z + (areaSize.z / 2)));
+
+                _line.SetPosition(3, new Vector3(transform.position.x -
+                (areaSize.x / 2), transform.position.y,
+                transform.position.z + (areaSize.z / 2)));
+
 
                 _line.SetPosition(4, new Vector3(transform.position.x -
                 (areaSize.x / 2), transform.position.y,
                 transform.position.z - (areaSize.z / 2)));
+
                 yield return new WaitForEndOfFrame();
             }
         }

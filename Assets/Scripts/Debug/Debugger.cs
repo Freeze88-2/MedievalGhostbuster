@@ -3,18 +3,20 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CostumDebug 
+namespace CostumDebug
 {
     public class Debugger : MonoBehaviour
     {
         // The text box the user writes on
         [SerializeField] private TMP_InputField _inputfield = null;
         // Target canvas
-        [SerializeField] private Canvas         _canvas = null;
+        [SerializeField] private Canvas _canvas = null;
         // Array of A* algorithms
         private GameObject[] _astar;
         // Array of Ghosts
         private GameObject[] _aIs;
+        // Array of Doors
+        private LiftDoor[] _doors;
         // The player on the game
         private GameObject _player;
 
@@ -26,6 +28,7 @@ namespace CostumDebug
             _aIs = GameObject.FindGameObjectsWithTag("GhostEnemy");
             _astar = GameObject.FindGameObjectsWithTag("GhostArea");
             _player = GameObject.FindGameObjectWithTag("Player");
+            _doors = FindObjectsOfType<LiftDoor>();
         }
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace CostumDebug
         /// </summary>
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Backslash) 
+            if (Input.GetKeyDown(KeyCode.Backslash)
                 && !_canvas.gameObject.activeSelf)
             {
                 _canvas.gameObject.SetActive(true);
@@ -82,10 +85,25 @@ namespace CostumDebug
                     DebugObject(false, _astar); ResetText();
                     break;
 
+                case "/openalldoors":
+                    OpenAllDoors(); ResetText();
+                    break;
+
                 case "/reloadlvl":
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                     ResetText();
                     break;
+            }
+
+            if (inp.Contains("/addhp") && Input.GetKey(KeyCode.Return))
+            {
+                string[] a = inp.Split(' ');
+
+                int.TryParse(a[1], out int amount);
+
+                _player.GetComponent<IEntity>().Heal(amount);
+
+                ResetText();
             }
         }
 
@@ -97,6 +115,16 @@ namespace CostumDebug
             _inputfield.text = null;
         }
 
+        private void OpenAllDoors()
+        {
+            for (int i = 0; i < _doors.Length; i++)
+            {
+                if (_doors[i].gameObject.layer != LayerMask.NameToLayer("Debug"))
+                {
+                    _doors[i].ActivatePuzzlePiece(true, 1);
+                }
+            }
+        }
         /// <summary>
         /// Calls the RunDebug on all objects that have an IDebug
         /// </summary>

@@ -32,11 +32,6 @@ public class SaveController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (!File.Exists(_playerLocationFilepath) || !File.Exists(_worldFilepath) || !File.Exists(_healthFilepath))
-            SaveGame();
-        else
-            print("There are previous save files");
-
         ListenInputs();
     }
 
@@ -87,7 +82,7 @@ public class SaveController : MonoBehaviour
     //!-----------------------------------------------------------------------
 
     // Save start
-    public void SaveGame()
+    private void SaveGame()
     {
         (SaveData plr, WorldData wrld, HealthData hlth) save = GetSaveData();
 

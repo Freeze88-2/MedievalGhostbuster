@@ -212,7 +212,7 @@ namespace AI.DecisionTrees
             {
                 // Searches on a 5 unit radius for interactables
                 Collider[] col = Physics.OverlapSphere(_ai.transform.position,
-                    10f, LayerMask.GetMask("Interactable"));
+                    5f, LayerMask.GetMask("Interactable"));
 
                 // If there's no objects free roams
                 if (col.Length <= 0)

@@ -78,7 +78,7 @@ namespace AI.Movement
         /// </summary>
         private void Update()
         {
-            
+
             target = _brain.GetDecision();
 
             if (name == "Bobby")
@@ -179,8 +179,11 @@ namespace AI.Movement
                 // The _line uses world space coordinates
                 _line.useWorldSpace = true;
 
-                // Starts the drawing of the _line
-                StartCoroutine(DebugLine());
+                if (gameObject.activeInHierarchy)
+                {
+                    // Starts the drawing of the _line
+                    StartCoroutine(DebugLine());
+                }
             }
         }
 
@@ -198,23 +201,27 @@ namespace AI.Movement
                 // Set's the first position to the current position
                 _line.SetPosition(0, transform.position);
 
-                // Runs through every point found by the path finding
-                for (int i = 0; i < _ailogic.Path.Count; i++)
+                if (_ailogic.Path != null)
                 {
-                    if (i + 1 < _ailogic.Path.Count)
+                    // Runs through every point found by the path finding
+                    for (int i = 0; i < _ailogic.Path.Count; i++)
                     {
                         // Adds a point to the _line
                         _line.positionCount += 1;
                         // Sets the position of that point to a _path point
                         _line.SetPosition(_line.positionCount - 1,
                             _ailogic.Path[i]);
+
                     }
                 }
-                // Adds one last point
-                _line.positionCount += 1;
-                // Sets the position of the point to the position of the target
-                _line.SetPosition(_line.positionCount - 1,
-                    target);
+                if (target != Vector3.zero)
+                {
+                    // Adds one last point
+                    _line.positionCount += 1;
+                    // Sets the position of the point to the position of the target
+                    _line.SetPosition(_line.positionCount - 1,
+                        target);
+                }
                 // Waits for the _end of the frame
                 yield return new WaitForEndOfFrame();
             }

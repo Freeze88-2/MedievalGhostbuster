@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -140,6 +140,21 @@ PrefabInstance:
     - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: animatorFunctions
+      value: 
+      objectReference: {fileID: 674040664}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 674040666}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animatorFunctions
       value: 
       objectReference: {fileID: 674040664}
     - target: {fileID: 3731483096925000053, guid: 6a0c259672eaabd46b35c771b196c9c0,
@@ -284,6 +299,11 @@ PrefabInstance:
       propertyPath: menuButtonController
       value: 
       objectReference: {fileID: 2126677287}
+    - target: {fileID: 5913451603547227655, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name
@@ -821,6 +841,21 @@ PrefabInstance:
       propertyPath: thisIndex
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1444257734}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animatorFunctions
+      value: 
+      objectReference: {fileID: 1444257732}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 3731483096925000053, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -961,6 +996,11 @@ PrefabInstance:
       propertyPath: menuButtonController
       value: 
       objectReference: {fileID: 2126677287}
+    - target: {fileID: 5913451603547227655, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name
@@ -1092,6 +1132,21 @@ PrefabInstance:
       propertyPath: thisIndex
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1250946577}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animatorFunctions
+      value: 
+      objectReference: {fileID: 1250946575}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 3731483096925000053, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1234,6 +1289,11 @@ PrefabInstance:
       propertyPath: menuButtonController
       value: 
       objectReference: {fileID: 2126677287}
+    - target: {fileID: 5913451603547227655, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name
@@ -2359,6 +2419,21 @@ PrefabInstance:
       propertyPath: thisIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1063621210}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animatorFunctions
+      value: 
+      objectReference: {fileID: 1063621208}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 3731483096925000053, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -2501,6 +2576,11 @@ PrefabInstance:
       propertyPath: menuButtonController
       value: 
       objectReference: {fileID: 2126677287}
+    - target: {fileID: 5913451603547227655, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name
@@ -2535,6 +2615,21 @@ PrefabInstance:
       propertyPath: thisIndex
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 811463233}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _animatorFunctions
+      value: 
+      objectReference: {fileID: 811463231}
+    - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 3731483096925000053, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -2675,6 +2770,11 @@ PrefabInstance:
       propertyPath: menuButtonController
       value: 
       objectReference: {fileID: 2126677287}
+    - target: {fileID: 5913451603547227655, guid: 6a0c259672eaabd46b35c771b196c9c0,
+        type: 3}
+      propertyPath: _menuButtonController
+      value: 
+      objectReference: {fileID: 1759135659}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name
