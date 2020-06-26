@@ -26550,7 +26550,7 @@ Canvas:
   m_GameObject: {fileID: 937688224}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 799957814}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -28813,6 +28813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pauseMenu: {fileID: 1428353411}
   _forgeMenu: {fileID: 1676652706}
+  _gameUI: {fileID: 178372297}
   _menuCam: {fileID: 236492168}
   _escCount: 0
   _tabCount: 0
