@@ -69,6 +69,7 @@ public class DummyPlayer : MonoBehaviour, IEntity
     /// </summary>
     void Awake()
     {
+        Hp = _hp;
         saveController = GameObject.FindObjectOfType<SaveController>();        
     }
 
