@@ -61,6 +61,19 @@ public class DummyPlayer : MonoBehaviour, IEntity
     protected Rigidbody rb;
 
     /// <summary>
+    /// 
+    /// </summary>
+    private SaveController saveController;
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    void Awake()
+    {
+        saveController = GameObject.FindObjectOfType<SaveController>();        
+    }
+
+    /// <summary>
     /// Assigns the variables from IEntity to the ones given
     /// </summary>
     private void Start()
@@ -89,6 +102,14 @@ public class DummyPlayer : MonoBehaviour, IEntity
         // subtracts the amount from the hp
         Hp = Mathf.Max(Hp - amount, 0);
         Debug.Log($"{Hp} / {MaxHp}");
+
+        // Checks if the player's health is 0
+        if (Hp == 0)
+        {
+            Debug.Log("You died, reloading last save...");
+            // Calls LoadGame method from SaveController
+            saveController.LoadGame();
+        }
     }
 
     /// <summary>

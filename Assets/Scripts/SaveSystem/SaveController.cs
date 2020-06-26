@@ -121,7 +121,7 @@ public class SaveController : MonoBehaviour
     // Save end
 
     // Load start
-    private void LoadGame()
+    public void LoadGame()
     {
         if (File.Exists(_playerLocationFilepath) && File.Exists(_worldFilepath) && File.Exists(_healthFilepath))
         {
