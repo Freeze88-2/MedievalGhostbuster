@@ -89,7 +89,7 @@ public class SaveController : MonoBehaviour
         SaveData saveData;
         WorldData worldData;
 
-        saveData = movementController.CreateSaveData();
+        saveData = movementController.CreatePlayerSaveData();
         worldData = new WorldData(_objectsToSave);
 
         return (saveData, worldData);
@@ -148,7 +148,7 @@ public class SaveController : MonoBehaviour
 
     private void ProcessSaveData(SaveData playerData, WorldData worldData)
     {
-        movementController.ProcessSaveData(playerData);
+        movementController.ProcessPlayerSaveData(playerData);
         ProcessWorldData(worldData);
 
         print("Game loaded successfully!");

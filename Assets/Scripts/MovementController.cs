@@ -125,7 +125,7 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    public SaveData CreateSaveData()
+    public SaveData CreatePlayerSaveData()
     {
         SaveData saveData = new SaveData();
 
@@ -137,7 +137,7 @@ public class MovementController : MonoBehaviour
         return saveData;
     }
 
-    public void ProcessSaveData(SaveData saveData)
+    public void ProcessPlayerSaveData(SaveData saveData)
     {
         _cc.enabled         = false;
 
