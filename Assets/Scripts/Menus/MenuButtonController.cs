@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class MenuButtonController : MonoBehaviour
 {
-    [SerializeField] private int        maxIndex;
+    [SerializeField] private int        _maxIndex;
 
-    private bool                        keyDown;
+    private bool                        _keyDown;
     
     public int                          index;
     public AudioSource                  audioSource;
 
     void Start()
     {
+        Time.timeScale = 1;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -22,11 +24,11 @@ public class MenuButtonController : MonoBehaviour
     {
         if(Input.GetAxis("Vertical") != 0)
         {
-            if(!keyDown)
+            if(!_keyDown)
             {
                 if(Input.GetAxis("Vertical") < 0)
                 {
-                    if(index < maxIndex)
+                    if(index < _maxIndex)
                     {
                         index++;
                     }
@@ -43,15 +45,15 @@ public class MenuButtonController : MonoBehaviour
                     }
                     else
                     {
-                        index = maxIndex;
+                        index = _maxIndex;
                     }
                 }
-                keyDown = true;
+                _keyDown = true;
             }
         }
         else
         {
-            keyDown = false;
+            _keyDown = false;
         }
     }
 }

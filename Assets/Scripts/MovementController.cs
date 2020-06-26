@@ -18,6 +18,7 @@ public class MovementController : MonoBehaviour
     private float                           _jumpForce;
     private Vector3                         _moveDirection;
     private CharacterController             _cc;
+    private bool                            _gameLoaded;
     
     void Start()
     {
@@ -105,7 +106,7 @@ public class MovementController : MonoBehaviour
         if (_cc.isGrounded == true && _stepsSource.isPlaying == false 
             && (_moveDirection.x != 0 || _moveDirection.z != 0))
         {
-            _stepsSource.volume = Random.Range(0.3f, 0.4f);
+            _stepsSource.volume = Random.Range(0.1f, 0.2f);
             _stepsSource.pitch = Random.Range(0.7f, 1f);
             _stepsSource.Play();    
         }
@@ -118,9 +119,34 @@ public class MovementController : MonoBehaviour
         if (_armorSource.isPlaying == false && _cc.isGrounded == true 
             && (_moveDirection.x != 0 || _moveDirection.z != 0))
         {
-            _armorSource.volume = Random.Range(0.2f, 0.3f);
+            _armorSource.volume = Random.Range(0.1f, 0.2f);
             _armorSource.pitch = Random.Range(0.8f, 1.0f);
             _armorSource.Play();             
         }
+    }
+
+    public SaveData CreatePlayerSaveData()
+    {
+        SaveData saveData = new SaveData();
+
+        saveData.position       = transform.position;
+        saveData.rotation       = transform.rotation;
+
+        print(saveData.position + "\t" + saveData.rotation);
+
+        return saveData;
+    }
+
+    public void ProcessPlayerSaveData(SaveData saveData)
+    {
+        _cc.enabled         = false;
+
+        transform.position  = saveData.position;
+        transform.rotation  = saveData.rotation;
+
+        print(transform.position + "\t" + transform.rotation);
+
+        _gameLoaded         = true;
+        _cc.enabled         = true;
     }
 }

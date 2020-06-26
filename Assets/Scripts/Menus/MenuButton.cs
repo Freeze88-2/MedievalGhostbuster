@@ -5,32 +5,32 @@ using UnityEngine.SceneManagement;
 
 public class MenuButton : MonoBehaviour
 {
-    [SerializeField] private MenuButtonController menuButtonController;
-    [SerializeField] private Animator animator;
-    [SerializeField] private AnimatorFunctions animatorFunctions;
+    [SerializeField] private MenuButtonController   _menuButtonController;
+    [SerializeField] private Animator               _animator;
+    [SerializeField] private AnimatorFunctions      _animatorFunctions;
     [SerializeField] private int thisIndex;
 
     private int index;
 
     void Update()
     {
-        index = menuButtonController.index;
+        index = _menuButtonController.index;
 
         if(index == thisIndex)
         {
-            animator.SetBool("selected", true);
+            _animator.SetBool("selected", true);
             
             if(Input.GetAxis("Submit") == 1)
-                animator.SetBool("clicked", true);
-            else if(animator.GetBool("clicked"))
+                _animator.SetBool("clicked", true);
+            else if(_animator.GetBool("clicked"))
             {
-                animator.SetBool("clicked", false);
-                animatorFunctions.disableOnce = true;
+                _animator.SetBool("clicked", false);
+                _animatorFunctions.disableOnce = true;
             }
         }
         else
         {
-            animator.SetBool("selected", false);
+            _animator.SetBool("selected", false);
         }
 
         CheckLoadAndQuit();
@@ -38,7 +38,7 @@ public class MenuButton : MonoBehaviour
 
     private void CheckLoadAndQuit()
     {
-                if (index == 0 && thisIndex == 0 && Input.GetButtonDown("Submit"))
+        if (index == 0 && thisIndex == 0 && Input.GetButtonDown("Submit"))
         {
             Debug.Log("I Load!");
             SceneManager.LoadScene(1);
