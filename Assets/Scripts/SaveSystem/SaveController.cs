@@ -88,7 +88,7 @@ public class SaveController : MonoBehaviour
     //!-----------------------------------------------------------------------
 
     // Save start
-    private void SaveGame()
+    public void SaveGame()
     {
         (SaveData plr, WorldData wrld, HealthData hlth) save = GetSaveData();
 
