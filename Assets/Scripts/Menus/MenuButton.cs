@@ -12,7 +12,15 @@ public class MenuButton : MonoBehaviour
 
     private int index;
 
-    void Update()
+
+    public bool _gameIsLoaded;
+
+    private void Start()
+    {
+        _gameIsLoaded = false;    
+    }
+
+    private void Update()
     {
         index = _menuButtonController.index;
 
@@ -34,6 +42,7 @@ public class MenuButton : MonoBehaviour
         }
 
         CheckLoadAndQuit();
+        LoadSave();
     }
 
     private void CheckLoadAndQuit()
@@ -47,6 +56,24 @@ public class MenuButton : MonoBehaviour
         {
             Debug.Log("I Quit!");
             Application.Quit();
+        }
+    }
+
+    private void ShowCredits()
+    {
+
+    }
+
+
+
+    private void LoadSave()
+    {
+        if (index == 1 && thisIndex == 1 && Input.GetButtonDown("Submit"))
+        {
+            transform.parent = null;
+            DontDestroyOnLoad(this);
+            _gameIsLoaded = true;
+            SceneManager.LoadScene(1);
         }
     }
 }

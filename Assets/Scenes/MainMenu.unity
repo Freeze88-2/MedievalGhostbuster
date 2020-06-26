@@ -146,7 +146,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _menuButtonController
       value: 
-      objectReference: {fileID: 1759135659}
+      objectReference: {fileID: 2126677287}
     - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: _animator
@@ -303,7 +303,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _menuButtonController
       value: 
-      objectReference: {fileID: 1759135659}
+      objectReference: {fileID: 2126677287}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name
@@ -942,7 +942,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _menuButtonController
       value: 
-      objectReference: {fileID: 1759135659}
+      objectReference: {fileID: 2126677287}
     - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: _animator
@@ -1099,7 +1099,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _menuButtonController
       value: 
-      objectReference: {fileID: 1759135659}
+      objectReference: {fileID: 2126677287}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name
@@ -2092,7 +2092,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1759135658}
-  - component: {fileID: 1759135659}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -2125,21 +2124,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1759135659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759135657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34187a77fae03fe4c8acb88b35c6caa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxIndex: 0
-  index: 0
-  audioSource: {fileID: 2126677288}
 --- !u!1 &2044740769
 GameObject:
   m_ObjectHideFlags: 0
@@ -2209,7 +2193,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _menuButtonController
       value: 
-      objectReference: {fileID: 1759135659}
+      objectReference: {fileID: 2126677287}
     - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: _animator
@@ -2366,7 +2350,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _menuButtonController
       value: 
-      objectReference: {fileID: 1759135659}
+      objectReference: {fileID: 2126677287}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name
@@ -2405,7 +2389,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _menuButtonController
       value: 
-      objectReference: {fileID: 1759135659}
+      objectReference: {fileID: 2126677287}
     - target: {fileID: 2217782489030877196, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: _animator
@@ -2560,7 +2544,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _menuButtonController
       value: 
-      objectReference: {fileID: 1759135659}
+      objectReference: {fileID: 2126677287}
     - target: {fileID: 8476242394896790794, guid: 6a0c259672eaabd46b35c771b196c9c0,
         type: 3}
       propertyPath: m_Name

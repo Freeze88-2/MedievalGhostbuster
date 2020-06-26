@@ -6,7 +6,7 @@
 public class DummyPlayer : MonoBehaviour, IEntity
 {
     // The color of the ghost
-    [SerializeField] private GhostColor _gcolor = GhostColor.Blue;
+    [SerializeField] private GhostColor _gcolor = GhostColor.None;
 
     // Maximum speed of the entity
     [SerializeField] private float _maxSpeed = 1f;
