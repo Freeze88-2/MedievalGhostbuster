@@ -14539,7 +14539,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -210.00003}
+  m_AnchoredPosition: {x: 0, y: -210}
   m_SizeDelta: {x: 135.2, y: -1115.65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &576108611
@@ -26550,7 +26550,7 @@ Canvas:
   m_GameObject: {fileID: 937688224}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 799957814}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -27077,6 +27077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe295c554af81548bf9249d5fd0b986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _height: 3
 --- !u!54 &959552821
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -28812,6 +28813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pauseMenu: {fileID: 1428353411}
   _forgeMenu: {fileID: 1676652706}
+  _gameUI: {fileID: 178372297}
   _menuCam: {fileID: 236492168}
   _escCount: 0
   _tabCount: 0
@@ -57978,6 +57980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe295c554af81548bf9249d5fd0b986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _height: 3
 --- !u!33 &2625239525640911020
 MeshFilter:
   m_ObjectHideFlags: 0
