@@ -25,6 +25,12 @@ public class SaveController : MonoBehaviour
         _playerLocationFilepath = Application.persistentDataPath + "/" + PLAYER_LOCATION_FILENAME;
         _worldFilepath = Application.persistentDataPath + "/" + WORLD_FILENAME;
         _healthFilepath = Application.persistentDataPath + "/" + HEALTH_FILENAME;
+
+        if (!File.Exists(_playerLocationFilepath) || !File.Exists(_worldFilepath) || !File.Exists(_healthFilepath))
+            SaveGame();
+        else
+            print("There are previous save files");
+
     }
 
     /// <summary>
