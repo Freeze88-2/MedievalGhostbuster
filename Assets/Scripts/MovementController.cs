@@ -125,11 +125,11 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    public PlayerSaveData CreateSaveData()
+    public SaveData CreateSaveData()
     {
-        PlayerSaveData saveData = new PlayerSaveData();
+        SaveData saveData = new SaveData();
 
-        saveData.position       = transform.localPosition;
+        saveData.position       = transform.position;
         saveData.rotation       = transform.rotation;
 
         print(saveData.position + "\t" + saveData.rotation);
@@ -137,8 +137,10 @@ public class MovementController : MonoBehaviour
         return saveData;
     }
 
-    public void ProcessSaveData(PlayerSaveData saveData)
+    public void ProcessSaveData(SaveData saveData)
     {
+        _cc.enabled         = false;
+
         transform.position  = saveData.position;
         transform.rotation  = saveData.rotation;
 
@@ -147,11 +149,4 @@ public class MovementController : MonoBehaviour
         _gameLoaded         = true;
         _cc.enabled         = true;
     }
-}
-
-[System.Serializable]
-public struct PlayerSaveData
-{
-    public Vector3      position;
-    public Quaternion   rotation;
 }
