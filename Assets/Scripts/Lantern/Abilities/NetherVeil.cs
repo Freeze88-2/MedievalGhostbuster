@@ -78,7 +78,10 @@ namespace Lantern.Abilities
 
             while (timer <= _duration)
             {
-                col.radius -= amount * Time.deltaTime;
+                if (col != null)
+                {
+                    col.radius -= amount * Time.deltaTime;
+                }
                 timer += Time.deltaTime % 60;
 
                 yield return null;
