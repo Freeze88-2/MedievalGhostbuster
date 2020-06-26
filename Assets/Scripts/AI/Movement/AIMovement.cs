@@ -218,9 +218,11 @@ namespace AI.Movement
                 {
                     // Adds one last point
                     _line.positionCount += 1;
+                    Vector3 levelTraget = target;
+                    levelTraget.y = transform.position.y;
                     // Sets the position of the point to the position of the target
                     _line.SetPosition(_line.positionCount - 1,
-                        target);
+                        levelTraget);
                 }
                 // Waits for the _end of the frame
                 yield return new WaitForEndOfFrame();
