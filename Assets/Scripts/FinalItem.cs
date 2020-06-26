@@ -21,14 +21,16 @@ public class FinalItem : MonoBehaviour
         _content.transform.Rotate(_contentRotation);
     }
 
-    IEnumerator WaitForFade()
+    IEnumerator WaitForEnd()
     {
         yield return new WaitForSecondsRealtime(3);
+        print("Loading scene...");
         SceneManager.LoadScene(0);
     }
 
     private void OnTriggerEnter(Collider other) 
     {
-        WaitForFade();
+        print("Game completed...");
+        StartCoroutine(WaitForEnd());
     }
 }
