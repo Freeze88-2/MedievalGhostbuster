@@ -72,7 +72,11 @@ namespace Lantern.Abilities
                 {
                     _ghosts[i].IsTargatable = false;
                     _ghosts[i].DealDamage(25);
-                    _ghosts.Remove(_ghosts[i]);
+
+                    if (_ghosts[i].Hp <= 0)
+                    {
+                        _ghosts.Remove(_ghosts[i]);
+                    }
                 }
                 yield return _wait;
             }

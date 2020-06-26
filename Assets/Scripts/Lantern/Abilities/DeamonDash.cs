@@ -22,8 +22,7 @@ namespace Lantern.Abilities
         {
             get => (GhostColor.Red, GhostColor.Red);
         }
-        public int NActivations
-            { get => _dashes; set {NActivations = _nDashes; } }
+        public int NActivations { get => _dashes; }
 
         public bool HabilityEnded { get; private set; }
 
@@ -35,7 +34,7 @@ namespace Lantern.Abilities
             _playerRb = GameObject.FindGameObjectWithTag("Player")
                 .GetComponent<CharacterController>();
             _wait = new WaitForSecondsRealtime(0.5f);
-            _dashes = NActivations;
+            _dashes = _nDashes;
             _timer = 0;
             _isDashing = false;
             HabilityEnded = false;
@@ -53,7 +52,7 @@ namespace Lantern.Abilities
                 HabilityEnded = true;
                 _isDashing = false;
                 _timer = 0;
-                _dashes = NActivations;
+                _dashes = _nDashes;
             }
         }
 

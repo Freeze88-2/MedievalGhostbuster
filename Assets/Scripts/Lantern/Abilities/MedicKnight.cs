@@ -5,7 +5,7 @@ namespace Lantern.Abilities
 {
     public class MedicKnight : MonoBehaviour, IAbility
     {
-        [SerializeField] public float _healTime { get; set; }
+        [SerializeField] private float _healTime = 2;
         [SerializeField] private float _healAmount = 10f;
         [SerializeField] private float _healTicks = 0.2f;
 
