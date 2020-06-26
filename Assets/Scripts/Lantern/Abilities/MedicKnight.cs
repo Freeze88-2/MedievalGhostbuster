@@ -5,9 +5,10 @@ namespace Lantern.Abilities
 {
     public class MedicKnight : MonoBehaviour, IAbility
     {
+        [SerializeField] public float _healTime { get; set; }
         [SerializeField] private float _healAmount = 10f;
-        [SerializeField] private float _healTime = 5f;
         [SerializeField] private float _healTicks = 0.2f;
+
         [Tooltip("Sound Effects")]
         [SerializeField] private AudioClip _sound;
 
@@ -22,6 +23,10 @@ namespace Lantern.Abilities
         }
 
         public bool HabilityEnded { get; private set; }
+
+        public int ID => 2;
+
+        public int NActivations => 1;
 
         // Start is called before the first frame update
         private void Start()

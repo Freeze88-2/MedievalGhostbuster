@@ -17,11 +17,16 @@ namespace Lantern.Abilities
         private List<Collider> alreadyCounted = new List<Collider>();
         private GameObject _player;
 
-        public bool HabilityEnded { get; private set; }
         public (GhostColor, GhostColor) AbilityColors
         {
             get => (GhostColor.Red, GhostColor.Green);
         }
+
+        public bool HabilityEnded { get; private set; }
+
+        public int ID => 4;
+
+        public int NActivations => 1;
 
         private void Start()
         {

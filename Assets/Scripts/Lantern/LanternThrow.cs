@@ -42,6 +42,15 @@ namespace Lantern
             CheckLanternDespawn();
             LanternThrowing();
             AbilityCast();
+
+            if (Input.GetKey(KeyCode.L))
+            {
+                Debug.Log(GetLaternColors());
+            }
+            if (Input.GetKey(KeyCode.K))
+            {
+                Debug.Log(GetCurrentInLanternAbility()?.NActivations);
+            }
         }
 
         private void CheckLanternDespawn()
@@ -83,7 +92,7 @@ namespace Lantern
                         _cursor.transform.position = hit.point;
 
                         if (Input.GetKeyDown(KeyCode.E) && 
-                            !behaviour.Colors[1].HasValue)
+                            !behaviour.GetColors()[1].HasValue)
                         {
                             if (!_capturer.activeSelf)
                             {
@@ -184,6 +193,28 @@ namespace Lantern
                 yield return null;
             }
             behaviour.EmptyLantern(true);
+        }
+
+        /// <summary>
+        /// Provides the colors inside the lantern at the moment
+        /// </summary>
+        /// <returns> A native tuple with the two colors</returns>
+        public (GhostColor, GhostColor) GetLaternColors()
+        {
+            GhostColor first = behaviour.GetColors()[0] ?? GhostColor.None;
+
+            GhostColor second = behaviour.GetColors()[1] ?? GhostColor.None;
+
+            return (first, second);
+        }
+
+        /// <summary>
+        /// Returns an IAbility if there's any in the lantern
+        /// </summary>
+        /// <returns> The current active ability </returns>
+        public IAbility GetCurrentInLanternAbility()
+        {
+            return behaviour.GetAbility();
         }
 
         private void PlaySound(AudioSource _lanternThrowSource)

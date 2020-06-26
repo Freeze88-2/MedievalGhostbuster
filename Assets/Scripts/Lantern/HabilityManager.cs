@@ -23,15 +23,18 @@
             {
                 return SearchWantedAbility((GhostColor.Blue, GhostColor.Blue));
             }
-            else if ((a == GhostColor.Red && b == GhostColor.Green) || (a == GhostColor.Green && b == GhostColor.Red))
+            else if ((a == GhostColor.Red && b == GhostColor.Green) || 
+                (a == GhostColor.Green && b == GhostColor.Red))
             {
                 return SearchWantedAbility((GhostColor.Red, GhostColor.Green));
             }
-            else if ((a == GhostColor.Red && b == GhostColor.Blue) || (a == GhostColor.Blue && b == GhostColor.Red))
+            else if ((a == GhostColor.Red && b == GhostColor.Blue) || 
+                (a == GhostColor.Blue && b == GhostColor.Red))
             {
                 return SearchWantedAbility((GhostColor.Red, GhostColor.Blue));
             }
-            else if ((a == GhostColor.Green && b == GhostColor.Blue) || (a == GhostColor.Blue && b == GhostColor.Green))
+            else if ((a == GhostColor.Green && b == GhostColor.Blue) || 
+                (a == GhostColor.Blue && b == GhostColor.Green))
             {
                 return SearchWantedAbility((GhostColor.Green, GhostColor.Blue));
             }

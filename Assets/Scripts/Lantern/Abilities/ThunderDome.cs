@@ -8,6 +8,7 @@ namespace Lantern.Abilities
     {
         [SerializeField] private GameObject _particles = null;
         [SerializeField] private float _tickTime = 0.2f;
+
         [Tooltip("Sound Effects")]
         [SerializeField] private AudioClip _sound;
 
@@ -15,12 +16,17 @@ namespace Lantern.Abilities
         private GameObject _player;
         private WaitForSeconds _wait;
 
-        public bool HabilityEnded { get; private set; }
 
         public (GhostColor, GhostColor) AbilityColors
         {
             get => (GhostColor.Green, GhostColor.Blue);
         }
+
+        public bool HabilityEnded { get; private set; }
+
+        public int ID => 3;
+
+        public int NActivations => 1;
 
         // Start is called before the first frame update
         private void Start()

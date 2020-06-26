@@ -6,4 +6,5 @@ public enum GhostColor
     Red,
     Green,
     Blue,
+    None
 }
