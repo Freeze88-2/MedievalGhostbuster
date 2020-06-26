@@ -6,8 +6,8 @@ using UnityEngine.Audio;
 
 public class PauseFunctions : MonoBehaviour
 {
-    [SerializeField] private AudioMixer _mixer;
-    [SerializeField] private AudioListener _listener;
+    [SerializeField] private AudioMixer     _mixer;
+    [SerializeField] private AudioListener  _listener;
 
     private bool mute = false;
 

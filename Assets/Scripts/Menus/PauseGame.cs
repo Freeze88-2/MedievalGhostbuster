@@ -6,11 +6,9 @@ public class PauseGame : MonoBehaviour
 {
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _forgeMenu;
-    [SerializeField] private Camera  _menuCam;
-    [SerializeField] private int     _escCount;
-    [SerializeField] private int     _tabCount;
-
-    private bool _isPaused;
+    [SerializeField] private Camera     _menuCam;
+    [SerializeField] private int        _escCount;
+    [SerializeField] private int        _tabCount;
 
     void Start()
     {
@@ -20,7 +18,6 @@ public class PauseGame : MonoBehaviour
         _menuCam.enabled = false;
         _escCount = 0;
         _tabCount = 0;
-        _isPaused = false;
     }
 
     void Update()
@@ -40,7 +37,6 @@ public class PauseGame : MonoBehaviour
                 _pauseMenu.SetActive(true);
                 _menuCam.enabled = true;
                 Time.timeScale = 0;
-                _isPaused = true;
                 _tabCount = 0;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
@@ -51,7 +47,6 @@ public class PauseGame : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 _menuCam.enabled = false;
                 _pauseMenu.SetActive(false);
-                _isPaused = false;
                 Time.timeScale = 1;
                 _tabCount = 0;
                 _escCount = 0;
@@ -70,14 +65,12 @@ public class PauseGame : MonoBehaviour
                 _forgeMenu.SetActive(true);
                 _menuCam.enabled = true;
                 Time.timeScale = 0;
-                _isPaused = true;
                 _escCount = 0;
             }
             else if (_tabCount == 2)
             {
                 _menuCam.enabled = false;
                 _forgeMenu.SetActive(false);
-                _isPaused = false;
                 Time.timeScale = 1;
                 _tabCount = 0;
                 _escCount = 0;
