@@ -100,4 +100,30 @@ public class DummyPlayer : MonoBehaviour, IEntity
         // Adds hp to the player capped at the defined max hp
         Hp = Mathf.Min(Hp + amount, MaxHp);
     }
+
+    /// <summary>
+    /// Saves the current Health of the player
+    /// </summary>
+    /// <returns> Returns the current Health of the player </returns>
+    public HealthData CreateHealthSaveData()
+    {
+        HealthData saveData = new HealthData();
+
+        saveData.currentHealth = Hp;
+
+        print(saveData.currentHealth);
+
+        return saveData;
+    }
+
+    /// <summary>
+    /// Sets the Health of the player to the saved Health value
+    /// </summary>
+    /// <param name="saveData"></param>
+    public void ProcessHealthSaveData(HealthData saveData)
+    {
+        Hp  = saveData.currentHealth;
+
+        print(Hp);
+    }
 }

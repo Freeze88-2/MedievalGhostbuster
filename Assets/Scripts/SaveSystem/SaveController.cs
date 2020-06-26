@@ -9,17 +9,22 @@ public class SaveController : MonoBehaviour
 
     private const KeyCode SAVE_KEY = KeyCode.F3;
     private const KeyCode LOAD_KEY = KeyCode.F5;
-    private const string FILENAME = "ghostbusterSave.dat";
+    private const string PLAYER_LOCATION_FILENAME = "ghostbusterSave.dat";
     private const string WORLD_FILENAME = "ghostbusterWorldSave.dat";
-    private string _playerFilepath;
+    private const string HEALTH_FILENAME = "ghostbusterHealthSave.dat";
+    private string _playerLocationFilepath;
     private string _worldFilepath;
-    private MovementController movementController;
+    private string _healthFilepath;
+    private MovementController _movementController;
+    private DummyPlayer _dummy;
 
     private void Awake()
     {
-        movementController = GameObject.FindObjectOfType<MovementController>();
-        _playerFilepath = Application.persistentDataPath + "/" + FILENAME;
+        _movementController = GameObject.FindObjectOfType<MovementController>();
+        _dummy = GameObject.FindObjectOfType<DummyPlayer>();
+        _playerLocationFilepath = Application.persistentDataPath + "/" + PLAYER_LOCATION_FILENAME;
         _worldFilepath = Application.persistentDataPath + "/" + WORLD_FILENAME;
+        _healthFilepath = Application.persistentDataPath + "/" + HEALTH_FILENAME;
     }
 
     /// <summary>
@@ -79,32 +84,37 @@ public class SaveController : MonoBehaviour
     // Save start
     private void SaveGame()
     {
-        (SaveData plr, WorldData wrld) save = GetSaveData();
+        (SaveData plr, WorldData wrld, HealthData hlth) save = GetSaveData();
 
-        StoreSaveData(save.plr, save.wrld);
+        StoreSaveData(save.plr, save.wrld, save.hlth);
     }
 
-    private(SaveData, WorldData) GetSaveData()
+    private(SaveData, WorldData, HealthData) GetSaveData()
     {
         SaveData saveData;
         WorldData worldData;
+        HealthData healthData;
 
-        saveData = movementController.CreatePlayerSaveData();
+        saveData = _movementController.CreatePlayerSaveData();
         worldData = new WorldData(_objectsToSave);
+        healthData = _dummy.CreateHealthSaveData();
 
-        return (saveData, worldData);
+        return (saveData, worldData, healthData);
     }
 
-    private void StoreSaveData(SaveData saveData, WorldData worldData)
+    private void StoreSaveData(SaveData saveData, WorldData worldData, HealthData healthData)
     {
         string jsonPlayerSaveData = JsonUtility.ToJson(saveData, true);
         string jsonWorldSaveData = JsonUtility.ToJson(worldData, true);
+        string jsonHealthSaveData = JsonUtility.ToJson(healthData, true);
 
-        File.WriteAllText(_playerFilepath, jsonPlayerSaveData);
+        File.WriteAllText(_playerLocationFilepath, jsonPlayerSaveData);
         File.WriteAllText(_worldFilepath, jsonWorldSaveData);
+        File.WriteAllText(_healthFilepath, jsonHealthSaveData);
 
-        print(_playerFilepath);
+        print(_playerLocationFilepath);
         print(_worldFilepath);
+        print(_healthFilepath);
 
         print("Game saved successfully!");
     }
@@ -113,15 +123,17 @@ public class SaveController : MonoBehaviour
     // Load start
     private void LoadGame()
     {
-        if (File.Exists(_playerFilepath) && File.Exists(_worldFilepath))
+        if (File.Exists(_playerLocationFilepath) && File.Exists(_worldFilepath) && File.Exists(_healthFilepath))
         {
             SaveData playerSaveData;
             WorldData worldSaveData;
+            HealthData healthSaveData;
 
             playerSaveData = LoadPlayerSaveData();
             worldSaveData = LoadWorldSaveData();
+            healthSaveData = LoadHealthSaveData();
 
-            ProcessSaveData(playerSaveData, worldSaveData);
+            ProcessSaveData(playerSaveData, worldSaveData, healthSaveData);
         }
         else
         {
@@ -131,7 +143,7 @@ public class SaveController : MonoBehaviour
 
     private SaveData LoadPlayerSaveData()
     {
-        string jsonSaveData = File.ReadAllText(_playerFilepath);
+        string jsonSaveData = File.ReadAllText(_playerLocationFilepath);
 
         SaveData saveData = JsonUtility.FromJson<SaveData>(jsonSaveData);
 
@@ -146,10 +158,20 @@ public class SaveController : MonoBehaviour
         return worldData;
     }
 
-    private void ProcessSaveData(SaveData playerData, WorldData worldData)
+    private HealthData LoadHealthSaveData()
     {
-        movementController.ProcessPlayerSaveData(playerData);
+        string jsonSaveData = File.ReadAllText(_healthFilepath);
+
+        HealthData healthData = JsonUtility.FromJson<HealthData>(jsonSaveData);
+
+        return healthData;
+    }
+
+    private void ProcessSaveData(SaveData playerData, WorldData worldData, HealthData healthData)
+    {
+        _movementController.ProcessPlayerSaveData(playerData);
         ProcessWorldData(worldData);
+        _dummy.ProcessHealthSaveData(healthData);
 
         print("Game loaded successfully!");
     }
