@@ -35,7 +35,7 @@ public class SaveController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(_menuMain != null && _menuMain._gameIsLoaded == true)
+        if(_menuMain != null && _menuMain.gameIsLoaded == true)
         {
             LoadGame();
             Destroy(_menuMain);
@@ -45,7 +45,7 @@ public class SaveController : MonoBehaviour
         else
             print("There are previous save files");
 
-        Debug.Log("####" + _menuMain._gameIsLoaded);
+        Debug.Log("####" + _menuMain.gameIsLoaded);
 
 
         ListenInputs();
