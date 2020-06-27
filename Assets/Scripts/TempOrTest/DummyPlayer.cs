@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Temporary Player to test mechanics
@@ -106,9 +107,7 @@ public class DummyPlayer : MonoBehaviour, IEntity
         // Checks if the player's health is 0
         if (Hp == 0)
         {
-            Debug.Log("You died, reloading last save...");
-            // Calls LoadGame method from SaveController
-            saveController.LoadGame();
+            SceneManager.LoadScene(2);
         }
     }
 

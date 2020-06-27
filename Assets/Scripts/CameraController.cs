@@ -9,6 +9,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Camera _rightShoulderCamera;
     [SerializeField] private Transform _player;
     [SerializeField] private bool _drawGizmos = true;
+    [SerializeField] private GameObject _forge;
+    [SerializeField] private AudioClip _ambience;
+    [SerializeField] private AudioClip _forgeSong;
+
+    private AudioSource _audioSource;
     private CameraType _currentActiveCamera;
     private float _rotationSpeed;
     private float _mouseX, _mouseY;
@@ -45,6 +50,17 @@ public class CameraController : MonoBehaviour
         _playerLayer = LayerMask.NameToLayer(PLAYER_LAYER);
         _range = Vector3.Distance(TargetPosition, transform.position);
         ChangeCameras(CameraType.Main);
+
+        _audioSource = GetComponentInChildren<AudioSource>();
+    }
+
+    private void Update()
+    {
+        _audioSource.clip = _forge.activeInHierarchy ? _forgeSong : _ambience;
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.Play();
+        }
     }
 
     void LateUpdate()

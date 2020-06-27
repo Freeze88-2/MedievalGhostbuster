@@ -25,12 +25,11 @@ public class FinalItem : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(3);
         print("Loading scene...");
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(3);
     }
 
     private void OnTriggerEnter(Collider other) 
     {
-        print("Game completed...");
         StartCoroutine(WaitForEnd());
     }
 }

@@ -11,6 +11,12 @@ public class PauseFunctions : MonoBehaviour
 
     private bool mute = false;
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     public void ReloadScene()
     {
         Scene scene = SceneManager.GetActiveScene();
