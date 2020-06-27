@@ -20,24 +20,18 @@ public class AnimController : MonoBehaviour
     {
         AnimChangeOnWalk();
         AnimChangeOnAttack();
-        AnimChangeOnBlock();
     }
 
     private void AnimChangeOnWalk()
     {
-        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0
+                || Mathf.Abs(Input.GetAxis("Vertical")) > 0)
+        {
+            _characterAnim.SetBool("IsWalking", true);
+        }
+        else
         {
             _characterAnim.SetBool("IsWalking", false);
-        }
-        else if (Input.GetAxis("Horizontal") > 0
-                || Input.GetAxis("Horizontal") < 0)
-        {
-            _characterAnim.SetBool("IsWalking", true);
-        }
-        else if (Input.GetAxis("Vertical") > 0
-                || Input.GetAxis("Vertical") < 0)
-        {
-            _characterAnim.SetBool("IsWalking", true);
         }
     }
 
@@ -51,18 +45,6 @@ public class AnimController : MonoBehaviour
                 _characterAnim.SetInteger("AttackChain", _random);
 
                 _characterAnim.SetTrigger("Attack");
-            }
-        }
-    }
-
-    private void AnimChangeOnBlock()
-    {
-        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
-        {
-            if (Input.GetButtonDown("Fire2"))
-            {
-                _characterAnim.SetTrigger("Block");
-                _lanternAnim.SetTrigger("Rotate");
             }
         }
     }

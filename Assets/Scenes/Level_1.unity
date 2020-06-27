@@ -3908,7 +3908,7 @@ PrefabInstance:
     - target: {fileID: 6657489886863078924, guid: 81cf526ec0aea604b804414ffaa0fdb2,
         type: 3}
       propertyPath: _hp
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7280548950455508864, guid: 81cf526ec0aea604b804414ffaa0fdb2,
         type: 3}
@@ -4078,6 +4078,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _secondsToDespawn
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8588945756745256092, guid: 81cf526ec0aea604b804414ffaa0fdb2,
+        type: 3}
+      propertyPath: _healAmount
+      value: 12.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8588945756745256092, guid: 81cf526ec0aea604b804414ffaa0fdb2,
+        type: 3}
+      propertyPath: _healTicks
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81cf526ec0aea604b804414ffaa0fdb2, type: 3}

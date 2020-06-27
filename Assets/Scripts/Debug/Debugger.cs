@@ -65,11 +65,12 @@ namespace CostumDebug
                     _inputfield.text = "Commands:\n" +
                         "/help for all commands\n" +
                         "/aipathon to show AI pathing\n" +
-                        "/aipath to hide AI pathing\n" +
+                        "/aipathoff to hide AI pathing\n" +
                         "/aiareaon to show AI areas\n" +
                         "/aiareaoff to hide AI areas\n" +
-                        "/onpendoors to open all doors\n" +
-                        "/reloadlvl to start again";
+                        "/opensesame to open all doors\n" +
+                        "/reloadlvl to start again\n" +
+                        "/addhp (number) to add hp";
                     break;
 
                 case "/aipathon":
@@ -88,7 +89,7 @@ namespace CostumDebug
                     DebugObject(false, _astar); ResetText();
                     break;
 
-                case "/opendoors":
+                case "/opensesame":
                     OpenAllDoors(); ResetText();
                     break;
 
