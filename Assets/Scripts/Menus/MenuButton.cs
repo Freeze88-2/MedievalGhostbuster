@@ -59,7 +59,7 @@ public class MenuButton : MonoBehaviour
             //Debug.Log("I Load!");
             SceneManager.LoadScene(1);
         }
-        else if (index == 4 && thisIndex == 4 && Input.GetButtonDown("Submit"))
+        else if (index == 3 && thisIndex == 3 && Input.GetButtonDown("Submit"))
         {
             //Debug.Log("I Quit!");
             Application.Quit();
