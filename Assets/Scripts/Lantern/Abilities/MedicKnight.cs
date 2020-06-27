@@ -7,13 +7,11 @@ namespace Lantern.Abilities
     {
         [SerializeField] private float _healTime = 2;
         [SerializeField] private float _healAmount = 10f;
-        [SerializeField] private float _healTicks = 0.2f;
 
         [Tooltip("Sound Effects")]
         [SerializeField] private AudioClip _sound;
 
         private IEntity _player;
-        private WaitForSeconds _wait;
         private float _timer;
         private bool _isHealing;
 
@@ -33,7 +31,6 @@ namespace Lantern.Abilities
         {
             _isHealing = false;
             HabilityEnded = false;
-            _wait = new WaitForSeconds(_healTicks);
             _player = GameObject.FindGameObjectWithTag("Player")
                 .GetComponent<IEntity>();
         }
@@ -61,9 +58,9 @@ namespace Lantern.Abilities
                 // ------- Heal Player ----------
                 _player.Heal(_healAmount);
 
-                yield return _wait;
+                _timer += Time.deltaTime;
 
-                _timer += Time.deltaTime % 60;
+                yield return null;
             }
             _isHealing = false;
             HabilityEnded = true;
