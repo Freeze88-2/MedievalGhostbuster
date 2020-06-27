@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: Koala Company
   productName: Mibivell's Ghostbuster
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: 08aa28301b178e04b8f1caee5c5d3a09, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.004004982, g: 0.04352638, b: 0.09433961, a: 1}
   m_ShowUnitySplashScreen: 1
@@ -40,8 +40,12 @@ PlayerSettings:
     width: 1
     height: 1
   m_SplashScreenLogos:
-  - logo: {fileID: 21300000, guid: 35995c4dc703152479845a8ba0bb4208, type: 3}
+  - logo: {fileID: 21300000, guid: 3c270950cdbc8e942961c1bb287372f5, type: 3}
     duration: 2
+  - logo: {fileID: 21300000, guid: 9d1f43a0cfe5f2d4aac75968b8f39266, type: 3}
+    duration: 2
+  - logo: {fileID: 21300000, guid: 35995c4dc703152479845a8ba0bb4208, type: 3}
+    duration: 3
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
@@ -122,7 +126,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.1
+  bundleVersion: 1.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -281,7 +285,7 @@ PlayerSettings:
   - m_BuildTarget: Standalone
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 28f23bee8b5f81444b14ca13d932f119, type: 3}
+      m_Icon: {fileID: 2800000, guid: d3305fee3542a2c4692cb585c164cbcf, type: 3}
       m_Width: 1024
       m_Height: 1024
       m_Kind: 0
@@ -319,6 +323,13 @@ PlayerSettings:
       m_Icon: {fileID: 0}
       m_Width: 16
       m_Height: 16
+      m_Kind: 0
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 0}
+      m_Width: 128
+      m_Height: 128
       m_Kind: 0
   m_BuildTargetPlatformIcons: []
   m_BuildTargetBatching:
@@ -612,7 +623,7 @@ PlayerSettings:
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
-  allowUnsafeCode: 0
+  allowUnsafeCode: 1
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 0
