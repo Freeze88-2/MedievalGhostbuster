@@ -16,6 +16,7 @@ public class PressurePlate : MonoBehaviour
     private Vector3 _wantedPos;
     private bool _active;
     private GameObject _current;
+    private AudioSource _audio;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class PressurePlate : MonoBehaviour
         _initialPos = transform.position;
         _wait = new WaitForSeconds(_activeTiming);
         _pieces = new (IPuzzleInteractable, Direction)[_gameObjects.Length];
+        _audio = GetComponent<AudioSource>();
 
         for (int i = 0; i < _gameObjects.Length; i++)
         {
@@ -77,6 +79,10 @@ public class PressurePlate : MonoBehaviour
         {
             _active = true;
 
+            _audio.volume = Random.Range(0.5f, 1);
+            _audio.pitch = Random.Range(0.5f, 1);
+            _audio.Play();
+
             for (int i = 0; i < _pieces.Length; i++)
             {
                 if ((_pieces[i].dir == (Direction)0 ||
@@ -93,6 +99,10 @@ public class PressurePlate : MonoBehaviour
         yield return _wait;
 
         _active = false;
+
+        _audio.volume = Random.Range(0.5f, 1);
+        _audio.pitch = Random.Range(0.5f, 1);
+        _audio.Play();
 
         for (int i = 0; i < _pieces.Length; i++)
         {

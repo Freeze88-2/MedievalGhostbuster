@@ -7,13 +7,13 @@ public class LiftDoor : MonoBehaviour, IPuzzleInteractable
     [SerializeField] private float _height = 3.0f;
     private float _startTransform;
     private float _endTransform;
-    // private Rigidbody _rb;
+    private AudioSource _audio;
 
     private void Start()
     {
         _endTransform = 0;
         _startTransform = 0;
-        // _rb = GetComponent<Rigidbody>();
+        _audio = GetComponent<AudioSource>();
     }
 
     public void ActivatePuzzlePiece(bool active, float time)
@@ -26,6 +26,7 @@ public class LiftDoor : MonoBehaviour, IPuzzleInteractable
     {
         if (active)
         {
+            _audio.Play();
             if (_endTransform == 0)
             {
                 _endTransform = transform.position.y + _height; 
@@ -41,6 +42,7 @@ public class LiftDoor : MonoBehaviour, IPuzzleInteractable
         }
         else
         {
+            _audio.Play();
             if (_startTransform == 0)
             {
                 _startTransform = transform.position.y - _height;
