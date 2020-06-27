@@ -17,6 +17,11 @@ public class PauseFunctions : MonoBehaviour
         SceneManager.LoadScene(scene.name);
     }
 
+    public void GoLevel1()
+    {
+        SceneManager.LoadScene(1);
+    }
+
     public void VolumeSlider(float volumeValue)
     {
         _mixer.SetFloat("SceneMasterExp", Mathf.Log10(volumeValue) * 20);

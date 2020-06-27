@@ -8,11 +8,25 @@ public class MenuButton : MonoBehaviour
     [SerializeField] private MenuButtonController   _menuButtonController;
     [SerializeField] private Animator               _animator;
     [SerializeField] private AnimatorFunctions      _animatorFunctions;
+    [SerializeField] private GameObject             _mainMenu;
+    [SerializeField] private GameObject             _credits;
     [SerializeField] private int thisIndex;
 
     private int index;
+    
+    public bool showCredits;
+    public bool gameIsLoaded;
 
-    void Update()
+    private void Start()
+    {
+        gameIsLoaded = false;  
+        showCredits = false; 
+
+        _credits.SetActive(false);
+        _mainMenu.SetActive(true);
+    }
+
+    private void Update()
     {
         index = _menuButtonController.index;
 
@@ -34,19 +48,55 @@ public class MenuButton : MonoBehaviour
         }
 
         CheckLoadAndQuit();
+        ShowCredits();
+        LoadSave();
     }
 
     private void CheckLoadAndQuit()
     {
         if (index == 0 && thisIndex == 0 && Input.GetButtonDown("Submit"))
         {
-            Debug.Log("I Load!");
+            //Debug.Log("I Load!");
             SceneManager.LoadScene(1);
         }
         else if (index == 4 && thisIndex == 4 && Input.GetButtonDown("Submit"))
         {
-            Debug.Log("I Quit!");
+            //Debug.Log("I Quit!");
             Application.Quit();
         }
+    }
+
+    private void ShowCredits()
+    {
+        if (index == 2 && thisIndex == 2 && Input.GetButtonDown("Submit")
+        && showCredits == false)
+        {
+            showCredits = true;
+            _mainMenu.SetActive(false);
+            _credits.SetActive(true);
+        }
+        
+        if (showCredits == true)
+        {
+            _mainMenu.SetActive(false);
+            _credits.SetActive(true);
+        }
+
+    }
+
+    private void LoadSave()
+    {
+        if (index == 1 && thisIndex == 1 && Input.GetButtonDown("Submit"))
+        {
+            transform.parent = null;
+            DontDestroyOnLoad(this);
+            gameIsLoaded = true;
+            SceneManager.LoadScene(1);
+        }
+    }
+
+    public void NewShowCredits(bool b)
+    {
+        showCredits = b;
     }
 }

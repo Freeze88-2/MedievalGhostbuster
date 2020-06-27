@@ -17,6 +17,7 @@ public class SaveController : MonoBehaviour
     private string _healthFilepath;
     private MovementController _movementController;
     private DummyPlayer _dummy;
+    private MenuButton _menuMain;
 
     private void Awake()
     {
@@ -25,6 +26,8 @@ public class SaveController : MonoBehaviour
         _playerLocationFilepath = Application.persistentDataPath + "/" + PLAYER_LOCATION_FILENAME;
         _worldFilepath = Application.persistentDataPath + "/" + WORLD_FILENAME;
         _healthFilepath = Application.persistentDataPath + "/" + HEALTH_FILENAME;
+
+        _menuMain = FindObjectOfType<MenuButton>();
     }
 
     /// <summary>
@@ -32,6 +35,19 @@ public class SaveController : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if(_menuMain != null && _menuMain.gameIsLoaded == true)
+        {
+            LoadGame();
+            Destroy(_menuMain);
+        }
+        else if (!File.Exists(_playerLocationFilepath) || !File.Exists(_worldFilepath) || !File.Exists(_healthFilepath))
+            SaveGame();
+        else
+            print("There are previous save files");
+
+        Debug.Log("####" + _menuMain.gameIsLoaded);
+
+
         ListenInputs();
     }
 
@@ -82,7 +98,7 @@ public class SaveController : MonoBehaviour
     //!-----------------------------------------------------------------------
 
     // Save start
-    private void SaveGame()
+    public void SaveGame()
     {
         (SaveData plr, WorldData wrld, HealthData hlth) save = GetSaveData();
 
